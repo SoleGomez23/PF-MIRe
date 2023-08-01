@@ -1,5 +1,5 @@
 """
-ASGI config for MIReApp project.
+ASGI config for MIRe project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MIReApp.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MIRe.settings')
 
 application = get_asgi_application()

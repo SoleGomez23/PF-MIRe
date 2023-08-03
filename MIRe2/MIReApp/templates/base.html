@@ -4,6 +4,7 @@
 
 <head>
   <title> {% block titulo %} {% endblock %} </title>
+  <link type="text/css" href='{% static "css/base.css" %}' rel="stylesheet"/>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -17,7 +18,7 @@
 <body>
     <nav class="navbar navbar-expand navbar-light bg-light">
         <div class="nav navbar-nav">
-            <a class="nav-item nav-link active" href="{% url 'inicio' %}" aria-current="page">Inicio<span class="visually-hidden">(current)</span></a>
+            <a class="nav-item nav-link" href="{% url 'inicio' %}" aria-current="page">Inicio<span class="visually-hidden">(current)</span></a>
             <a class="nav-item nav-link" href="{% url 'metricas' %}">Metricas</a>
             <a class="nav-item nav-link" href="{% url 'nosotros' %}">Nosotros</a>
         </div>

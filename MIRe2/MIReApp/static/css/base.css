@@ -11,7 +11,11 @@ h6 {
     font-size: 10px;
     text-align: justify;
 }
-
+h5{
+    color: #ffd500;
+    font-size: 8px;
+    text-align: justify;
+}
 .cont {
     height: auto;
     background-image: url(../../static/images/proyecto.png);
@@ -28,7 +32,18 @@ h6 {
 
 }
 
+.prueba {
+    height: auto;
+    background-image: url(../../static/images/mire.png);
+    background-position: center;
+	background-size: cover;
+}
+
 texto-justificado {
     text-align: justify;
     }
-
+    
+.left {
+    float: izquierda;
+    acolchado: 0 20px 20px 0;
+}

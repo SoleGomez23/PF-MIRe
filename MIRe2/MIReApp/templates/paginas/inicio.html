@@ -1,27 +1,54 @@
 {% extends "base.html" %}
 
 {% block titulo %} Inicio {% endblock %}
-
+{% load static %}
 {% block contenido %} 
 
     <div class="row align-items-md-stretch">
         <div class="col-md-12">
-            <div
-                class="h-100 p-5 text-white border rounded-3" style="background-color: #f097fc;">
-                <h2>Bienvenidos a MIRe</h2>
-                <br>
+                <img src="/../static/images/captura.png" class="mx-auto d-block rounded-3"> 
                 <h6>El monitor de Indicadores para Resultados UTN (MIRe UTN) es una plataforma que permite la visualización de cómo se alinean los objetivos de los programas brindados por la Secretaría de Coordinación Universitaria con los objetivos estratégicos establecidos. Es un instrumento clave para la planeación dado que proporciona información de monitoreo y evaluación de resultados a partir de la medición de indicadores. </h6>
                 <br>
-                <button class="btn" style="background-color: #e468f4;" type="button">Example button</button>
-                <button class="btn" style="background-color: #f60;" type="button">Probando</button>
-                <button class="btn" style="background-color: #ffd500;" type="button">Nuestra</button>
-                <button class="btn border" style="background-color: #ffff;" type="button">paleta</button>
-                <button class="btn" style="background-color: #a020b0;" type="button">de colores</button>
+                <button class="btn dropdown-toggle" style="background-color: #e468f4;" type="button" data-bs-toggle="dropdown" aria-expanded="false">Área</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
+                  </ul>
+                <button class="btn dropdown-toggle" style="background-color: #f60;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Tipo</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
+                  </ul>
+                <button class="btn dropdown-toggle" style="background-color: #ffd500;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Ámbito</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
+                  </ul>
+                <button class="btn border dropdown-toggle" style="background-color: #ffff;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Programa</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
+                  </ul>
+                <button class="btn dropdown-toggle" style="background-color: #a020b0;" type="button"data-bs-toggle="dropdown" aria-expanded="false">etc</button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
+                  </ul>
                 <br>
                 <br>  
-            </div>
     
         </div>
     </div> 
+    <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #e468f4;">
+        <img src="/../static/images/grafica.png" class="col-md-3"> 
+    </div>
+    <br>
+    <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #e468f4;">
+        <h6 class='text-center' style="color: black;">Nivel de satisfaccion respecto<br/> a la implementación del repensando </h6>
+    <br>
+    <br>
+    <br>
+    <br>
+    </div>
 
 {% endblock %}

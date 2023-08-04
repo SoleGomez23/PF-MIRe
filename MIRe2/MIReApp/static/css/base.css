@@ -12,12 +12,23 @@ h6 {
     text-align: justify;
 }
 
-a {
-    
-    background-color: #e468f4;
+.cont {
+    height: auto;
+    background-image: url(../../static/images/proyecto.png);
+    background-position: center;
+	background-size: cover;
+
+}
+
+.fondo {
+    height: auto;
+    background-image: url(../../static/images/backgro.png);
+    background-position: center;
+	background-size: cover;
+
 }
 
 texto-justificado {
     text-align: justify;
     }
-//////probando///////
+

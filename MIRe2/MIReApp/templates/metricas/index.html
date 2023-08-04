@@ -5,13 +5,13 @@
 {% block contenido %} 
 
     <div class="card">
-        <div class="card-header">
-            <a name="" id="" class="btn" style="background-color: #f60;" href="{% url 'crear' %}">Agregar nueva metrica</a>
+        <div class="card-header" style="background-color: #e468f4;">
+            <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'crear' %}">+ Agregar nueva metrica</a>
         </div>
         <div class="card-body">
-            <h class="card-title">Metricas</h>
+            <h6 class="card-title">Metricas</h6>
             <div class="table-responsive">
-                <table class="table" style="background-color: #e468f4;">
+                <table class="table" style="background-color: #eab5f1;">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -29,8 +29,8 @@
                             <td>{{ metri.descripcion }}</td>
                             <td>{{ metri.unidad_medida }}</td>
                             <td> 
-                                <a name="" id="" class="btn btn-info" href="{% url 'editar' metri.id %}" role="button">Editar</a> 
-                                <a name="" id="" class="btn btn-danger" href="{% url 'eliminar' metri.id %}" role="button">Eliminar</a> 
+                                <a name="" id="" class="btn" style="background-color: #e468f4;" href="{% url 'editar' metri.id %}">Editar</a> 
+                                <a name="" id="" class="btn" style="background-color: #f60;" href="{% url 'eliminar' metri.id %}" role="button">Eliminar</a> 
                             </td>
                         </tr>
                         {% endfor %}
@@ -39,7 +39,7 @@
             </div>
             
         </div>
-        <div class="card-footer text-muted">
+        <div class="card-footer text-muted" style="background-color: #e468f4;">
         </div>
     </div>
 

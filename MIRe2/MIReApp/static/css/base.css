@@ -1,0 +1,49 @@
+h2{
+    color: #A020B0;
+}
+
+button {
+    color:rgb(255, 255, 255);
+    background-color: #e468f4
+}
+h6 {
+    color: #A020B0;
+    font-size: 10px;
+    text-align: justify;
+}
+h5{
+    color: #ffd500;
+    font-size: 8px;
+    text-align: justify;
+}
+.cont {
+    height: auto;
+    background-image: url(../../static/images/proyecto.png);
+    background-position: center;
+	background-size: cover;
+
+}
+
+.fondo {
+    height: auto;
+    background-image: url(../../static/images/backgro.png);
+    background-position: center;
+	background-size: cover;
+
+}
+
+.prueba {
+    height: auto;
+    background-image: url(../../static/images/mire.png);
+    background-position: center;
+	background-size: cover;
+}
+
+texto-justificado {
+    text-align: justify;
+    }
+    
+.left {
+    float: izquierda;
+    acolchado: 0 20px 20px 0;
+}

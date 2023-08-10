@@ -9,6 +9,9 @@ def inicio(request):
 def nosotros(request):
     return render(request, 'paginas/nosotros.html')
 
+def error(request):
+    return render(request, 'paginas/error.html')
+
 def metricas(request):#el renderizado se hace acá, por eso tenemos el libro incrustado en el index, eso se soluciona acá
     metricas = Metrica.objects.all()
     return render(request, 'metricas/index.html', {'metrica': metricas})

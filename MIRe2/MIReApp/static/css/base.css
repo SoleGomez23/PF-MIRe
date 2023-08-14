@@ -361,3 +361,8 @@ texto-justificado {
     border-color: #ffd500;}
     
     @media (max-width:768px) {}
+
+.dropdown-menu.vertical {
+    display: block;
+    transform: translateX(0); /* Resuelve un problema de alineación */
+    }

@@ -4,9 +4,6 @@
 {% load static %}
 {% block contenido %} 
 <br>
-<br>
-<br>
-<br>
   <div class="contenedor">
 
         <div class="col-md-6 rounded-3" style="padding: 40px;">
@@ -36,33 +33,51 @@
     </div>
   </div> 
   <br> 
+  <div class="dropdown">
   <button class="btn dropdown-toggle" style="background-color: #e468f4;" type="button" data-bs-toggle="dropdown" aria-expanded="false">Área</button>
-  <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-      <li><a class="dropdown-item" href="#">Alumnado</a></li>
-    </ul>
-  <button class="btn dropdown-toggle" style="background-color: #f60;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Tipo</button>
-  <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-      <li><a class="dropdown-item" href="#">Alumnado</a></li>
-    </ul>
+  <div class="dropdown-menu vertical">
+    <a class="dropdown-item" href="#">Decanato</a>
+    <a class="dropdown-item" href="#">Sec. Académica</a>
+    <a class="dropdown-item" href="#">Sec. Administrativa</a>
+    <a class="dropdown-item" href="#">Sec. de Asuntos Universitarios</a>
+    <a class="dropdown-item" href="#">Sec. de Extensión Universitaria</a>
+    <a class="dropdown-item" href="#">Sec. de Ciencia y Tecnología</a>
+    <a class="dropdown-item" href="#">Sec. de Relaciones Internacionales</a>
+    <a class="dropdown-item" href="#">Sec. de Infraestructura</a>
+    <a class="dropdown-item" href="#">Depto. de Carreras</a>
+
+  </div>
+  <button class="btn dropdown-toggle" style="background-color: #f60;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Tipo
+  </button>
+  <div class="dropdown-menu vertical">
+    <a class="dropdown-item" href="#">Calidad</a>
+    <a class="dropdown-item" href="#">Eficacia</a>
+    <a class="dropdown-item" href="#">Economía</a>
+    <a class="dropdown-item" href="#">Eficiencia</a>
+  </div>
   <button class="btn dropdown-toggle" style="background-color: #ffd500;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Ámbito</button>
-  <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-      <li><a class="dropdown-item" href="#">Alumnado</a></li>
-    </ul>
+  <div class="dropdown-menu vertical">
+    <a class="dropdown-item" href="#">Actividad</a>
+    <a class="dropdown-item" href="#">Componente</a>
+    <a class="dropdown-item" href="#">Propósito</a>
+    <a class="dropdown-item" href="#">Fin</a>
+  </div>
   <button class="btn border dropdown-toggle" style="background-color: #ffff;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Programa</button>
-  <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-      <li><a class="dropdown-item" href="#">Alumnado</a></li>
-    </ul>
-  <button class="btn dropdown-toggle" style="background-color: #a020b0;" type="button"data-bs-toggle="dropdown" aria-expanded="false">etc</button>
-  <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-      <li><a class="dropdown-item" href="#">Alumnado</a></li>
-    </ul>
+  <div class="dropdown-menu vertical">
+    <a class="dropdown-item" href="#">Repensando UTN</a>
+    <a class="dropdown-item" href="#">otro</a>
+  </div>
+  <button class="btn dropdown-toggle" style="background-color: #a020b0;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Perioricidad</button>
+  <div class="dropdown-menu vertical">
+    <a class="dropdown-item" href="#">Bianual</a>
+    <a class="dropdown-item" href="#">Anual</a>
+    <a class="dropdown-item" href="#">Semestral</a>
+    <a class="dropdown-item" href="#">Mensual</a>
+    <a class="dropdown-item" href="#">Quincenal</a>
+  </div>
+  </div>
     <br> 
-    <br>
     <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #e468f4;">
         <img src="/../static/images/grafica.png" class="col-md-3"> 
     </div>
@@ -74,5 +89,13 @@
     <br>
     <br>
     </div>
-
+    <br>
+    <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #e468f4;">
+      <h6 class='text-center' style="color: black;">Acá se verian los<br/> Indicadores</h6>
+  <br>
+  <br>
+  <br>
+  <br>
+  </div>
+<br>
 {% endblock %}

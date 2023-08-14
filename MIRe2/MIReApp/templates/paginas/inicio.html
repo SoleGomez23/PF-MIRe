@@ -3,42 +3,66 @@
 {% block titulo %} Inicio {% endblock %}
 {% load static %}
 {% block contenido %} 
+<br>
+<br>
+<br>
+<br>
+  <div class="contenedor">
 
-    <div class="row align-items-md-stretch">
-        <div class="col-md-12">
-                <img src="/../static/images/captura.png" class="mx-auto d-block rounded-3"> 
-                <h6>El monitor de Indicadores para Resultados UTN (MIRe UTN) es una plataforma que permite la visualización de cómo se alinean los objetivos de los programas brindados por la Secretaría de Coordinación Universitaria con los objetivos estratégicos establecidos. Es un instrumento clave para la planeación dado que proporciona información de monitoreo y evaluación de resultados a partir de la medición de indicadores. </h6>
-                <br>
-                <button class="btn dropdown-toggle" style="background-color: #e468f4;" type="button" data-bs-toggle="dropdown" aria-expanded="false">Área</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
-                  </ul>
-                <button class="btn dropdown-toggle" style="background-color: #f60;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Tipo</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
-                  </ul>
-                <button class="btn dropdown-toggle" style="background-color: #ffd500;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Ámbito</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
-                  </ul>
-                <button class="btn border dropdown-toggle" style="background-color: #ffff;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Programa</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
-                  </ul>
-                <button class="btn dropdown-toggle" style="background-color: #a020b0;" type="button"data-bs-toggle="dropdown" aria-expanded="false">etc</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
-                    <li><a class="dropdown-item" href="#">Alumnado</a></li>
-                  </ul>
-                <br>
-                <br>  
+        <div class="col-md-6 rounded-3" style="padding: 40px;">
+                <img src="/../static/images/captura.png" class="mx-auto d-flex rounded-3"> 
     
         </div>
-    </div> 
+    <br>
+    
+    <div class="rounded-3 element" style="background-color: #fff4bb; padding: 30px; width: min-content;"> 
+              <h1 class="text-center fw-bold">Bienvenid@!</h1>
+              <img src="/../static/images/barrita.png" class="mx-auto d-flex rounded-3">
+              <br>
+              <div class="text-center" style=" border-width: 1px; border-color: #f60">
+                <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'error' %}">+ Nuevo programa</a>
+                <br>
+                <br>
+                <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'crear' %}">+ Nueva metrica</a>
+                <br>
+                <br>
+                <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'error' %}">+ Nuevo indicador</a>
+                <br>
+                <br>
+                <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'nosotros' %}">Mis informes</a>
+                
+              </div>
+              <br>
+    </div>
+  </div> 
+  <br> 
+  <button class="btn dropdown-toggle" style="background-color: #e468f4;" type="button" data-bs-toggle="dropdown" aria-expanded="false">Área</button>
+  <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+      <li><a class="dropdown-item" href="#">Alumnado</a></li>
+    </ul>
+  <button class="btn dropdown-toggle" style="background-color: #f60;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Tipo</button>
+  <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+      <li><a class="dropdown-item" href="#">Alumnado</a></li>
+    </ul>
+  <button class="btn dropdown-toggle" style="background-color: #ffd500;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Ámbito</button>
+  <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+      <li><a class="dropdown-item" href="#">Alumnado</a></li>
+    </ul>
+  <button class="btn border dropdown-toggle" style="background-color: #ffff;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Programa</button>
+  <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+      <li><a class="dropdown-item" href="#">Alumnado</a></li>
+    </ul>
+  <button class="btn dropdown-toggle" style="background-color: #a020b0;" type="button"data-bs-toggle="dropdown" aria-expanded="false">etc</button>
+  <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Secretaria Academica</a></li>
+      <li><a class="dropdown-item" href="#">Alumnado</a></li>
+    </ul>
+    <br> 
+    <br>
     <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #e468f4;">
         <img src="/../static/images/grafica.png" class="col-md-3"> 
     </div>

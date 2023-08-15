@@ -19,7 +19,8 @@
 <body>
   <nav class="navbar bg-body-tertiary fixed-top" style="background-color: #a020a0;">
     <div class="container-fluid">
-      <img src="/../static/images/grafiquita.png" class="rounded-3">
+      <a class="nav-item nav-link fw-bold " style="color: #a020a0;" href="{% url 'inicio' %}" aria-current="page">
+      <img src="/../static/images/grafiquita.png" class="rounded-3"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation" >
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -31,13 +32,16 @@
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-item nav-link fw-bold " style="color: #000000;" href="{% url 'inicio' %}" aria-current="page">Inicio<span class="visually-hidden">(current)</span></a>
+              <a class="nav-item nav-link fw-bold " style="color: #a020a0;" href="{% url 'inicio' %}" aria-current="page">Inicio<span class="visually-hidden">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-item nav-link fw-bold" style="color: #000000;" href="{% url 'metricas' %}">Metricas</a>
+              <a class="nav-item nav-link fw-bold" style="color: #a020a0;" href="{% url 'metricas' %}">Métricas</a>
             </li>
             <li class="nav-item">
-              <a class="nav-item nav-link fw-bold" style="color: #000000;" href="{% url 'nosotros' %}">Nosotros</a>
+              <a class="nav-item nav-link fw-bold" style="color: #a020a0;" href="{% url 'error' %}">Indicadores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-item nav-link fw-bold" style="color: #a020a0;" href="{% url 'nosotros' %}">Informes</a>
             </li>
           </ul>
           </div>
@@ -47,6 +51,9 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+              <br>
+              <br>
+              <br>
               <br>
               {% block contenido %} {% endblock %}
             </div>

@@ -1,0 +1,53 @@
+[1mdiff --git a/MIRe2/MIReApp/__pycache__/forms.cpython-311.pyc b/MIRe2/MIReApp/__pycache__/forms.cpython-311.pyc[m
+[1mindex a75e0ed..1784c77 100644[m
+Binary files a/MIRe2/MIReApp/__pycache__/forms.cpython-311.pyc and b/MIRe2/MIReApp/__pycache__/forms.cpython-311.pyc differ
+[1mdiff --git a/MIRe2/MIReApp/__pycache__/views.cpython-311.pyc b/MIRe2/MIReApp/__pycache__/views.cpython-311.pyc[m
+[1mindex e6372af..6125464 100644[m
+Binary files a/MIRe2/MIReApp/__pycache__/views.cpython-311.pyc and b/MIRe2/MIReApp/__pycache__/views.cpython-311.pyc differ
+[1mdiff --git a/MIRe2/MIReApp/forms.py b/MIRe2/MIReApp/forms.py[m
+[1mindex 57b76e4..8f4c6a4 100644[m
+[1m--- a/MIRe2/MIReApp/forms.py[m
+[1m+++ b/MIRe2/MIReApp/forms.py[m
+[36m@@ -2,14 +2,7 @@[m [mfrom django import forms[m
+ from .models import Metrica[m
+ [m
+ class MetricaForm(forms.ModelForm):[m
+[31m-    class Meta:[m
+[31m-        model = Metrica[m
+[31m-        fields = '__all__'[m
+[31m-[m
+[31m-[m
+[31m-class MetricaFormEditar(forms.ModelForm):[m
+     class Meta:[m
+         model = Metrica[m
+         fields = ['descripcion'][m
+[31m-        [m
+        [m
+\ No newline at end of file[m
+[1mdiff --git a/MIRe2/MIReApp/views.py b/MIRe2/MIReApp/views.py[m
+[1mindex d24e46c..cb4aa89 100644[m
+[1m--- a/MIRe2/MIReApp/views.py[m
+[1m+++ b/MIRe2/MIReApp/views.py[m
+[36m@@ -2,7 +2,6 @@[m [mfrom django.shortcuts import render, redirect[m
+ from django.http import HttpResponse[m
+ from .models import Metrica[m
+ from .forms import MetricaForm[m
+[31m-from .forms import MetricaFormEditar[m
+ from django.shortcuts import get_object_or_404, render[m
+ [m
+ def inicio(request):[m
+[36m@@ -27,9 +26,9 @@[m [mdef crear_metricas(request):[m
+ [m
+ def editar_metricas(request, id):[m
+     metrica = get_object_or_404(Metrica, id=id)[m
+[31m-    formulario = MetricaFormEditar(request.POST or None, request.FILES or None, instance=metrica)[m
+[32m+[m[32m    formulario = MetricaForm(request.POST or None, request.FILES or None, instance=metrica)[m[41m[m
+     if request.method == 'POST':[m
+[31m-        formulario = MetricaFormEditar(request.POST, instance=metrica)[m
+[32m+[m[32m        formulario = MetricaForm(request.POST, instance=metrica)[m[41m[m
+         if formulario.is_valid():[m
+             formulario.save()[m
+         return redirect('metricas')[m
+[1mdiff --git a/MIRe2/db.sqlite3 b/MIRe2/db.sqlite3[m
+[1mindex 98122be..d909cfc 100644[m
+Binary files a/MIRe2/db.sqlite3 and b/MIRe2/db.sqlite3 differ

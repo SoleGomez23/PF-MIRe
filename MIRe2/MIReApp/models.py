@@ -30,7 +30,7 @@ class Metrica(models.Model):
                                                             code='invalid_nombre')
                                         ])
     valor = models.IntegerField(verbose_name='Valor', validators=[MinValueValidator(0, message="El valor no puede ser negativo")], default=0)
-    frecuencia = models.CharField(max_length=10, choices=FRECUENCIAS, default='Anual')
+    frecuencia = models.CharField(max_length=10, choices=FRECUENCIAS, verbose_name='Frecuencia')
 
     def __str__(self):
         fila = 'Titulo: ' + self.titulo + ' - ' + 'Descripcion: ' + self.descripcion

@@ -19,6 +19,7 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Unidad de medida</th>
                             <th scope="col">Valor</th>
+                            <th scope="col">Frecuencia</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -30,6 +31,7 @@
                             <td>{{ metri.descripcion }}</td>
                             <td>{{ metri.unidad_medida }}</td>
                             <td>{{ metri.valor }}</td>
+                            <td>{{ metri.frecuencia }}</td>
                             <td> 
                                 <a name="" id="" class="btn" style="background-color: #a020b0;" href="{% url 'editar' metri.id %}">Editar</a> 
                                 <a name="" id="" class="btn" style="background-color: #f60;" href="{% url 'eliminar' metri.id %}" role="button">Eliminar</a> 

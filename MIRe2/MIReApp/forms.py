@@ -8,7 +8,7 @@ class MetricaForm(forms.ModelForm):
         fields = '__all__' 
         widgets = {
             'descripcion': Textarea(attrs={'cols': 30, 'rows': 1}),
-   }  
+        }  
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

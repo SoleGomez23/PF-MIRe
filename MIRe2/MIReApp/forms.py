@@ -18,5 +18,10 @@ class MetricaFormEditar(forms.ModelForm):
     class Meta:
         model = Metrica
         fields = ['descripcion']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.fields:
+            self.fields[i].widget.attrs.update({'class':'form-control'})
         
        

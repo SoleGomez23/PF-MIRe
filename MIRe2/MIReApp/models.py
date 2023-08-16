@@ -23,7 +23,6 @@ class Metrica(models.Model):
     descripcion = models.TextField(max_length=100, verbose_name='Descripcion', null=True) 
     unidad_medida = models.CharField(max_length=100, 
                                         verbose_name='Unidad de Medida',
-                                        unique= True,
                                         validators= [
                                             RegexValidator(regex= r'^[a-zA-Z\s]*$',
                                                             message="La unidad de medida no puede contener caracteres especiales",

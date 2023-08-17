@@ -5,12 +5,38 @@
 {% block contenido %} 
 
 <center>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <div class="card col-md-6" style="text-align: left;">
         <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
             Nueva métrica
         </div>
         <div class="card-body">
             {%  include 'metricas/form.html' %}
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  const frecuenciaField = document.querySelector("#id_frecuencia");
+                  const yearField = document.querySelector("#id_year");
+                
+                  frecuenciaField.addEventListener("change", function() {
+                    if (frecuenciaField.value === "anual") {
+                      yearField.parentElement.style.display = "none";
+                      yearField.removeAttribute("disabled");
+                    } else {
+                      yearField.parentElement.style.display = "none";
+                      yearField.setAttribute("disabled", "disabled");
+                    }
+                  });
+                });
+                </script>
         </div>
         <div class="card-footer text-muted" style="background-color: #e468f4;">
             

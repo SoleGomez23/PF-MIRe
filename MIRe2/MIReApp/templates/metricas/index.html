@@ -3,19 +3,19 @@
 {% block titulo %} Lista de metricas {% endblock %}
 
 {% block contenido %} 
-
-    <div class="card">
+<center>
+    <div class="col-md-10 card" style="text-align: left;">
         <div class="card-header" style="background-color: #e468f4;">
-            <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'crear' %}">+ Agregar nueva metrica</a>
+            <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'crear' %}">+ Agregar nueva métrica</a>
         </div>
         <div class="card-body">
-            <h6 class="card-title">Metricas</h6>
+            <h6 class="card-title">Métricas</h6>
             <div class="table-responsive">
                 <table class="table" style="background-color: #eab5f1;">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
-                            <th scope="col">Titulo</th>
+                            <th scope="col">Título</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Unidad de medida</th>
                             <th scope="col">Valor</th>
@@ -44,5 +44,6 @@
         <div class="card-footer text-muted" style="background-color: #e468f4;">
         </div>
     </div>
+</center>
 
 {% endblock %}

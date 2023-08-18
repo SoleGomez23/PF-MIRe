@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block titulo %} Histórico {% endblock %}
+
+{% block contenido %} 
+<center>
+<div class="card col-md-10" style="text-align: left;">
+    <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
+        Histórico
+    </div>
+    <div class="card-body" >
+                <title>Historico de la métrica</title>
+                
+                <body>
+                    <h2>{{ metrica.titulo }}</h2>
+                    <br>
+                    <table class="table" style="background-color: #eab5f1;">
+                        <tr>
+                            <th>Año</th>
+                            <th>Valor</th>
+                        </tr>
+                        {% for item in historial %}
+                            <tr>
+                                <td>{{ item.año_historico }}</td>
+                                <td>{{ item.metrica.valor }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <br>
+                    <h6>Agregar nueva instancia:</h6>
+                    <form method="post">
+                        {% csrf_token %}
+                       
+                        <input type="number" name="nuevo_año" required class="rounded-3" style="border-color: #a020a0;">
+                        <input type="number" name="nuevo_valor" required class="rounded-3" style="border-color: #a020a0;">
+                        <button type="submit" class="rounded-3 fw-bold" style="background-color: #ffd500;color: #000000; border-color: #f60;">Agregar</button>
+                    </form>
+                </body>
+    </div>
+    <div class="card-footer text-muted" style="background-color: #e468f4;">
+        <br>
+    </div>   
+</div>  
+</center>
+
+
+
+{% endblock %}

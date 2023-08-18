@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Metrica
+from .models import Metrica, HistorialMetrica
 from .forms import MetricaForm
 from .forms import MetricaFormEditar
 from django.shortcuts import get_object_or_404, render
@@ -41,3 +41,21 @@ def eliminar_metricas(request, id):
     metricas = Metrica.objects.get(id=id)
     metricas.delete()
     return redirect('metricas')
+
+def historial_metrica(request, metrica_id):
+    metrica = Metrica.objects.get(id=metrica_id)
+    historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-id')
+
+    if request.method == 'POST':
+        nuevo_año = request.POST['nuevo_año']
+        nuevo_valor = request.POST['nuevo_valor']
+
+        historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año)
+        historial_metrica.save()
+
+        metrica.valor = nuevo_valor
+        metrica.save()
+
+        return redirect('historial_metrica', metrica_id=metrica_id)
+
+    return render(request, 'historial_metrica.html', {'metrica': metrica, 'historial': historial})

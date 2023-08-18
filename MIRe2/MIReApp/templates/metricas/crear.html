@@ -14,34 +14,38 @@
     <br>
     <br>
     <br>
-    <br>
     <div class="card col-md-6" style="text-align: left;">
         <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
             Nueva métrica
         </div>
-        <div class="card-body">
+        <div class="card-body" style="background-color: #e9acf1;">
             {%  include 'metricas/form.html' %}
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                  const frecuenciaField = document.querySelector("#id_frecuencia");
-                  const yearField = document.querySelector("#id_year");
-                
-                  frecuenciaField.addEventListener("change", function() {
-                    if (frecuenciaField.value === "anual") {
-                      yearField.parentElement.style.display = "none";
-                      yearField.removeAttribute("disabled");
-                    } else {
-                      yearField.parentElement.style.display = "none";
-                      yearField.setAttribute("disabled", "disabled");
-                    }
-                  });
+              document.addEventListener("DOMContentLoaded", function() {
+                const frecuenciaField = document.querySelector("#{{ formulario.frecuencia.id_for_label }}"); // Utiliza el id_for_label del campo de frecuencia
+                const yearField = document.querySelector("#{{ formulario.year.id_for_label }}"); // Utiliza el id_for_label del campo de año
+            
+                // Ocultar el campo de año al principio
+                yearField.parentElement.style.display = "none";
+                yearField.setAttribute("disabled", "disabled");
+            
+                frecuenciaField.addEventListener("change", function() {
+                  if (frecuenciaField.value === "Anual") {
+                    yearField.parentElement.style.display = "block";
+                    yearField.removeAttribute("disabled");
+                  } else {
+                    yearField.parentElement.style.display = "none";
+                    yearField.setAttribute("disabled", "disabled");
+                  }
                 });
-                </script>
+              });
+            </script>
         </div>
         <div class="card-footer text-muted" style="background-color: #e468f4;">
             
         </div>
     </div>
+    <br>
 </center>
 
 {% endblock %}

@@ -19,7 +19,7 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Unidad de medida</th>
                             <th scope="col">Valor</th>
-                            <th scope="col">Acciones</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -32,7 +32,9 @@
                             <td>{{ metri.valor }}</td>
                             <td> 
                                 <a name="" id="" class="btn" style="background-color: #a020b0;" href="{% url 'editar' metri.id %}">Editar</a> 
-                                <a name="" id="" class="btn" style="background-color: #f60;" href="{% url 'eliminar' metri.id %}" role="button">Eliminar</a> 
+                                <a name="" id="" class="btn" style="background-color: #f60;" href="{% url 'eliminar' metri.id %}" role="button">Eliminar</a>
+                                <a name="" id="" class="btn" style="background-color: #ffd500;" href="{% url 'historial_metrica' metri.id %}">Histórico</a>
+                        
                             </td>
                         </tr>
                         {% endfor %}

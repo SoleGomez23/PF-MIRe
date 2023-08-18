@@ -35,3 +35,11 @@ class Metrica(models.Model):
     def __str__(self):
         fila = 'Título: ' + self.titulo + ' - ' + 'Descripcíon: ' + self.descripcion
         return fila
+    
+class HistorialMetrica(models.Model):
+    metrica = models.ForeignKey(Metrica, on_delete=models.CASCADE)
+    año_historico = models.PositiveIntegerField()
+    valor_historico = models.PositiveIntegerField(default=0)  # Agrega un valor predeterminado
+
+    def __str__(self):
+        return f"Métrica: {self.metrica.titulo} - Año Histórico: {self.año_historico} - Valor Histórico: {self.valor_historico}"

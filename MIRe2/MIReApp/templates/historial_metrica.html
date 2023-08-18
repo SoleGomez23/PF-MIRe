@@ -4,7 +4,7 @@
 
 {% block contenido %} 
 <center>
-<div class="card col-md-10" style="text-align: left;">
+<div class="card col-md-6" style="text-align: left;">
     <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
         Histórico
     </div>
@@ -31,9 +31,9 @@
                     <form method="post">
                         {% csrf_token %}
                        
-                        <input type="number" name="nuevo_año" required class="rounded-3" style="border-color: #a020a0;">
-                        <input type="number" name="nuevo_valor" required class="rounded-3" style="border-color: #a020a0;">
-                        <button type="submit" class="rounded-3 fw-bold" style="background-color: #ffd500;color: #000000; border-color: #f60;">Agregar</button>
+                        <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #a020a0;">
+                        <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #a020a0;">
+                        <button type="submit" class="btn rounded-3 fw-bold" style="background-color: #ffd500;color: #000000;">Agregar</button>
                     </form>
                 </body>
     </div>

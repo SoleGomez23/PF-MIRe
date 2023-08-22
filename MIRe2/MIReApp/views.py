@@ -4,6 +4,7 @@ from .models import Metrica, HistorialMetrica
 from .forms import MetricaForm
 from .forms import MetricaFormEditar
 from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
 
 def inicio(request):
     return render(request, 'paginas/inicio.html')
@@ -22,6 +23,7 @@ def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
     if formulario.is_valid():
         formulario.save()
+        messages.success(request, '¡Metrica creada exitosamente!')
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 

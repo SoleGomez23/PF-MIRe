@@ -4,6 +4,14 @@
 
 {% block contenido %} 
 <center>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <div class="col-md-10 card" style="text-align: left;">
         <div class="card-header" style="background-color: #e468f4;">
             <a name="" id="" class="btn fw-bold rounded-3" style="background-color: #ffd500;" href="{% url 'crear' %}">+ Agregar nueva métrica</a>

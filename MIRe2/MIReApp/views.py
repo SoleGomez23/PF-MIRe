@@ -54,6 +54,7 @@ def historial_metrica(request, metrica_id):
 
         historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
         historial_metrica.save()
+        messages.success(request, '¡Instancia creada exitosamente!')
 
         # metrica.valor = nuevo_valor
         # metrica.save()

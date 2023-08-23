@@ -5,6 +5,13 @@
 {% block contenido %} 
 <center>
 <div class="card col-md-6" style="text-align: left;">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
         Histórico
     </div>

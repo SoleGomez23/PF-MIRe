@@ -46,7 +46,7 @@ def eliminar_metricas(request, id):
 
 def historial_metrica(request, metrica_id):
     metrica = Metrica.objects.get(id=metrica_id)
-    historial = HistorialMetrica.objects.all()
+    historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-id')
 
     if request.method == 'POST':
         nuevo_año = request.POST['nuevo_año']
@@ -56,8 +56,8 @@ def historial_metrica(request, metrica_id):
         historial_metrica.save()
         messages.success(request, '¡Instancia creada exitosamente!')
 
-        # metrica.valor = nuevo_valor
-        # metrica.save()
+        metrica.valor = nuevo_valor
+        metrica.save()
 
         return redirect('historial_metrica', metrica_id=metrica_id)
 

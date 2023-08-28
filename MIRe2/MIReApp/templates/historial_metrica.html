@@ -3,15 +3,11 @@
 {% block titulo %} Histórico {% endblock %}
 
 {% block contenido %} 
+<br>
+<br>
+<br>
 <center>
 <div class="card col-md-6" style="text-align: left;">
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
     <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
         Histórico
     </div>
@@ -21,15 +17,16 @@
                 <body>
                     <h2>{{ metrica.titulo }}</h2>
                     <br>
-                    <table class="table" style="background-color: #eab5f1;">
+                    <table class="table rounded-3" style="background-color: #eab5f1">
                         <tr>
                             <th>Año</th>
                             <th>Valor</th>
                         </tr>
                         {% for item in historial %}
                             <tr>
-                                <td>{{ item.año_historico }}</td>
+                                <td scope="row">{{ item.año_historico }}</td>
                                 <td>{{ item.valor_historico }}</td>
+                                <td><a class="btn eliminar-btn" data-id="{{ item.id }}" style="background-color: #f60;" role="button">Eliminar</a></td>
                             </tr>
                         {% endfor %}
                     </table>
@@ -43,13 +40,53 @@
                         <button type="submit" class="btn rounded-3 fw-bold" style="background-color: #ffd500;color: #000000;">Agregar</button>
                     </form>
                 </body>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
     </div>
     <div class="card-footer text-muted" style="background-color: #e468f4;">
-        <br>
     </div>   
-</div>  
+</div> 
+<br> 
 </center>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const eliminarButtons = document.querySelectorAll(".eliminar-btn");
+        
+        eliminarButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                const historialId = this.getAttribute("data-id");
+                
+                if (confirm("¿Estás seguro de que deseas eliminar esta instancia?")) {
+                    // Realizar la solicitud AJAX para eliminar el historial
+                    fetch(`/eliminar_historial_metrica/${historialId}/`, {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Eliminar la fila de la tabla en la página
+                        if (data.success) {
+                            const fila = this.closest("tr");
+                            fila.remove();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 
 {% endblock %}

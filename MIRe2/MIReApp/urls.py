@@ -12,4 +12,5 @@ urlpatterns = [
     path('metricas/editar/<int:id>', views.editar_metricas, name='editar'),
     path('metricas/eliminar/<int:id>', views.eliminar_metricas, name='eliminar'),
     path('historial-metrica/<int:metrica_id>/', views.historial_metrica, name='historial_metrica'),
+    path('eliminar_historial_metrica/<int:historial_id>/', views.eliminar_historial_metrica, name='eliminar_historial_metrica'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

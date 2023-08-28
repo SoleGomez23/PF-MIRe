@@ -5,6 +5,7 @@ from .forms import MetricaForm
 from .forms import MetricaFormEditar
 from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
+from django.http import JsonResponse
 
 def inicio(request):
     return render(request, 'paginas/inicio.html')
@@ -28,7 +29,7 @@ def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
     if formulario.is_valid():
         formulario.save()
-        messages.success(request, '¡Metrica creada exitosamente!')
+        messages.success(request, '¡Métrica creada exitosamente!')
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
@@ -49,21 +50,32 @@ def eliminar_metricas(request, id):
     metricas.delete()
     return redirect('metricas')
 
+
+
 def historial_metrica(request, metrica_id):
     metrica = Metrica.objects.get(id=metrica_id)
-    historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-id')
+    historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
 
     if request.method == 'POST':
-        nuevo_año = request.POST['nuevo_año']
-        nuevo_valor = request.POST['nuevo_valor']
+        nuevo_año = int(request.POST['nuevo_año'])
+        nuevo_valor = int(request.POST['nuevo_valor'])
 
-        historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
-        historial_metrica.save()
-        messages.success(request, '¡Instancia creada exitosamente!')
+        # Verificar si el nuevo año ya está en el historial
+        if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año).exists():
+            messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
+        else:
+            historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
+            historial_metrica.save()
+            messages.success(request, '¡Instancia creada exitosamente!')
 
-        metrica.valor = nuevo_valor
-        metrica.save()
+            metrica.valor = nuevo_valor
+            metrica.save()
 
         return redirect('historial_metrica', metrica_id=metrica_id)
 
     return render(request, 'historial_metrica.html', {'metrica': metrica, 'historial': historial})
+
+def eliminar_historial_metrica(request, historial_id):
+    historial = HistorialMetrica.objects.get(id=historial_id)
+    historial.delete()
+    return JsonResponse({"success": True})

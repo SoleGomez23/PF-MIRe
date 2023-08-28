@@ -7,7 +7,6 @@ class MetricaForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 1}),
-            
         }
 
     def __init__(self, *args, **kwargs):

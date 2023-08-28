@@ -24,7 +24,7 @@ def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
     if formulario.is_valid():
         formulario.save()
-        messages.success(request, '¡Metrica creada exitosamente!')
+        messages.success(request, '¡Métrica creada exitosamente!')
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
@@ -52,15 +52,19 @@ def historial_metrica(request, metrica_id):
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
 
     if request.method == 'POST':
-        nuevo_año = request.POST['nuevo_año']
-        nuevo_valor = request.POST['nuevo_valor']
+        nuevo_año = int(request.POST['nuevo_año'])
+        nuevo_valor = int(request.POST['nuevo_valor'])
 
-        historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
-        historial_metrica.save()
-        messages.success(request, '¡Instancia creada exitosamente!')
+        # Verificar si el nuevo año ya está en el historial
+        if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año).exists():
+            messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
+        else:
+            historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
+            historial_metrica.save()
+            messages.success(request, '¡Instancia creada exitosamente!')
 
-        metrica.valor = nuevo_valor
-        metrica.save()
+            metrica.valor = nuevo_valor
+            metrica.save()
 
         return redirect('historial_metrica', metrica_id=metrica_id)
 

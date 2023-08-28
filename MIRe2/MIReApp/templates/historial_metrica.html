@@ -3,15 +3,11 @@
 {% block titulo %} Histórico {% endblock %}
 
 {% block contenido %} 
+<br>
+<br>
+<br>
 <center>
 <div class="card col-md-6" style="text-align: left;">
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
     <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
         Histórico
     </div>
@@ -21,7 +17,7 @@
                 <body>
                     <h2>{{ metrica.titulo }}</h2>
                     <br>
-                    <table class="table rounded-3" style="background-color: #eab5f1;">
+                    <table class="table rounded-3" style="background-color: #eab5f1">
                         <tr>
                             <th>Año</th>
                             <th>Valor</th>
@@ -44,13 +40,20 @@
                         <button type="submit" class="btn rounded-3 fw-bold" style="background-color: #ffd500;color: #000000;">Agregar</button>
                     </form>
                 </body>
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
     </div>
     <div class="card-footer text-muted" style="background-color: #e468f4;">
-        <br>
-        
     </div>   
-</div>  
+</div> 
+<br> 
 </center>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const eliminarButtons = document.querySelectorAll(".eliminar-btn");

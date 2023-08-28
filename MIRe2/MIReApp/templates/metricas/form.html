@@ -10,12 +10,6 @@
     <div class="col-12 help-text">{{ campo.errors }}</div>
   {% endfor %}
 
-  <!-- Agrega un div contenedor para el campo de año -->
-  <div class="mb-3 d-none" id="campo_year">
-    <label for="{{ formulario.year.id_for_label }}" class="form-label">{{ formulario.year.label }}</label>
-    {{ formulario.year }}
-  </div>
-  
   <input name="" id="" class="btn btn-success" style="background-color: #a020b0;" type="submit" value="Confirmar">
   <a name="" id="" class="btn btn-success" style="background-color: #f60" href="{% url 'metricas' %}" role="button">Cancelar</a>
 </form>

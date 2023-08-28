@@ -18,6 +18,11 @@ def error(request):
 
 def metricas(request):#el renderizado se hace acá, por eso tenemos el libro incrustado en el index, eso se soluciona acá
     metricas = Metrica.objects.all()
+    ultimos_valores = list()
+    for u in metricas:
+        if HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'):
+            t = list(HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'))[-1]
+            u.valor = str(t.valor_historico)+' ('+str(t.año_historico)+')'
     return render(request, 'metricas/index.html', {'metrica': metricas})
 
 def crear_metricas(request):

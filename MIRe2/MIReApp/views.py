@@ -28,8 +28,12 @@ def metricas(request):#el renderizado se hace acá, por eso tenemos el libro inc
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
     if formulario.is_valid():
+        band = True
         formulario.save()
         messages.success(request, '¡Métrica creada exitosamente!')
+        t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo'])
+        if t.year:
+            historial_metrica(request, t.id, t.valor, t.year, band)
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
@@ -50,30 +54,32 @@ def eliminar_metricas(request, id):
     metricas.delete()
     return redirect('metricas')
 
-
-
-def historial_metrica(request, metrica_id):
+def historial_metrica(request, metrica_id, valor=0, año=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
 
-    if request.method == 'POST':
-        nuevo_año = int(request.POST['nuevo_año'])
-        nuevo_valor = int(request.POST['nuevo_valor'])
+    if band:
+        print(año)
+        historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año, valor_historico=valor)
+        historial_metrica.save()
+        
+    else:
 
-        # Verificar si el nuevo año ya está en el historial
-        if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año).exists():
-            messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
-        else:
-            historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
-            historial_metrica.save()
-            messages.success(request, '¡Instancia creada exitosamente!')
+        if request.method == 'POST':
+            nuevo_año = int(request.POST['nuevo_año'])
+            nuevo_valor = int(request.POST['nuevo_valor'])
 
-            metrica.valor = nuevo_valor
-            metrica.save()
+            # Verificar si el nuevo año ya está en el historial
+            if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año).exists():
+                messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
+            else:
+                historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
+                historial_metrica.save()
+                messages.success(request, '¡Instancia creada exitosamente!')
 
-        return redirect('historial_metrica', metrica_id=metrica_id)
+            return redirect('historial_metrica', metrica_id=metrica_id)
 
-    return render(request, 'historial_metrica.html', {'metrica': metrica, 'historial': historial})
+        return render(request, 'historial_metrica.html', {'metrica': metrica, 'historial': historial})
 
 def eliminar_historial_metrica(request, historial_id):
     historial = HistorialMetrica.objects.get(id=historial_id)

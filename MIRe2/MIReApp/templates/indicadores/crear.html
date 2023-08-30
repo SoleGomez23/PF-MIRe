@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block titulo %} Agregar nueva métrica {% endblock %}
+
+{% block contenido %} 
+
+<center>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="card col-md-6" style="text-align: left;">
+        <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
+            <h2>Nuevo indicador</h2>
+        </div>
+        <div class="card-body" style="background-color: #e9acf1;">
+            {%  include 'indicadores/form.html' %}
+            
+            <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                  const ambitoField = document.getElementById("#ambito");
+                  const tipoField = document.getElementById("#tipo");
+          
+                  // Oculta el campo de tipo al principio
+                  tipoField.parentElement.style.display = "none";
+                  tipoField.setAttribute("disabled", "disabled");
+          
+                  ambitoField.addEventListener("change", function() {
+                      if (ambitoField.value === "Actividades") {
+                          tipoField.parentElement.style.display = "block";
+                          tipoField.removeAttribute("disabled");
+                      } else {
+                          tipoField.parentElement.style.display = "none";
+                          tipoField.setAttribute("disabled", "disabled");
+                      }
+                  });
+              });
+          </script>
+        </div>
+        <div class="card-footer text-muted" style="background-color: #e468f4;">
+            
+        </div>
+    </div>
+    <br>
+</center>
+
+{% endblock %}

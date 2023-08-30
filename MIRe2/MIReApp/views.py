@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Metrica, HistorialMetrica
+from .models import Indicador, Metrica, HistorialMetrica
 from .forms import MetricaForm
 from .forms import MetricaFormEditar
+from .forms import IndicadorFormEditar
+from .forms import IndicadorForm
 from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.http import JsonResponse
@@ -20,6 +22,10 @@ def metricas(request):#el renderizado se hace acá, por eso tenemos el libro inc
     metricas = Metrica.objects.all()
     return render(request, 'metricas/index.html', {'metrica': metricas})
 
+def indicadores(request):#el renderizado se hace acá, por eso tenemos el libro incrustado en el index, eso se soluciona acá
+    indicadores = Indicador.objects.all()
+    return render(request, 'indicadores/indexindicador.html', {'indicador': indicadores})
+
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
     if formulario.is_valid():
@@ -27,6 +33,14 @@ def crear_metricas(request):
         messages.success(request, '¡Métrica creada exitosamente!')
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
+
+def crear_indicadores(request):
+    formulario2 = IndicadorForm(request.POST or None, request.FILES or None)
+    if formulario2.is_valid():
+        formulario2.save()
+        messages.success(request, '¡Indicador creado exitosamente!')
+        return redirect('indicadores')
+    return render(request, 'indicadores/crear.html', {'formulario2': formulario2})  
 
 def editar_metricas(request, id):
     metrica = get_object_or_404(Metrica, id=id)
@@ -44,6 +58,23 @@ def eliminar_metricas(request, id):
     metricas = Metrica.objects.get(id=id)
     metricas.delete()
     return redirect('metricas')
+
+def editar_indicadores(request, id):
+    indicador = get_object_or_404(Indicador, id=id)
+    formulario2 = IndicadorFormEditar(request.POST or None, request.FILES or None, instance=indicador)
+    if request.method == 'POST':
+        formulario2 = IndicadorFormEditar(request.POST, instance=indicador)
+        if formulario2.is_valid():
+            formulario2.save()
+        return redirect('indicadores')
+    else:
+        form = IndicadorForm(instance = indicador)
+    return render(request, 'indicadores/editar.html', {'formulario2': formulario2})
+
+def eliminar_indicadores(request, id):
+    indicadores = Indicador.objects.get(id=id)
+    indicadores.delete()
+    return redirect('indicadores')
 
 
 

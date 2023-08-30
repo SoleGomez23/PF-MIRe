@@ -8,7 +8,19 @@ FRECUENCIAS = (
     ('Semestral','Semestral'),
     ('Mensual','Mensual')
 )
- 
+
+AMBITOS = (
+    ('Fin','Fin'),
+    ('Propósito','Propósito'),
+    ('Componente','Componente'),
+    ('Actividades','Actividades'),
+)
+TIPOS = (
+    ('Eficiencia','Eficiencia'),
+    ('Eficacia','Eficacia'),
+    ('Economía','Economía'),
+    ('Calidad','Calidad')
+)
 # Create your models here.
 class Metrica(models.Model):
     id = models.AutoField(primary_key=True)
@@ -34,6 +46,25 @@ class Metrica(models.Model):
 
     def __str__(self):
         fila = 'Título: ' + self.titulo + ' - ' + 'Descripcíon: ' + self.descripcion
+        return fila
+    
+class Indicador(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100, 
+                              verbose_name='Nombre',
+                              unique= True,
+                              validators= [
+                                  RegexValidator(regex= r'^[a-zA-Z\s]*$',
+                                                 message="El nombre no puede contener caracteres especiales.",
+                                                 code='invalid_nombre')
+                              ])
+    descripcion = models.TextField(max_length=100, verbose_name='Descripción', null=True) 
+    frecuencia = models.CharField(verbose_name='Frecuencia de medición',max_length=10, choices=FRECUENCIAS,default='Anual')
+    ambito = models.CharField(verbose_name='¿Qué se está midiendo?',max_length=20, choices=AMBITOS)
+    tipo = models.CharField(verbose_name='Tipo',max_length=10, choices=TIPOS)
+
+    def __str__(self):
+        fila = 'Nombre: ' + self.titulo + ' - ' + 'Descripcíon: ' + self.descripcion
         return fila
     
 class HistorialMetrica(models.Model):

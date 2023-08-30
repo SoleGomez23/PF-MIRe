@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de indicadores {% endblock %}
+
+{% block contenido %} 
+<center>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="col-md-10 card" style="text-align: left;">
+        <div class="card-header" style="background-color: #e468f4;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span><a href="{% url 'inicio' %}" class="btn btn-secondary rounded-3 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">← Inicio</a></span>
+                <span><h2>MIS INDICADORES</h2></span>
+            </div>
+            
+        </div>
+        <div class="card-body">
+            <a name="" id="" class="btn fw-bold rounded-3" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table" style="background-color: #eab5f1;">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Ámbito</th>
+                            <th scope="col">Tipo</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for indi in indicador %}
+                        <tr class="">
+                            <td scope="row">{{ indi.id }}</td>
+                            <td>{{ indi.nombre }}</td>
+                            <td>{{ indi.descripcion }}</td>
+                            <td>{{ indi.ambito }}</td>
+                            <td>{{ indi.tipo }}</td>
+                            <td> 
+            
+                                <a name="" id="" class="btn" style="background-color: #a020b0;" href="">Ver/Editar</a> 
+                                <a name="" id="" class="btn" style="background-color: #f60;" href="" role="button">Eliminar</a>
+                        
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        <div class="card-footer text-muted" style="background-color: #e468f4;">
+        </div>
+    </div>
+</center>
+
+{% endblock %}

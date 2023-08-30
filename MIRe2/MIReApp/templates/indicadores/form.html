@@ -1,0 +1,23 @@
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}  
+    {% for campo2 in formulario2 %}
+      <div class="mb-3">
+        <label for="{{ campo2.id_for_label }}" class="form-label">{{ campo2.label }}</label>
+  
+        {{ campo2 }}
+  
+      </div>
+      <div class="col-12 help-text">{{ campo2.errors }}</div>
+    {% endfor %}
+   <!-- Agrega un div contenedor para el campo de tipo 
+   <div class="mb-3 d-none" id="campo_tipo">
+    <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
+    {{ formulario2.tipo }}
+  </div>-->
+    
+    <input name="" id="" class="btn btn-success" style="background-color: #a020b0;border-color: #a020b0;" type="submit" value="Confirmar">
+    <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;" href="{% url 'indicadores' %}" role="button">Cancelar</a>
+
+ 
+</form>
+  

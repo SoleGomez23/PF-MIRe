@@ -36,11 +36,22 @@ def crear_metricas(request):
 
 def crear_indicadores(request):
     formulario2 = IndicadorForm(request.POST or None, request.FILES or None)
+    
+    # Procesar el formulario de creación de indicadores
     if formulario2.is_valid():
         formulario2.save()
         messages.success(request, '¡Indicador creado exitosamente!')
         return redirect('indicadores')
-    return render(request, 'indicadores/crear.html', {'formulario2': formulario2})  
+
+    # Obtener la lista de métricas para mostrar en la tabla
+    metricas = Metrica.objects.all()
+    
+    context = {
+        'formulario2': formulario2,
+        'metricas': metricas,
+    }
+
+    return render(request, 'indicadores/crear.html', context)
 
 def editar_metricas(request, id):
     metrica = get_object_or_404(Metrica, id=id)

@@ -3,50 +3,80 @@
 {% block titulo %} Agregar nueva métrica {% endblock %}
 
 {% block contenido %} 
-
-<center>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="card col-md-6" style="text-align: left;">
-        <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
-            <h2>Nuevo indicador</h2>
-        </div>
-        <div class="card-body" style="background-color: #e9acf1;">
-            {%  include 'indicadores/form.html' %}
-            
-            <script>
-              document.addEventListener("DOMContentLoaded", function() {
-                  const ambitoField = document.getElementById("#ambito");
-                  const tipoField = document.getElementById("#tipo");
-          
-                  // Oculta el campo de tipo al principio
-                  tipoField.parentElement.style.display = "none";
-                  tipoField.setAttribute("disabled", "disabled");
-          
-                  ambitoField.addEventListener("change", function() {
-                      if (ambitoField.value === "Actividades") {
-                          tipoField.parentElement.style.display = "block";
-                          tipoField.removeAttribute("disabled");
-                      } else {
-                          tipoField.parentElement.style.display = "none";
-                          tipoField.setAttribute("disabled", "disabled");
-                      }
-                  });
-              });
-          </script>
-        </div>
-        <div class="card-footer text-muted" style="background-color: #e468f4;">
-            
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style="display: flex">
+    <!-- Sección izquierda: Formulario de creación de indicadores -->
+    <div style="width: 80%;flex: 2;">
+        <div class="card col-md-11" style="text-align: left;">
+            <div class="card-header fw-bold " style="background-color: #e468f4;color: #000000;">
+                <div style="display: flex; justify-content: flex-end; width: 100%;">
+                    <h2>INDICADORES</h2>
+                </div>  
+            </div>
+            <div class="card-body" style="background-color: #e9acf1;">
+                <h4 style="color: #a020a0;">Nuevo indicador</h4>
+                {%  include 'indicadores/form.html' %}
+            </div>
+            <div class="card-footer text-muted" style="background-color: #e468f4;">
+            </div>
         </div>
     </div>
-    <br>
-</center>
+    <!-- Sección derecha: Aqui se muestran las metricas disponibles-->
+    <div style="width: 20%;flex: 2;">
+        <div class="col-md-10 card" style="text-align: left;">
+            <div class="card-header fw-bold" style="background-color: #ffd500;">
+                <div style="display: flex; justify-content: flex-end; width: 100%;">
+                    <span><h2 style="color: #00000079;">MÉTRICAS</h2></span>
+                </div>  
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table rounded-3" style="background-color: #fff4bb">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Título</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col">Unidad de medida</th>
+                                <th scope="col">Valor</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for metri in metricas %}
+                            <tr class="">
+                                <td scope="row">{{ metri.id }}</td>
+                                <td>{{ metri.titulo }}</td>
+                                <td>{{ metri.descripcion }}</td>
+                                <td>{{ metri.unidad_medida }}</td>
+                                <td>{{ metri.valor }}</td>
+                                <td> 
+                                    <!-- ... es necesario mostrar el año aca? ... -->
+                                   {{ metri.año_actual }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            <div class="card-footer text-muted" style="background-color: #ffd500;">
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+        <br>
+
 
 {% endblock %}

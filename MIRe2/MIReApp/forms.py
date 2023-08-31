@@ -34,6 +34,10 @@ class MetricaFormEditar(forms.ModelForm):
     class Meta:
         model = Metrica
         fields = ['descripcion']
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
+            
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

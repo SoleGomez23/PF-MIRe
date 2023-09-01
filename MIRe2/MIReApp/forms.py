@@ -8,7 +8,6 @@ class MetricaForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 1}),
-            
         }
 
     def __init__(self, *args, **kwargs):
@@ -22,7 +21,6 @@ class IndicadorForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 2}),
-            
         }
 
     def __init__(self, *args, **kwargs):
@@ -36,7 +34,6 @@ class MetricaFormEditar(forms.ModelForm):
         fields = ['descripcion']
         widgets = {
             'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
-            
         }
 
     def __init__(self, *args, **kwargs):

@@ -56,6 +56,16 @@
                     {% endfor %}
                 </ul>
                 {% endif %}
+
+                <script>
+                    setTimeout(function() {
+                        var altaExitosaMessage = document.querySelector('.messages .alta-exitosa');
+                        if (altaExitosaMessage) {
+                            altaExitosaMessage.style.display = 'none';
+                        }
+                    }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
+                </script>
+
     </div>
     <div class="card-footer text-muted" style="background-color: #e468f4;">
         <br>

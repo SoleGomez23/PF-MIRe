@@ -15,6 +15,15 @@
     </ul>
     {% endif %}
 
+    <script>
+        setTimeout(function() {
+            var altaExitosaMessage = document.querySelector('.messages .alta-exitosa');
+            if (altaExitosaMessage) {
+                altaExitosaMessage.style.display = 'none';
+            }
+        }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
+    </script>
+
     <!--Font Awesome: utilizado para importar css dibujos de editar y eliminar-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> 
 

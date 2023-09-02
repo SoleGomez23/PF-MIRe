@@ -38,7 +38,7 @@ def crear_metricas(request):
     if formulario.is_valid():
         band = True
         formulario.save()
-        messages.success(request, '¡Métrica creada exitosamente!')
+        messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
         t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo'])
         if t.year:
             historial_metrica(request, t.id, t.valor, t.year, band)
@@ -51,7 +51,7 @@ def crear_indicadores(request):
     # Procesar el formulario de creación de indicadores
     if formulario2.is_valid():
         formulario2.save()
-        messages.success(request, '¡Indicador creado exitosamente!')
+        messages.success(request, '¡Indicador creado exitosamente!', extra_tags='alta-exitosa')
         return redirect('indicadores')
 
     # Obtener la lista de métricas para mostrar en la tabla
@@ -119,7 +119,7 @@ def historial_metrica(request, metrica_id, valor=0, año=0, band=False):
             else:
                 historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
                 historial_metrica.save()
-                messages.success(request, '¡Instancia creada exitosamente!')
+                messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
 
             return redirect('historial_metrica', metrica_id=metrica_id)
 

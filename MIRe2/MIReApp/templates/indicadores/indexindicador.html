@@ -15,6 +15,9 @@
     </ul>
     {% endif %}
 
+    <!--Font Awesome: utilizado para importar css dibujos de editar y eliminar-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> 
+
     <div class="col-md-10 card" style="text-align: left;">
         <div class="card-header" style="background-color: #e468f4;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -49,8 +52,8 @@
                             <td>{{ indi.tipo }}</td>
                             <td> 
             
-                                <a name="" id="" class="btn" style="background-color: #a020b0;" href="">Ver/Editar</a> 
-                                <a name="" id="" class="btn" style="background-color: #f60;" href="" role="button">Eliminar</a>
+                                <a name="" id="" class="btn" style="background-color: #a020b0;" href=""><i class="fa-solid fa-square-pen fa-lg"></i></a></a> <!--Boton editar-->
+                                <a name="" id="" class="btn" style="background-color: #f60;" href="" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
                         
                             </td>
                         </tr>

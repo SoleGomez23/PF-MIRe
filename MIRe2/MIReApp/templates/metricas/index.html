@@ -11,6 +11,8 @@
         {% endfor %}
     </ul>
     {% endif %}
+    <!--Font Awesome: utilizado para importar css dibujos de editar y eliminar-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> 
 
     <div class="col-md-10 card" style="text-align: left;">
         <div class="card-header" style="background-color: #e468f4;">
@@ -47,10 +49,10 @@
                             <td>{{ metri.year }}</td>
                             <td> 
             
-                                <a name="" id="" class="btn" style="background-color: #a020b0;" href="{% url 'editar' metri.id %}">Editar</a> 
-                                <a name="" id="" class="btn" style="background-color: #f60;" href="{% url 'eliminar' metri.id %}" role="button">Eliminar</a>
-                                <a name="" id="" class="btn" style="background-color: #ffd500;" href="{% url 'historial_metrica' metri.id %}">Histórico</a>
-                        
+                                <a name="" id="" class="btn" style="background-color: #b155bd;" href="{% url 'editar' metri.id %}"><i class="fa-solid fa-square-pen fa-lg"></i></a> <!--Boton editar-->
+                                <a name="" id="" class="btn" style="background-color: rgb(238, 125, 96);" href="{% url 'eliminar' metri.id %}" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
+                                <a name="" id="" class="btn" style="background-color: #ffd500;" href="{% url 'historial_metrica' metri.id %}"><i class="fa-solid fa-plus"></i></a><!--Boton Historico-->
+
                             </td>
                         </tr>
                         {% endfor %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Indicador, Metrica, HistorialMetrica
+from .models import Indicador, Metrica, HistorialMetrica, Tipo
 from .forms import MetricaForm
 from .forms import MetricaFormEditar
 from .forms import IndicadorFormEditar
@@ -8,6 +8,7 @@ from .forms import IndicadorForm
 from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.http import JsonResponse
+import json
 
 def inicio(request):
     return render(request, 'paginas/inicio.html')
@@ -128,3 +129,9 @@ def eliminar_historial_metrica(request, historial_id):
     historial = HistorialMetrica.objects.get(id=historial_id)
     historial.delete()
     return JsonResponse({"success": True})
+
+def tipos(request):
+    data = json.loads(request.body)
+    tipos = Tipo.objects.filter(ambito__id=data['user_id'])
+    print(tipos)
+    return JsonResponse(list(tipos.values("id", "nombre")), safe=False)

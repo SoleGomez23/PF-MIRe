@@ -1,23 +1,84 @@
 <form enctype="multipart/form-data" method="post">
-    {% csrf_token %}  
-    {% for campo2 in formulario2 %}
-      <div class="mb-3">
-        <label for="{{ campo2.id_for_label }}" class="form-label">{{ campo2.label }}</label>
-  
-        {{ campo2 }}
-  
-      </div>
-      <div class="col-12 help-text">{{ campo2.errors }}</div>
-    {% endfor %}
-   <!-- Agrega un div contenedor para el campo de tipo 
-   <div class="mb-3 d-none" id="campo_tipo">
-    <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
-    {{ formulario2.tipo }}
-  </div>-->
-    
-    <input name="" id="" class="btn btn-success" style="background-color: #a020b0;border-color: #a020b0;" type="submit" value="Confirmar">
-    <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;" href="{% url 'indicadores' %}" role="button">Cancelar</a>
+  {% csrf_token %}  
+  {% for campo2 in formulario2 %}
+    <div class="mb-3">
+      <label for="{{ campo2.id_for_label }}" class="form-label">{{ campo2.label }}</label>
 
- 
-</form>
+      {{ campo2 }}
+
+    </div>
+    <div class="col-12 help-text">{{ campo2.errors }}</div>
+  {% endfor %}
+ <!-- Agrega un div contenedor para el campo de tipo 
+ <div class="mb-3 d-none" id="campo_tipo">
+  <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
+  {{ formulario2.tipo }}
+</div>-->
   
+  <input name="" id="" class="btn btn-success" style="background-color: #a020b0;border-color: #a020b0;" type="submit" value="Confirmar">
+  <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;" href="{% url 'indicadores' %}" role="button">Cancelar</a>
+
+
+</form>
+
+<script>
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
+let ambito_field = document.getElementById("id_ambito")
+let tipo_field = document.getElementById("id_tipo")
+
+ambito_field.addEventListener("change", pickState)
+function pickState(e){
+    ambito_id = e.target.value
+    const data = { user_id: ambito_id}
+    let url = " {% url 'tipos' %} "
+
+fetch(url, {
+method: 'POST', // or 'PUT'
+headers: {
+'Content-Type': 'application/json',
+'X-CSRFToken': csrftoken
+},
+body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+console.log('Success:', data[0]['nombre']);
+
+tipo_field.innerHTML = `<option value = "" selescted>---------------</option>`
+for(let i = 0; i<data.length; i++){
+  tipo_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["nombre"]}</option>`
+
+}
+})
+.catch((error) => {
+console.error('Error:', error);
+});
+
+    }
+    let input = document.getElementById("id_nombre")
+    let select = document.getElementsByTagName("select")
+    console.log(select)
+
+    input.classList.add("form-control")
+
+    for(let i = 0; i <select.length; i++){
+        select[i].classList.add("form-select")
+    }
+</script>

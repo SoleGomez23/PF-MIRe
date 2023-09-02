@@ -1,0 +1,102 @@
+[
+    {
+        "model": "MIReApp.Ambito",
+        "pk": 1,
+        "fields": {
+            "nombre": "Fin"
+        }
+    },
+    {
+        "model": "MIReApp.Ambito",
+        "pk": 2,
+        "fields": {
+            "nombre": "Proposito"
+        }
+    },
+    {
+        "model": "MIReApp.Ambito",
+        "pk": 3,
+        "fields": {
+            "nombre": "Componente"
+        }
+    },
+    {
+        "model": "MIReApp.Ambito",
+        "pk": 4,
+        "fields": {
+            "nombre": "Actividades"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 1,
+        "fields": {
+            "ambito": "1",
+            "nombre": "Eficacia"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 2,
+        "fields": {
+            "ambito": "2",
+            "nombre": "Eficacia"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 3,
+        "fields": {
+            "ambito": "2",
+            "nombre": "Eficiencia"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 4,
+        "fields": {
+            "ambito": "3",
+            "nombre": "Eficacia"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 5,
+        "fields": {
+            "ambito": "3",
+            "nombre": "Eficiencia"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 6,
+        "fields": {
+            "ambito": "3",
+            "nombre": "Calidad"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 7,
+        "fields": {
+            "ambito": "4",
+            "nombre": "Eficacia"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 8,
+        "fields": {
+            "ambito": "4",
+            "nombre": "Eficiencia"
+        }
+    },
+    {
+        "model": "MIReApp.Tipo",
+        "pk": 9,
+        "fields": {
+            "ambito": "4",
+            "nombre": "Economia"
+        }
+    }
+]

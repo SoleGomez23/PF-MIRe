@@ -9,18 +9,6 @@ FRECUENCIAS = (
     ('Mensual','Mensual')
 )
 
-AMBITOS = (
-    ('Fin','Fin'),
-    ('Propósito','Propósito'),
-    ('Componente','Componente'),
-    ('Actividades','Actividades'),
-)
-TIPOS = (
-    ('Eficiencia','Eficiencia'),
-    ('Eficacia','Eficacia'),
-    ('Economía','Economía'),
-    ('Calidad','Calidad')
-)
 # Create your models here.
 class Metrica(models.Model):
     id = models.AutoField(primary_key=True)
@@ -58,10 +46,10 @@ class Indicador(models.Model):
                                                  message="El nombre no puede contener caracteres especiales.",
                                                  code='invalid_nombre')
                               ])
-    descripcion = models.TextField(max_length=100, verbose_name='Descripción', null=True) 
+    descripcion = models.CharField(max_length=100, verbose_name='Descripción', null=True) 
     frecuencia = models.CharField(verbose_name='Frecuencia de medición',max_length=10, choices=FRECUENCIAS,default='Anual')
-    ambito = models.CharField(verbose_name='¿Qué se está midiendo?',max_length=20, choices=AMBITOS)
-    tipo = models.CharField(verbose_name='Tipo',max_length=10, choices=TIPOS)
+    ambito = models.ForeignKey('Ambito', on_delete=models.CASCADE)
+    tipo = models.ForeignKey('Tipo', on_delete=models.CASCADE)
 
     def __str__(self):
         fila = 'Nombre: ' + self.titulo + ' - ' + 'Descripcíon: ' + self.descripcion
@@ -74,3 +62,16 @@ class HistorialMetrica(models.Model):
 
     def __str__(self):
         return f"Métrica: {self.metrica.titulo} - Año Histórico: {self.año_historico} - Valor Histórico: {self.valor_historico}"
+
+class Ambito(models.Model):
+    nombre = models.CharField(max_length=15)
+    
+    def __str__(self):
+        return self.nombre
+    
+class Tipo(models.Model):
+    nombre = models.CharField(max_length=15)
+    ambito = models.ForeignKey(Ambito, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.nombre

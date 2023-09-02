@@ -25,7 +25,8 @@ def metricas(request):
     for u in metricas:
         if HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'):
             t = list(HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'))[-1]
-            u.valor = str(t.valor_historico)+' ('+str(t.año_historico)+')'
+            u.valor = str(t.valor_historico)
+            u.year = str(t.año_historico)
     return render(request, 'metricas/index.html', {'metrica': metricas})
 
 def indicadores(request):

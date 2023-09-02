@@ -50,10 +50,12 @@
                             <td>{{ indi.descripcion }}</td>
                             <td>{{ indi.ambito }}</td>
                             <td>{{ indi.tipo }}</td>
+                            
+                            
                             <td> 
             
-                                <a name="" id="" class="btn" style="background-color: #a020b0;" href=""><i class="fa-solid fa-square-pen fa-lg"></i></a></a> <!--Boton editar-->
-                                <a name="" id="" class="btn" style="background-color: #f60;" href="" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
+                                <a class="btn" style="background-color: #a020b0;" href=""><i class="fa-solid fa-square-pen fa-lg"></i></a></a> <!--Boton editar-->
+                                <a class="btn eliminarIndicador-btn" data-id="{{ indi.id }}" style="background-color: #f60;" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
                         
                             </td>
                         </tr>
@@ -65,6 +67,44 @@
         </div>
         <div class="card-footer text-muted" style="background-color: #e468f4;">
         </div>
+        
+        
+        <!--Bloque JS para eliminacion de indicador-->
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const eliminarButtons = document.querySelectorAll(".eliminarIndicador-btn");
+                
+                eliminarButtons.forEach(button => {
+                    button.addEventListener("click", function() {
+                        const indicadorId = this.getAttribute("data-id");
+                        
+                        if (confirm("¿Estás seguro de que deseas eliminar este indicador?")) {
+                            // Realizar la solicitud AJAX para eliminar el indicador
+                            fetch(`/indicadores/eliminar/${indicadorId}/`, {
+                                method: "POST",
+                                headers: {
+                                    "X-CSRFToken": "{{ csrf_token }}",
+                                    "Content-Type": "application/json"
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                // Eliminar la fila de la tabla en la página
+                                if (data.success) {
+                                    const fila = this.closest("tr");
+                                    fila.remove();
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+
+
     </div>
 </center>
 

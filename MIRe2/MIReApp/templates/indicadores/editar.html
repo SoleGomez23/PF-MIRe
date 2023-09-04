@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block titulo %} Editar indicador {% endblock %}
+
+{% block contenido %} 
+
+<center>
+<div class="card col-md-6" style="text-align: left;">
+    <div class="card-header fw-bold" style="background-color: #e468f4;color: #fff;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span><a href="{% url 'indicadores' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">← Volver</a></span>
+            <span><h2>Indicador</h2></span>
+        </div>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title" style="color: #a020a0;">Vista indicadores</h4>
+        
+        {% include 'indicadores/form.html' with formulario2=formulario2 %}
+    </div>
+    <div class="card-footer text-muted" style="background-color: #e468f4;">
+        
+    </div>
+</div>
+</center>
+{% endblock %}

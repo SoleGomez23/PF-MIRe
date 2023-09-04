@@ -89,9 +89,8 @@ def editar_indicadores(request, id):
         if formulario2.is_valid():
             formulario2.save()
         return redirect('indicadores')
-    else:
-        form = IndicadorForm(instance = indicador)
-    return render(request, 'indicadores/editar.html', {'formulario2': formulario2})
+    
+    return render(request, 'indicadores/editar.html', {'formulario2': formulario2, 'indicador':indicador})
 
 def eliminar_indicadores(request, id):
     indicadores = Indicador.objects.get(id=id)

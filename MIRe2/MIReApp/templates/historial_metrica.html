@@ -8,9 +8,9 @@
 <br>
 <center>
 <div class="card col-md-6" style="text-align: left;">
-    <div class="card-header fw-bold" style="background-color: #e468f4;color: #000000;">
+    <div class="card-header fw-bold" style="background-color: #D7A5FF;color: #000000;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span><a href="{% url 'metricas' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">← Volver</a></span>
+            <span><a href="{% url 'metricas' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">⪻ Volver</a></span>
             <span><h2>HISTÓRICO</h2></span>
         </div>
     </div>
@@ -20,7 +20,7 @@
                 <body>
                     <h2>{{ metrica.titulo }}</h2>
                     <br>
-                    <table class="table rounded-4" style="background-color: #eab5f1; width: flex;">
+                    <table class="table rounded-4" style="background-color: #D7A5FF; width: flex;">
                         <tr>
                             
                             <th>Año</th>
@@ -44,8 +44,8 @@
                     <form method="post">
                         {% csrf_token %}
                        
-                        <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #a020a0;">
-                        <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #a020a0;">
+                        <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
+                        <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
                         <button type="submit" class="btn rounded-4 fw-bold" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">Agregar</button>
                     </form>
                 </body>
@@ -67,7 +67,7 @@
                 </script>
 
     </div>
-    <div class="card-footer text-muted" style="background-color: #e468f4;">
+    <div class="card-footer text-muted" style="background-color: #D7A5FF;">
         <br>
     </div>   
 </div> 

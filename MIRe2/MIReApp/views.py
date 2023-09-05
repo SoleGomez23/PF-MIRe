@@ -31,7 +31,7 @@ def metricas(request):
 
 def indicadores(request):
     indicadores = Indicador.objects.all()
-    return render(request, 'indicadores/indexindicador.html', {'indicador': indicadores})
+    return render(request, 'indicadores/index.html', {'indicador': indicadores})
 
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
@@ -95,7 +95,7 @@ def editar_indicadores(request, id):
 def eliminar_indicadores(request, id):
     indicadores = Indicador.objects.get(id=id)
     indicadores.delete()
-    return JsonResponse({"success": True})
+    return redirect('indicadores')
 
 def historial_metrica(request, metrica_id, valor=0, año=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)

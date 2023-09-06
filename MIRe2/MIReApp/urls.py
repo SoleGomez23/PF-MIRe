@@ -12,6 +12,7 @@ urlpatterns = [
     path('indicadores',views.indicadores, name='indicadores'),
     path('indicadores/crear', views.crear_indicadores, name='crear_indicador'),
     path('indicadores/eliminar/<int:id>', views.eliminar_indicadores, name='eliminar_indicador'),
+    path('indicadores/editar/<int:id>', views.editar_indicadores, name='editar_indicador'),
     path('metricas/crear', views.crear_metricas, name='crear'),
     path('metricas/editar/<int:id>', views.editar_metricas, name='editar'),
     path('metricas/eliminar/<int:id>', views.eliminar_metricas, name='eliminar'),

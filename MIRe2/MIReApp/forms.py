@@ -59,5 +59,15 @@ class IndicadorFormEditar(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
+
+class IndicadorFormVer(forms.ModelForm):
+    class Meta:
+        model = Indicador
+        fields = ['descripcion','ambito','tipo']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.fields:
+            self.fields[i].widget.attrs.update({'class':'form-control'})
         
        

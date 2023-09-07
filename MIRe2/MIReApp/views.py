@@ -5,6 +5,7 @@ from .forms import MetricaForm
 from .forms import MetricaFormEditar
 from .forms import IndicadorFormEditar
 from .forms import IndicadorForm
+from .forms import IndicadorFormVer
 from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.http import JsonResponse
@@ -91,6 +92,10 @@ def editar_indicadores(request, id):
         return redirect('indicadores')
     
     return render(request, 'indicadores/editar.html', {'formulario2': formulario2, 'indicador':indicador})
+
+def ver_indicador(request, id):
+    indicador = get_object_or_404(Indicador, id=id)
+    return render(request, 'indicadores/indicador.html', {'indicador': indicador})
 
 def eliminar_indicadores(request, id):
     indicadores = Indicador.objects.get(id=id)

@@ -52,7 +52,7 @@ class Indicador(models.Model):
     tipo = models.ForeignKey('Tipo', on_delete=models.CASCADE)
 
     def __str__(self):
-        fila = 'Nombre: ' + self.titulo + ' - ' + 'Descripcíon: ' + self.descripcion
+        fila = 'Nombre: ' + self.nombre + ' - ' + 'Descripcíon: ' + self.descripcion
         return fila
     
 class HistorialMetrica(models.Model):

@@ -100,6 +100,7 @@ def ver_indicador(request, id):
 def eliminar_indicadores(request, id):
     indicadores = Indicador.objects.get(id=id)
     indicadores.delete()
+    messages.success(request, '¡Indicador eliminado exitosamente!', extra_tags='alta-exitosa')
     return redirect('indicadores')
 
 def historial_metrica(request, metrica_id, valor=0, año=0, band=False):

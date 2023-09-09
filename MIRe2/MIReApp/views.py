@@ -80,6 +80,7 @@ def editar_metricas(request, id):
 def eliminar_metricas(request, id):
     metricas = Metrica.objects.get(id=id)
     metricas.delete()
+    messages.success(request, '¡Metrica eliminada exitosamente!', extra_tags='alta-exitosa')
     return redirect('metricas')
 
 def editar_indicadores(request, id):
@@ -89,6 +90,7 @@ def editar_indicadores(request, id):
         formulario2 = IndicadorFormEditar(request.POST, instance=indicador)
         if formulario2.is_valid():
             formulario2.save()
+        messages.success(request, '¡Cambios guardados exitosamente!', extra_tags='alta-exitosa')    
         return redirect('indicadores')
     
     return render(request, 'indicadores/editar.html', {'formulario2': formulario2, 'indicador':indicador})

@@ -369,3 +369,13 @@ h5{
     display: block;
     transform: translateX(0); /* Resuelve un problema de alineación */
     }
+
+.success {
+    background-color: #6aae6c; /* Fondo verde */
+    color: #fff; /* Texto blanco */
+    padding: 5px 10px; /* Espaciado interior */
+    text-align: center; /* Texto centrado */
+    border-radius: 5px; /* Bordes redondeados */
+    margin: 0 auto; /* Centrar horizontalmente */
+    width: 40%; /* Ancho del mensaje */
+}

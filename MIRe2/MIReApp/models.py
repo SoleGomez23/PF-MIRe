@@ -50,6 +50,14 @@ class Indicador(models.Model):
     frecuencia = models.CharField(verbose_name='Frecuencia de medición',max_length=10, choices=FRECUENCIAS,default='Anual')
     ambito = models.ForeignKey('Ambito', on_delete=models.CASCADE)
     tipo = models.ForeignKey('Tipo', on_delete=models.CASCADE)
+    formula = models.CharField(max_length=100, verbose_name='Formula', blank=True) 
+    numerador = models.ForeignKey('Metrica', related_name="Numerador", on_delete=models.CASCADE) 
+    denominador = models.ForeignKey('Metrica', related_name="Denominador", on_delete=models.CASCADE) 
+    numerador_u_medida = models.CharField(max_length=100, verbose_name='', blank=True) 
+    denominador_u_medida = models.CharField(max_length=100, verbose_name='', blank=True) 
+    numerador_valor = models.CharField(max_length=100, verbose_name='', blank=True) 
+    denominador_valor = models.CharField(max_length=100, verbose_name='' , blank=True) 
+    resultado = models.CharField(max_length=100, verbose_name='' , blank=True) 
 
     def __str__(self):
         fila = 'Nombre: ' + self.nombre + ' - ' + 'Descripcíon: ' + self.descripcion

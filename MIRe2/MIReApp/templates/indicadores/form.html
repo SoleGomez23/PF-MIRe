@@ -1,19 +1,73 @@
 <form enctype="multipart/form-data" method="post">
   {% csrf_token %}  
-  {% for campo2 in formulario2 %}
-    <div class="mb-3">
-      <label for="{{ campo2.id_for_label }}" class="form-label">{{ campo2.label }}</label>
+  
+      <div class="mb-3">
+        <label for="{{ formulario2.nombre.id_for_label }}" class="form-label">{{ formulario2.nombre.label }}</label>
+        {{ formulario2.nombre }}  
+      </div>
+      <div class="col-12 help-text">{{ formulario2.nombre.errors }}</div>
+      <div class="mb-3">
+        <label for="{{ formulario2.descripcion.id_for_label }}" class="form-label">{{ formulario2.descripcion.label }}</label>
+        {{ formulario2.descripcion }}  
+      </div>
+      <div class="col-12 help-text">{{ formulario2.descripcion.errors }}</div>      
+      <div class="mb-3">
+        <label for="{{ formulario2.frecuencia.id_for_label }}" class="form-label">{{ formulario2.frecuencia.label }}</label>
+        {{ formulario2.frecuencia }}  
+      </div>
+      <div class="col-12 help-text">{{ formulario2.frecuencia.errors }}</div>     
+      <div class="mb-3">
+        <label for="{{ formulario2.ambito.id_for_label }}" class="form-label">{{ formulario2.ambito.label }}</label>
+        {{ formulario2.ambito }}  
+      </div>
+      <div class="col-12 help-text">{{ formulario2.ambito.errors }}</div>      
+      <div class="mb-3">
+        <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
+        {{ formulario2.tipo }}  
+      </div>
+      <div class="col-12 help-text">{{ formulario2.tipo.errors }}</div>      
+      <div class="mb-3">
+        <label for="{{ formulario2.formula.id_for_label }}" class="form-label">{{ formulario2.formula.label }}</label>
+        {{ formulario2.formula }}  
+      </div>
+      <div class="col-12 help-text">{{ formulario2.formula.errors }}</div>  
 
-      {{ campo2 }}
+      <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
+        <div style="margin:auto">
+          (
+        </div>
+        <div class="field-wrapper">
+          {{ formulario2.numerador }}  
+          {{ formulario2.denominador }}  
+        </div>
+        <div class="field-wrapper">
+          {{ formulario2.numerador_u_medida }}  
+          {{ formulario2.denominador_u_medida }}  
+        </div>
+        <div class="field-wrapper">
+          {{ formulario2.numerador_valor }}  
+          {{ formulario2.denominador_valor }}  
+        </div>            
+        <div style="margin:auto">
+          -1   
+        </div>      
+        <div style="margin:auto">
+          )
+        </div>        
+        <div style="margin:auto">
+          x100
+        </div>        
+        <div style="margin:auto">
+          =
+        </div>
+        <div style="margin:auto">
+          {{ formulario2.denominador_valor }}
+        </div>
+        <div style="margin:auto">
+          %
+        </div>
+      </div>
 
-    </div>
-    <div class="col-12 help-text">{{ campo2.errors }}</div>
-  {% endfor %}
- <!-- Agrega un div contenedor para el campo de tipo 
- <div class="mb-3 d-none" id="campo_tipo">
-  <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
-  {{ formulario2.tipo }}
-</div>-->
   
   <input name="" id="" class="btn btn-success" style="background-color: #965FB8;border-color: #a020b0;" type="submit" value="Confirmar">
   <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;" href="{% url 'indicadores' %}" role="button">Cancelar</a>

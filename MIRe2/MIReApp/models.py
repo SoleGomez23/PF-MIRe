@@ -2,12 +2,9 @@ from django.core.validators import MinValueValidator
 from django.core.validators import RegexValidator
 from django.db import models
  
-FRECUENCIAS = (
-    ('Bianual','Bianual'),
-    ('Anual', 'Anual'),
-    ('Semestral','Semestral'),
-    ('Mensual','Mensual')
+FRECUENCIAS = (('Bianual','Bianual'), ('Anual', 'Anual'), ('Semestral','Semestral'), ('Mensual','Mensual')
 )
+FORMULAS = (('Promedio','Promedio'), ('Tasa de Variacion','Tasa de Variacion'), ('Inversion Promedio','Inversion Promedio'))
 
 # Create your models here.
 class Metrica(models.Model):
@@ -50,14 +47,14 @@ class Indicador(models.Model):
     frecuencia = models.CharField(verbose_name='Frecuencia de medición',max_length=10, choices=FRECUENCIAS,default='Anual')
     ambito = models.ForeignKey('Ambito', on_delete=models.CASCADE)
     tipo = models.ForeignKey('Tipo', on_delete=models.CASCADE)
-    formula = models.CharField(max_length=100, verbose_name='Formula', blank=True) 
-    numerador = models.ForeignKey('Metrica', related_name="Numerador", on_delete=models.CASCADE) 
-    denominador = models.ForeignKey('Metrica', related_name="Denominador", on_delete=models.CASCADE) 
-    numerador_u_medida = models.CharField(max_length=100, verbose_name='', blank=True) 
-    denominador_u_medida = models.CharField(max_length=100, verbose_name='', blank=True) 
-    numerador_valor = models.CharField(max_length=100, verbose_name='', blank=True) 
-    denominador_valor = models.CharField(max_length=100, verbose_name='' , blank=True) 
-    resultado = models.CharField(max_length=100, verbose_name='' , blank=True) 
+    formula = models.CharField(max_length=20, choices= FORMULAS,verbose_name='Formula', blank=True) 
+    numerador = models.CharField(max_length=50, verbose_name='', blank=True, null=True) 
+    denominador = models.CharField(max_length=50, verbose_name='', blank=True, null=True) 
+    numerador_u_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
+    denominador_u_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
+    numerador_valor = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
+    denominador_valor = models.PositiveIntegerField(verbose_name='' , blank=True, null=True) 
+    resultado = models.PositiveIntegerField(verbose_name='' , blank=True, null=True) 
 
     def __str__(self):
         fila = 'Nombre: ' + self.nombre + ' - ' + 'Descripcíon: ' + self.descripcion

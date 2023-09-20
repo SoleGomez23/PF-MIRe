@@ -70,7 +70,7 @@
           =
         </div>
         <div style="margin:auto">
-          <button id="miBoton" type="button" style="background-color: rgb(0, 3, 192)">Calcular</button>
+          <button id="miBoton" type="button" style="background-color:#0003C0">Calcular</button>
           {{ formulario2.resultado }}
         </div>
         <div style="margin:auto">
@@ -93,7 +93,6 @@ function getCookie(name) {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
             const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) === (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                 break;
@@ -108,7 +107,7 @@ let ambito_field = document.getElementById("id_ambito")
 let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");
 
-//Este evento que calcula el valor del indicador, se ejecuta al clickear "Calcular"
+//Este evento calcula el valor del indicador, se ejecuta al clickear "Calcular"
 boton.addEventListener("click", calcular)
 function calcular(){
   let formula_field = document.getElementById("id_formula")
@@ -151,7 +150,7 @@ function calcular(){
   }
 };
 
-//Este evento que carga la lista de Tipos, se ejecuta al seleccionar un ambito
+//Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
 ambito_field.addEventListener("change", pickState)
 function pickState(e){
     ambito_id = e.target.value //Selecciona el id del ambito elegido por el usuario

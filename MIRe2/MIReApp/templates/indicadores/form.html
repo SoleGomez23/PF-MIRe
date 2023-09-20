@@ -104,9 +104,9 @@ const csrftoken = getCookie('csrftoken');
 //Defino los botones/campos que necesito "escuchar"
 let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
 let tipo_field = document.getElementById("id_tipo")
-let boton = document.getElementById("miBoton");//Los id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
+let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
 
-//Este evento calcula el valor del indicador, se ejecuta al clickear "Calcular"
+//Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
 boton.addEventListener("click", calcular)
 function calcular(){
   //Se definen todos los campos que voy a leer/escribir
@@ -179,7 +179,6 @@ function pickState(e){
   .catch((error) => {
     console.error('Error:', error);
   });
-
 }
   //Le agrega la clase de select para que funcione como un dropdown
   let select = document.getElementsByTagName("select")

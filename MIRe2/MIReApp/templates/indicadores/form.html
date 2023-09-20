@@ -107,7 +107,7 @@ let ambito_field = document.getElementById("id_ambito")
 let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");
 
-//Evento que calcula el valor del indicador, se ejecuta al clickear "Calcular"
+//Este evento que calcula el valor del indicador, se ejecuta al clickear "Calcular"
 boton.addEventListener("click", function() {
   let formula_field = document.getElementById("id_formula")
   let numerador_field = document.getElementById("id_numerador")
@@ -149,7 +149,7 @@ boton.addEventListener("click", function() {
   }
 });
 
-//Evento que carga la lista de Tipos, se ejecuta al seleccionar un ambito
+//Este evento que carga la lista de Tipos, se ejecuta al seleccionar un ambito
 ambito_field.addEventListener("change", pickState)
 function pickState(e){
     ambito_id = e.target.value //Selecciona el id del ambito elegido por el usuario
@@ -178,12 +178,10 @@ function pickState(e){
   });
 
 }
-  let input = document.getElementById("id_nombre")
+  //Le agrega la clase de select para que funcione como un dropdown
   let select = document.getElementsByTagName("select")
   console.log(select)
-  
-  input.classList.add("form-control")
   for(let i = 0; i <select.length; i++){
-      select[i].classList.add("form-select")
+    select[i].classList.add("form-select")
   }
 </script>

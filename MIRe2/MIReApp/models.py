@@ -4,7 +4,7 @@ from django.db import models
  
 FRECUENCIAS = (('Bianual','Bianual'), ('Anual', 'Anual'), ('Semestral','Semestral'), ('Mensual','Mensual')
 )
-FORMULAS = (('Promedio','Promedio'), ('Tasa de Variacion','Tasa de Variacion'), ('Inversion Promedio','Inversion Promedio'))
+FORMULAS = (('Promedio','Promedio'), ('Tasa de Variacion','Tasa de Variacion'), ('Porcentaje','Porcentaje'))
 
 # Create your models here.
 class Metrica(models.Model):
@@ -30,7 +30,7 @@ class Metrica(models.Model):
     year = models.PositiveIntegerField(blank=True, null=True,verbose_name='Ingrese año:')
 
     def __str__(self):
-        fila = 'Título: ' + self.titulo + ' - ' + 'Descripcíon: ' + self.descripcion
+        fila = self.titulo
         return fila
     
 class Indicador(models.Model):
@@ -48,10 +48,12 @@ class Indicador(models.Model):
     ambito = models.ForeignKey('Ambito', on_delete=models.CASCADE)
     tipo = models.ForeignKey('Tipo', on_delete=models.CASCADE)
     formula = models.CharField(max_length=20, choices= FORMULAS,verbose_name='Formula', blank=True) 
-    numerador = models.CharField(max_length=50, verbose_name='', blank=True, null=True) 
-    denominador = models.CharField(max_length=50, verbose_name='', blank=True, null=True) 
-    numerador_u_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
-    denominador_u_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
+    numerador = models.ForeignKey('Metrica', related_name='Numerador', on_delete=models.CASCADE)
+    denominador = models.ForeignKey('Metrica', related_name='Denominador', on_delete=models.CASCADE) 
+    numerador_periodo = models.IntegerField(verbose_name='', blank=True, null=True)
+    denominador_periodo = models.IntegerField(verbose_name='', blank=True, null=True) 
+    numerador_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
+    denominador_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
     numerador_valor = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
     denominador_valor = models.PositiveIntegerField(verbose_name='' , blank=True, null=True) 
     resultado = models.PositiveIntegerField(verbose_name='' , blank=True, null=True) 

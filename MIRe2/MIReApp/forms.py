@@ -18,6 +18,7 @@ class IndicadorForm(forms.ModelForm):
     class Meta:
         model = Indicador
         fields = '__all__'
+        #exclude = ['denominador_medida', 'numerador_medida']
         widgets = {
             'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 2}),
         }
@@ -26,8 +27,8 @@ class IndicadorForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
-            if i not in ["nombre", "descripcion", "ambito", "tipo", "frecuencia", "formula", "numerador", "denominador"]:
-                self.fields[i].disabled = True
+            # if i not in ["nombre", "descripcion", "ambito", "tipo", "frecuencia", "formula", "numerador", "denominador"]:
+            #     self.fields[i].disabled = True
         
         self.fields['tipo'].queryset = Tipo.objects.none()
         if 'ambito' in self.data:

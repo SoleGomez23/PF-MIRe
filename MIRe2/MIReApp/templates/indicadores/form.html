@@ -103,12 +103,14 @@ function getCookie(name) {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
+//Defino los botones/campos que necesito "escuchar"
 let ambito_field = document.getElementById("id_ambito")
 let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");
 
 //Este evento que calcula el valor del indicador, se ejecuta al clickear "Calcular"
-boton.addEventListener("click", function() {
+boton.addEventListener("click", calcular)
+function calcular(){
   let formula_field = document.getElementById("id_formula")
   let numerador_field = document.getElementById("id_numerador")
   let denominador_field = document.getElementById("id_denominador")
@@ -123,7 +125,7 @@ boton.addEventListener("click", function() {
   if (formula_field.value == 'Tasa de Variacion'){
     if ( numerador_periodo_field.value != denominador_periodo_field.value){
       if (numerador_medida_field.value == denominador_medida_field.value){
-        var result = ((numerador_valor_field.value / denominador_valor_field.value) - 1) * 100  
+        let result = ((numerador_valor_field.value / denominador_valor_field.value) - 1) * 100  
         console.log(result);
         valor_field.value = result        
       }else{console.log('Las unidades de medida deben ser iguales');}
@@ -132,7 +134,7 @@ boton.addEventListener("click", function() {
   else if (formula_field.value == 'Porcentaje'){
     if ( numerador_periodo_field.value == denominador_periodo_field.value){
       if (numerador_medida_field.value == denominador_medida_field.value){
-        var result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
+        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
         console.log(result);
         valor_field.value = result        
       }else{console.log('Las unidades de medida deben ser iguales');}
@@ -141,13 +143,13 @@ boton.addEventListener("click", function() {
   else if (formula_field.value == 'Promedio'){
     if ( numerador_periodo_field.value == denominador_periodo_field.value){
       if (numerador_medida_field.value != denominador_medida_field.value){
-        var result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
+        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
         console.log(result);
         valor_field.value = result        
       }else{console.log('Las unidades de medida deben ser distintas');}
     }else{console.log('Las periodos deben ser iguales');}
   }
-});
+};
 
 //Este evento que carga la lista de Tipos, se ejecuta al seleccionar un ambito
 ambito_field.addEventListener("change", pickState)

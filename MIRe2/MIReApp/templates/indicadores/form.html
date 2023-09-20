@@ -156,35 +156,34 @@ function pickState(e){
     const data = { user_id: ambito_id} //Agrega el ambito a un objeto 
     let url = " {% url 'tipos' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
 
-fetch(url, { //Hace la request HTTP
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-'X-CSRFToken': csrftoken
-},
-body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
-})
-.then(response => response.json())
-.then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
-console.log('Success:', data[0]['nombre']);
-//Se agrega al dropdown todos los elementos recibidos
-tipo_field.innerHTML = `<option value = "" selescted>---------------</option>`
-for(let i = 0; i<data.length; i++){
-  tipo_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["nombre"]}</option>`
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+  })
+  .then(response => response.json())
+  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  console.log('Success:', data[0]['nombre']);
+  //Se agrega al dropdown todos los elementos recibidos:
+  tipo_field.innerHTML = `<option value = "" selescted>---------------</option>`
+  for(let i = 0; i<data.length; i++){
+    tipo_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["nombre"]}</option>`
+  }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+
 }
-})
-.catch((error) => {
-console.error('Error:', error);
-});
-
-    }
-    let input = document.getElementById("id_nombre")
-    let select = document.getElementsByTagName("select")
-    console.log(select)
-    
-    input.classList.add("form-control")
-
-    for(let i = 0; i <select.length; i++){
-        select[i].classList.add("form-select")
-    }
+  let input = document.getElementById("id_nombre")
+  let select = document.getElementsByTagName("select")
+  console.log(select)
+  
+  input.classList.add("form-control")
+  for(let i = 0; i <select.length; i++){
+      select[i].classList.add("form-select")
+  }
 </script>

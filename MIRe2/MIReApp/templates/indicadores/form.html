@@ -82,7 +82,6 @@
   <input name="" id="" class="btn btn-success" style="background-color: #965FB8;border-color: #a020b0;" type="submit" value="Confirmar">
   <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;" href="{% url 'indicadores' %}" role="button">Cancelar</a>
 
-
 </form>
 
 <script>
@@ -103,13 +102,14 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 //Defino los botones/campos que necesito "escuchar"
-let ambito_field = document.getElementById("id_ambito")
+let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
 let tipo_field = document.getElementById("id_tipo")
-let boton = document.getElementById("miBoton");
+let boton = document.getElementById("miBoton");//Los id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
 
 //Este evento calcula el valor del indicador, se ejecuta al clickear "Calcular"
 boton.addEventListener("click", calcular)
 function calcular(){
+  //Se definen todos los campos que voy a leer/escribir
   let formula_field = document.getElementById("id_formula")
   let numerador_field = document.getElementById("id_numerador")
   let denominador_field = document.getElementById("id_denominador")
@@ -147,6 +147,8 @@ function calcular(){
         valor_field.value = result        
       }else{console.log('Las unidades de medida deben ser distintas');}
     }else{console.log('Las periodos deben ser iguales');}
+  }else{
+    console.log('No se ha seleccionado ningun tipo de formula');
   }
 };
 

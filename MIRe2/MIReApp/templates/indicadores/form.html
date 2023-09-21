@@ -105,17 +105,14 @@ const csrftoken = getCookie('csrftoken');
 //Defino los botones/campos que necesito "escuchar"
 let valor_num = document.getElementById("id_numerador_valor")
 let valor_den = document.getElementById("id_denominador_valor")
-let medida_num = document.getElementById("id_numerador_medida")
-let medida_den = document.getElementById("id_denominador_medida")
+let periodo_num = document.getElementById("id_numerador_periodo")
+let periodo_den = document.getElementById("id_denominador_periodo")
 let numerador_campo = document.getElementById("id_numerador")
 let denominador_campo = document.getElementById("id_denominador")
-let num_field = document.getElementById("id_numerador_periodo")
-let den_field = document.getElementById("id_denominador_periodo")
 let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
 let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
-let numerador_periodo_field = document.getElementById("id_numerador_periodo");
-let denominador_periodo_field = document.getElementById("id_denominador_periodo");
+
 //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
 ambito_field.addEventListener("change", pickState)
 function pickState(e){
@@ -151,37 +148,37 @@ function pickState(e){
     select[i].classList.add("form-select")
   }
 
-//Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
-numerador_campo.addEventListener("change", pickState2)
-numerador_campo.addEventListener("change", pickState4)
-num_field.addEventListener("change", pickState6)
-function pickState2(e){
-    numerador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
-    const data = { user_id: numerador_id} //Agrega el ambito a un objeto 
-    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
 
-  fetch(url, { //Hace la request HTTP
+numerador_campo.addEventListener("change", pickState2)//carga los los periodos del numerador
+numerador_campo.addEventListener("change", pickState4)//carga la unidad de medida del numerador
+periodo_num.addEventListener("change", pickState6)// carga el valor del numerador
+function pickState2(e){
+    numerador_id = e.target.value 
+    const data = { user_id: numerador_id} 
+    let url = " {% url 'instancias' %} " 
+
+  fetch(url, { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
-    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    body: JSON.stringify(data), 
   })
   .then(response => response.json())
-  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
-  // console.log('Success:', data[0]['año_historico']);
-  //Se agrega al dropdown todos los elementos recibidos:
-  num_field.innerHTML = `<option value = "" selescted>---------------</option>`
+  .then(data => { 
+  // console.log('Success:', data[0]['año_historico']); 
+
+  periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
-    num_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
   }
   })
   .catch((error) => {
     console.error('Error:', error);
   });
 }
-  //Le agrega la clase de select para que funcione como un dropdown
+
   let select_num = document.getElementsByTagName("select")
   console.log(select_num)
   for(let i = 0; i <select_num.length; i++){
@@ -189,23 +186,24 @@ function pickState2(e){
   }
 
 function pickState4(e){
-    numerador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    let medida_num = document.getElementById("id_numerador_medida")
+    numerador_id = e.target.value 
     console.log(numerador_id);
-    const data = { user_id: numerador_id} //Agrega el ambito a un objeto 
-    let url = " {% url 'medidas' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+    const data = { user_id: numerador_id} 
+    let url = " {% url 'medidas' %} " 
 
-  fetch(url, { //Hace la request HTTP
+  fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
-    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    body: JSON.stringify(data), 
   })
   .then(response => response.json())
-  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  .then(data => { 
   // console.log('Success:', data[0]['año_historico']);
-  //Se agrega al dropdown todos los elementos recibidos:
+  
   console.log(data[0]["unidad_medida"]);
   medida_num.value = data[0]["unidad_medida"]
   })
@@ -215,10 +213,10 @@ function pickState4(e){
 }
 
 function pickState6(e){
-    numerador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    numerador_id = e.target.value //devuelve undefined
     console.log(numerador_id);
-    const data = { user_id: numerador_id} //Agrega el ambito a un objeto 
-    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+    const data = { user_id: numerador_id} 
+    let url = " {% url 'instancias' %} " 
 
   fetch(url, { //Hace la request HTTP
     method: 'POST',
@@ -226,12 +224,12 @@ function pickState6(e){
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
-    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    body: JSON.stringify(data), 
   })
   .then(response => response.json())
-  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  .then(data => { 
   // console.log('Success:', data[0]['año_historico']);
-  //Se agrega al dropdown todos los elementos recibidos:
+  
   console.log(data[0]["valor_historico"]);
   valor_num.value = data[0]["valor_historico"]
   })
@@ -241,37 +239,36 @@ function pickState6(e){
 }
 
 
-//Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
-denominador_campo.addEventListener("change", pickState3)
-denominador_campo.addEventListener("change", pickState5)
-den_field.addEventListener("change", pickState7)
+denominador_campo.addEventListener("change", pickState3)//Carga ls instancias del denominador
+denominador_campo.addEventListener("change", pickState5)//Carga la unidad de medida del denominador
+periodo_den.addEventListener("change", pickState7)//Carga el valor del denomindor
 function pickState3(e){
-    denominador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
-    const data = { user_id: denominador_id} //Agrega el ambito a un objeto 
-    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+    denominador_id = e.target.value
+    const data = { user_id: denominador_id} 
+    let url = " {% url 'instancias' %} " 
 
-  fetch(url, { //Hace la request HTTP
+  fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
-    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    body: JSON.stringify(data), 
   })
   .then(response => response.json())
-  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  .then(data => { 
   // console.log('Success:', data[0]['año_historico']);
-  //Se agrega al dropdown todos los elementos recibidos:
-  den_field.innerHTML = `<option value = "" selescted>---------------</option>`
+
+  periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
-    den_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
   }
   })
   .catch((error) => {
     console.error('Error:', error);
   });
 }
-  //Le agrega la clase de select para que funcione como un dropdown
+
   let select_den = document.getElementsByTagName("select")
   console.log(select_den)
   for(let i = 0; i <select_den.length; i++){
@@ -279,22 +276,23 @@ function pickState3(e){
   }
 
   function pickState5(e){
-    denominador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
-    const data = { user_id: denominador_id} //Agrega el ambito a un objeto 
-    let url = " {% url 'medidas' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+    let medida_den = document.getElementById("id_denominador_medida")
+    denominador_id = e.target.value 
+    const data = { user_id: denominador_id} 
+    let url = " {% url 'medidas' %} " 
 
-  fetch(url, { //Hace la request HTTP
+  fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
-    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    body: JSON.stringify(data), 
   })
   .then(response => response.json())
-  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  .then(data => { 
   // console.log('Success:', data[0]['año_historico']);
-  //Se agrega al dropdown todos los elementos recibidos:
+  
   console.log(data[0]["unidad_medida"]);
   medida_den.value = data[0]["unidad_medida"]
   })
@@ -304,10 +302,10 @@ function pickState3(e){
 }
 
 function pickState7(e){
-    denominador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    denominador_id = e.target.value //devuelve undefined
     console.log(denominador_id);
-    const data = { user_id: denominador_id} //Agrega el ambito a un objeto 
-    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+    const data = { user_id: denominador_id} 
+    let url = " {% url 'instancias' %} " 
 
   fetch(url, { //Hace la request HTTP
     method: 'POST',
@@ -315,12 +313,12 @@ function pickState7(e){
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
-    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    body: JSON.stringify(data), 
   })
   .then(response => response.json())
-  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  .then(data => { 
   // console.log('Success:', data[0]['año_historico']);
-  //Se agrega al dropdown todos los elementos recibidos:
+  
   console.log(data[0]["valor_historico"]);
   valor_den.value = data[0]["valor_historico"]
   })
@@ -329,23 +327,18 @@ function pickState7(e){
   });
 }
 
+
 //Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
 boton.addEventListener("click", calcular)
 function calcular(){
   //Se definen todos los campos que voy a leer/escribir
   let formula_field = document.getElementById("id_formula")
-  let numerador_field = document.getElementById("id_numerador")
-  let denominador_field = document.getElementById("id_denominador")
-  let numerador_medida_field = document.getElementById("id_numerador_medida")
-  let denominador_medida_field= document.getElementById("id_denominador_medida")
-  let numerador_valor_field = document.getElementById("id_numerador_valor")
-  let denominador_valor_field = document.getElementById("id_denominador_valor")
   let valor_field = document.getElementById("id_resultado") 
 
   if (formula_field.value == 'Tasa de Variacion'){
-    if ( numerador_periodo_field.value != denominador_periodo_field.value){
-      if (numerador_medida_field.value == denominador_medida_field.value){
-        let result = ((numerador_valor_field.value / denominador_valor_field.value) - 1) * 100  
+    if ( periodo_num.value != periodo_den.value){
+      if (medida_num.value == medida_den.value){
+        let result = ((valor_num.value / valor_den.value) - 1) * 100  
         console.log(result);
         valor_field.value = result
       }else{
@@ -355,16 +348,14 @@ function calcular(){
     }else{
       alert('Los periodos deben ser distintos')
       valor_field.value = ''
-      let variable = numerador_periodo_field.value
-      console.log(parseFloat(variable))
-      console.log(numerador_periodo_field.value);
-      console.log(denominador_periodo_field.value);
+      console.log(periodo_num.value);
+      console.log(periodo_den.value);
     ;}
   }
   else if (formula_field.value == 'Porcentaje'){
-    if ( numerador_periodo_field.value == denominador_periodo_field.value){
-      if (numerador_medida_field.value == denominador_medida_field.value){
-        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
+    if ( periodo_num.value == periodo_den.value){
+      if (medida_num.value == medida_den.value){
+        let result = (valor_num.value / valor_den.value) * 100  
         console.log(result);
         valor_field.value = result        
       }else{
@@ -377,9 +368,9 @@ function calcular(){
     }
   }
   else if (formula_field.value == 'Promedio'){
-    if ( numerador_periodo_field.value == denominador_periodo_field.value){
-      if (numerador_medida_field.value != denominador_medida_field.value){
-        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
+    if ( periodo_num.value == periodo_num.value){
+      if ( medida_num.value != medida_den.value){
+        let result = (valor_num.value / valor_den.value) * 100  
         console.log(result);
         valor_field.value = result        
       }else{

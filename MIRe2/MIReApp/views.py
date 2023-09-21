@@ -147,12 +147,15 @@ def tipos(request):
 
 def instancias(request):
     data = json.loads(request.body)
+    print(data['user_id'])
     instances = HistorialMetrica.objects.filter(metrica__id=data['user_id'])
     print(instances)
-    return JsonResponse(list(instances.values("año_historico")), safe=False)
+    return JsonResponse(list(instances.values("año_historico", "valor_historico")), safe=False)
 
 def medidas(request):
     data = json.loads(request.body)
-    metrics = Metrica.objects.filter(metrica__id=data['user_id'])
+    metrics = Metrica.objects.filter(id=data['user_id'])
+    print('ggggggggggggg')
     print(metrics)
     return JsonResponse(list(metrics.values("unidad_medida")), safe=False)
+

@@ -103,21 +103,19 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 //Defino los botones/campos que necesito "escuchar"
+let valor_num = document.getElementById("id_numerador_valor")
+let valor_den = document.getElementById("id_denominador_valor")
+let medida_num = document.getElementById("id_numerador_medida")
+let medida_den = document.getElementById("id_denominador_medida")
 let numerador_campo = document.getElementById("id_numerador")
 let denominador_campo = document.getElementById("id_denominador")
-let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
-let tipo_field = document.getElementById("id_tipo")
 let num_field = document.getElementById("id_numerador_periodo")
 let den_field = document.getElementById("id_denominador_periodo")
+let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
+let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Aquí puedes acceder a los campos y obtener sus valores
-    let numerador_periodo_field = document.getElementById("id_numerador_periodo");
-    let denominador_periodo_field = document.getElementById("id_denominador_periodo");
-
-    // Realiza tus cálculos u operaciones aquí
-});
+let numerador_periodo_field = document.getElementById("id_numerador_periodo");
+let denominador_periodo_field = document.getElementById("id_denominador_periodo");
 
 //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
 ambito_field.addEventListener("change", pickState)
@@ -138,7 +136,7 @@ function pickState(e){
   .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
   console.log('Success:', data[0]['nombre']);
   //Se agrega al dropdown todos los elementos recibidos:
-  denominador_field.innerHTML = `<option value = "" selescted>---------------</option>`
+  tipo_field.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
     tipo_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["nombre"]}</option>`
   }
@@ -156,6 +154,8 @@ function pickState(e){
 
 //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
 numerador_campo.addEventListener("change", pickState2)
+numerador_campo.addEventListener("change", pickState4)
+num_field.addEventListener("change", pickState6)
 function pickState2(e){
     numerador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
     const data = { user_id: numerador_id} //Agrega el ambito a un objeto 
@@ -189,8 +189,63 @@ function pickState2(e){
     select_num[i].classList.add("form-select")
   }
 
+function pickState4(e){
+    numerador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    console.log(numerador_id);
+    const data = { user_id: numerador_id} //Agrega el ambito a un objeto 
+    let url = " {% url 'medidas' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+  })
+  .then(response => response.json())
+  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  // console.log('Success:', data[0]['año_historico']);
+  //Se agrega al dropdown todos los elementos recibidos:
+  console.log(data[0]["unidad_medida"]);
+  medida_num.value = data[0]["unidad_medida"]
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
+function pickState6(e){
+    numerador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    console.log(numerador_id);
+    const data = { user_id: numerador_id} //Agrega el ambito a un objeto 
+    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+  })
+  .then(response => response.json())
+  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  // console.log('Success:', data[0]['año_historico']);
+  //Se agrega al dropdown todos los elementos recibidos:
+  console.log(data[0]["valor_historico"]);
+  valor_num.value = data[0]["valor_historico"]
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
+
 //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
 denominador_campo.addEventListener("change", pickState3)
+denominador_campo.addEventListener("change", pickState5)
+den_field.addEventListener("change", pickState7)
 function pickState3(e){
     denominador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
     const data = { user_id: denominador_id} //Agrega el ambito a un objeto 
@@ -224,6 +279,56 @@ function pickState3(e){
     select_den[i].classList.add("form-select")
   }
 
+  function pickState5(e){
+    denominador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    const data = { user_id: denominador_id} //Agrega el ambito a un objeto 
+    let url = " {% url 'medidas' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+  })
+  .then(response => response.json())
+  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  // console.log('Success:', data[0]['año_historico']);
+  //Se agrega al dropdown todos los elementos recibidos:
+  console.log(data[0]["unidad_medida"]);
+  medida_den.value = data[0]["unidad_medida"]
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
+function pickState7(e){
+    denominador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    console.log(denominador_id);
+    const data = { user_id: denominador_id} //Agrega el ambito a un objeto 
+    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+  })
+  .then(response => response.json())
+  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  // console.log('Success:', data[0]['año_historico']);
+  //Se agrega al dropdown todos los elementos recibidos:
+  console.log(data[0]["valor_historico"]);
+  valor_den.value = data[0]["valor_historico"]
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
 
 //Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
 boton.addEventListener("click", calcular)
@@ -289,7 +394,5 @@ function calcular(){
     alert('No se ha seleccionado ningun tipo de formula');
   }
 };
-
-
 
 </script>

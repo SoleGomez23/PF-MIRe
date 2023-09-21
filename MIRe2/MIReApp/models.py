@@ -50,8 +50,8 @@ class Indicador(models.Model):
     formula = models.CharField(max_length=20, choices= FORMULAS,verbose_name='Formula', blank=True) 
     numerador = models.ForeignKey('Metrica', related_name='Numerador', on_delete=models.CASCADE)
     denominador = models.ForeignKey('Metrica', related_name='Denominador', on_delete=models.CASCADE) 
-    numerador_periodo = models.IntegerField(verbose_name='', blank=True, null=True)
-    denominador_periodo = models.IntegerField(verbose_name='', blank=True, null=True) 
+    numerador_periodo = models.ForeignKey('HistorialMetrica', related_name='Instancia_Numerador', on_delete=models.CASCADE)
+    denominador_periodo = models.ForeignKey('HistorialMetrica', related_name='Instancia_Denominador', on_delete=models.CASCADE)
     numerador_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
     denominador_medida = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
     numerador_valor = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
@@ -68,7 +68,7 @@ class HistorialMetrica(models.Model):
     valor_historico = models.PositiveIntegerField(default=0)  # Agrega un valor predeterminado
 
     def __str__(self):
-        return f"Métrica: {self.metrica.titulo} - Año Histórico: {self.año_historico} - Valor Histórico: {self.valor_historico}"
+        return f"{self.año_historico}"
 
 class Ambito(models.Model):
     nombre = models.CharField(max_length=15)

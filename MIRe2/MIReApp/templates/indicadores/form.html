@@ -45,6 +45,7 @@
         <label>periodo denominador</label> 
         {{ formulario2.denominador_periodo }} 
       </div>
+      <br>
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
         <div style="margin:auto">
           (
@@ -70,8 +71,8 @@
           =
         </div>
         <div style="margin:auto">
-          <button id="miBoton" type="button" style="background-color:#0003C0">Calcular</button>
           {{ formulario2.resultado }}
+          <button id="miBoton" type="button" style="background-color:#0003C0">Calcular</button>
         </div>
         <div style="margin:auto">
           %
@@ -102,55 +103,21 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 //Defino los botones/campos que necesito "escuchar"
+let numerador_campo = document.getElementById("id_numerador")
+let denominador_campo = document.getElementById("id_denominador")
 let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
 let tipo_field = document.getElementById("id_tipo")
+let num_field = document.getElementById("id_numerador_periodo")
+let den_field = document.getElementById("id_denominador_periodo")
 let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
 
-//Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
-boton.addEventListener("click", calcular)
-function calcular(){
-  //Se definen todos los campos que voy a leer/escribir
-  let formula_field = document.getElementById("id_formula")
-  let numerador_field = document.getElementById("id_numerador")
-  let denominador_field = document.getElementById("id_denominador")
-  let numerador_periodo_field = document.getElementById("id_numerador_periodo")
-  let denominador_periodo_field = document.getElementById("id_denominador_periodo")
-  let numerador_medida_field = document.getElementById("id_numerador_medida")
-  let denominador_medida_field= document.getElementById("id_denominador_medida")
-  let numerador_valor_field = document.getElementById("id_numerador_valor")
-  let denominador_valor_field = document.getElementById("id_denominador_valor")
-  let valor_field = document.getElementById("id_resultado") 
+document.addEventListener("DOMContentLoaded", function() {
+    // Aquí puedes acceder a los campos y obtener sus valores
+    let numerador_periodo_field = document.getElementById("id_numerador_periodo");
+    let denominador_periodo_field = document.getElementById("id_denominador_periodo");
 
-  if (formula_field.value == 'Tasa de Variacion'){
-    if ( numerador_periodo_field.value != denominador_periodo_field.value){
-      if (numerador_medida_field.value == denominador_medida_field.value){
-        let result = ((numerador_valor_field.value / denominador_valor_field.value) - 1) * 100  
-        console.log(result);
-        valor_field.value = result        
-      }else{console.log('Las unidades de medida deben ser iguales');}
-    }else{console.log('Los periodos deben ser distintos');}
-  }
-  else if (formula_field.value == 'Porcentaje'){
-    if ( numerador_periodo_field.value == denominador_periodo_field.value){
-      if (numerador_medida_field.value == denominador_medida_field.value){
-        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
-        console.log(result);
-        valor_field.value = result        
-      }else{console.log('Las unidades de medida deben ser iguales');}
-    }else{console.log('Los periodos deben ser iguales');}
-  }
-  else if (formula_field.value == 'Promedio'){
-    if ( numerador_periodo_field.value == denominador_periodo_field.value){
-      if (numerador_medida_field.value != denominador_medida_field.value){
-        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
-        console.log(result);
-        valor_field.value = result        
-      }else{console.log('Las unidades de medida deben ser distintas');}
-    }else{console.log('Las periodos deben ser iguales');}
-  }else{
-    console.log('No se ha seleccionado ningun tipo de formula');
-  }
-};
+    // Realiza tus cálculos u operaciones aquí
+});
 
 //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
 ambito_field.addEventListener("change", pickState)
@@ -171,7 +138,7 @@ function pickState(e){
   .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
   console.log('Success:', data[0]['nombre']);
   //Se agrega al dropdown todos los elementos recibidos:
-  tipo_field.innerHTML = `<option value = "" selescted>---------------</option>`
+  denominador_field.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
     tipo_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["nombre"]}</option>`
   }
@@ -186,4 +153,143 @@ function pickState(e){
   for(let i = 0; i <select.length; i++){
     select[i].classList.add("form-select")
   }
+
+//Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
+numerador_campo.addEventListener("change", pickState2)
+function pickState2(e){
+    numerador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    const data = { user_id: numerador_id} //Agrega el ambito a un objeto 
+    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+  })
+  .then(response => response.json())
+  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  // console.log('Success:', data[0]['año_historico']);
+  //Se agrega al dropdown todos los elementos recibidos:
+  num_field.innerHTML = `<option value = "" selescted>---------------</option>`
+  for(let i = 0; i<data.length; i++){
+    num_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+  }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+  //Le agrega la clase de select para que funcione como un dropdown
+  let select_num = document.getElementsByTagName("select")
+  console.log(select_num)
+  for(let i = 0; i <select_num.length; i++){
+    select_num[i].classList.add("form-select")
+  }
+
+//Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
+denominador_campo.addEventListener("change", pickState3)
+function pickState3(e){
+    denominador_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+    const data = { user_id: denominador_id} //Agrega el ambito a un objeto 
+    let url = " {% url 'instancias' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+  })
+  .then(response => response.json())
+  .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+  // console.log('Success:', data[0]['año_historico']);
+  //Se agrega al dropdown todos los elementos recibidos:
+  den_field.innerHTML = `<option value = "" selescted>---------------</option>`
+  for(let i = 0; i<data.length; i++){
+    den_field.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+  }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+  //Le agrega la clase de select para que funcione como un dropdown
+  let select_den = document.getElementsByTagName("select")
+  console.log(select_den)
+  for(let i = 0; i <select_den.length; i++){
+    select_den[i].classList.add("form-select")
+  }
+
+
+//Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
+boton.addEventListener("click", calcular)
+function calcular(){
+  //Se definen todos los campos que voy a leer/escribir
+  let formula_field = document.getElementById("id_formula")
+  let numerador_field = document.getElementById("id_numerador")
+  let denominador_field = document.getElementById("id_denominador")
+  let numerador_medida_field = document.getElementById("id_numerador_medida")
+  let denominador_medida_field= document.getElementById("id_denominador_medida")
+  let numerador_valor_field = document.getElementById("id_numerador_valor")
+  let denominador_valor_field = document.getElementById("id_denominador_valor")
+  let valor_field = document.getElementById("id_resultado") 
+
+  if (formula_field.value == 'Tasa de Variacion'){
+    if ( numerador_periodo_field.value != denominador_periodo_field.value){
+      if (numerador_medida_field.value == denominador_medida_field.value){
+        let result = ((numerador_valor_field.value / denominador_valor_field.value) - 1) * 100  
+        console.log(result);
+        valor_field.value = result
+      }else{
+        alert('Las unidades de medida deben ser iguales');
+        valor_field.value = '';
+      }
+    }else{
+      alert('Los periodos deben ser distintos')
+      valor_field.value = ''
+      let variable = numerador_periodo_field.value
+      console.log(parseFloat(variable))
+      console.log(numerador_periodo_field.value);
+      console.log(denominador_periodo_field.value);
+    ;}
+  }
+  else if (formula_field.value == 'Porcentaje'){
+    if ( numerador_periodo_field.value == denominador_periodo_field.value){
+      if (numerador_medida_field.value == denominador_medida_field.value){
+        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
+        console.log(result);
+        valor_field.value = result        
+      }else{
+        alert('Las unidades de medida deben ser iguales')
+        valor_field.value = '';
+      ;}
+    }else{
+      alert('Los periodos deben ser iguales');
+      valor_field.value = '';
+    }
+  }
+  else if (formula_field.value == 'Promedio'){
+    if ( numerador_periodo_field.value == denominador_periodo_field.value){
+      if (numerador_medida_field.value != denominador_medida_field.value){
+        let result = (numerador_valor_field.value / denominador_valor_field.value) * 100  
+        console.log(result);
+        valor_field.value = result        
+      }else{
+        alert('Las unidades de medida deben ser distintas');
+        valor_field.value = '';}
+    }else{
+      alert('Las periodos deben ser iguales');
+      valor_field.value = '';
+    }
+  }else{
+    alert('No se ha seleccionado ningun tipo de formula');
+  }
+};
+
+
+
 </script>

@@ -141,12 +141,12 @@ function pickState(e){
     console.error('Error:', error);
   });
 }
-  //Le agrega la clase de select para que funcione como un dropdown
-  let select = document.getElementsByTagName("select")
-  console.log(select)
-  for(let i = 0; i <select.length; i++){
-    select[i].classList.add("form-select")
-  }
+//Le agrega la clase de select para que funcione como un dropdown
+let select = document.getElementsByTagName("select")
+console.log(select)
+for(let i = 0; i <select.length; i++){
+  select[i].classList.add("form-select")
+}
 
 
 numerador_campo.addEventListener("change", pickState2)//carga los los periodos del numerador
@@ -178,12 +178,6 @@ function pickState2(e){
     console.error('Error:', error);
   });
 }
-
-  let select_num = document.getElementsByTagName("select")
-  console.log(select_num)
-  for(let i = 0; i <select_num.length; i++){
-    select_num[i].classList.add("form-select")
-  }
 
 function pickState4(e){
     let medida_num = document.getElementById("id_numerador_medida")
@@ -269,17 +263,11 @@ function pickState3(e){
   });
 }
 
-  let select_den = document.getElementsByTagName("select")
-  console.log(select_den)
-  for(let i = 0; i <select_den.length; i++){
-    select_den[i].classList.add("form-select")
-  }
-
-  function pickState5(e){
-    let medida_den = document.getElementById("id_denominador_medida")
-    denominador_id = e.target.value 
-    const data = { user_id: denominador_id} 
-    let url = " {% url 'medidas' %} " 
+function pickState5(e){
+  let medida_den = document.getElementById("id_denominador_medida")
+  denominador_id = e.target.value 
+  const data = { user_id: denominador_id} 
+  let url = " {% url 'medidas' %} " 
 
   fetch(url, {
     method: 'POST',
@@ -332,6 +320,8 @@ function pickState7(e){
 boton.addEventListener("click", calcular)
 function calcular(){
   //Se definen todos los campos que voy a leer/escribir
+  let medida_num = document.getElementById("id_numerador_medida")
+  let medida_den = document.getElementById("id_denominador_medida")
   let formula_field = document.getElementById("id_formula")
   let valor_field = document.getElementById("id_resultado") 
 

@@ -31,6 +31,8 @@ class IndicadorForm(forms.ModelForm):
             #     self.fields[i].disabled = True
         
         self.fields['tipo'].queryset = Tipo.objects.none()
+        self.fields['numerador_periodo'].queryset = Tipo.objects.none()
+        self.fields['denominador_periodo'].queryset = Tipo.objects.none()
         if 'ambito' in self.data:
             try:
                 ambito_id = int(self.data.get('ambito'))

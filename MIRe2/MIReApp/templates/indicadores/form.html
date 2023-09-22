@@ -114,8 +114,8 @@ let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
 
 //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
-ambito_field.addEventListener("change", pickState)
-function pickState(e){
+ambito_field.addEventListener("change", cargarTipos)
+function cargarTipos(e){
     ambito_id = e.target.value //Selecciona el id del ambito elegido por el usuario
     const data = { user_id: ambito_id} //Agrega el ambito a un objeto 
     let url = " {% url 'tipos' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
@@ -149,10 +149,10 @@ for(let i = 0; i <select.length; i++){
 }
 
 
-numerador_campo.addEventListener("change", pickState2)//carga los los periodos del numerador
-numerador_campo.addEventListener("change", pickState4)//carga la unidad de medida del numerador
-periodo_num.addEventListener("change", pickState6)// carga el valor del numerador
-function pickState2(e){
+numerador_campo.addEventListener("change", cargarPeriodos_num)//carga los los periodos del numerador
+numerador_campo.addEventListener("change", cargarMedida_num)//carga la unidad de medida del numerador
+periodo_num.addEventListener("change", cargarValor_num)// carga el valor del numerador
+function cargarPeriodos_num(e){
     numerador_id = e.target.value 
     const data = { user_id: numerador_id} 
     let url = " {% url 'instancias' %} " 
@@ -179,7 +179,7 @@ function pickState2(e){
   });
 }
 
-function pickState4(e){
+function cargarMedida_num(e){
     let medida_num = document.getElementById("id_numerador_medida")
     numerador_id = e.target.value 
     console.log(numerador_id);
@@ -206,9 +206,9 @@ function pickState4(e){
   });
 }
 
-function pickState6(e){
+function cargarValor_num(e){
     numerador_id = e.target.value //devuelve undefined
-    console.log(numerador_id);
+    console.log(e);
     const data = { user_id: numerador_id} 
     let url = " {% url 'instancias' %} " 
 
@@ -233,10 +233,10 @@ function pickState6(e){
 }
 
 
-denominador_campo.addEventListener("change", pickState3)//Carga ls instancias del denominador
-denominador_campo.addEventListener("change", pickState5)//Carga la unidad de medida del denominador
-periodo_den.addEventListener("change", pickState7)//Carga el valor del denomindor
-function pickState3(e){
+denominador_campo.addEventListener("change", cargarPeriodos_den)//Carga ls instancias del denominador
+denominador_campo.addEventListener("change", cargarMedida_den)//Carga la unidad de medida del denominador
+periodo_den.addEventListener("change", cargarValor_den)//Carga el valor del denomindor
+function cargarPeriodos_den(e){
     denominador_id = e.target.value
     const data = { user_id: denominador_id} 
     let url = " {% url 'instancias' %} " 
@@ -263,7 +263,7 @@ function pickState3(e){
   });
 }
 
-function pickState5(e){
+function cargarMedida_den(e){
   let medida_den = document.getElementById("id_denominador_medida")
   denominador_id = e.target.value 
   const data = { user_id: denominador_id} 
@@ -289,7 +289,7 @@ function pickState5(e){
   });
 }
 
-function pickState7(e){
+function cargarValor_den(e){
     denominador_id = e.target.value //devuelve undefined
     console.log(denominador_id);
     const data = { user_id: denominador_id} 

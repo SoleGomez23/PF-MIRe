@@ -17,7 +17,7 @@ class Metrica(models.Model):
                                                  message="El nombre no puede contener caracteres especiales.",
                                                  code='invalid_nombre')
                               ])
-    descripcion = models.TextField(max_length=100, verbose_name='Descripción', null=True) 
+    descripcion = models.TextField(max_length=100, verbose_name='Descripción', blank=True, null=True) 
     unidad_medida = models.CharField(max_length=100, 
                                         verbose_name='Unidad de Medida',
                                         validators= [
@@ -43,20 +43,20 @@ class Indicador(models.Model):
                                                  message="El nombre no puede contener caracteres especiales.",
                                                  code='invalid_nombre')
                               ])
-    descripcion = models.CharField(max_length=100, verbose_name='Descripción', null=True) 
+    descripcion = models.CharField(max_length=100, verbose_name='Descripción', blank=True, null=True) 
     frecuencia = models.CharField(verbose_name='Frecuencia de medición',max_length=10, choices=FRECUENCIAS,default='Anual')
     ambito = models.ForeignKey('Ambito', on_delete=models.CASCADE)
     tipo = models.ForeignKey('Tipo', on_delete=models.CASCADE)
     formula = models.CharField(max_length=20, choices= FORMULAS,verbose_name='Formula', blank=True) 
-    numerador = models.ForeignKey('Metrica', related_name='Numerador', on_delete=models.CASCADE)
-    denominador = models.ForeignKey('Metrica', related_name='Denominador', on_delete=models.CASCADE) 
-    numerador_periodo = models.ForeignKey('HistorialMetrica', related_name='Instancia_Numerador', on_delete=models.CASCADE)
-    denominador_periodo = models.ForeignKey('HistorialMetrica', related_name='Instancia_Denominador', on_delete=models.CASCADE)
+    numerador = models.ForeignKey('Metrica', related_name='Numerador', on_delete=models.CASCADE, blank=True, null=True)
+    denominador = models.ForeignKey('Metrica', related_name='Denominador', on_delete=models.CASCADE, blank=True, null=True) 
+    numerador_periodo = models.ForeignKey('HistorialMetrica', related_name='Instancia_Numerador', on_delete=models.CASCADE, blank=True, null=True)
+    denominador_periodo = models.ForeignKey('HistorialMetrica', related_name='Instancia_Denominador', on_delete=models.CASCADE, blank=True, null=True)
     numerador_medida = models.CharField(max_length=100, verbose_name='', blank=True, null=True) 
     denominador_medida = models.CharField(max_length=100, verbose_name='', blank=True, null=True) 
     numerador_valor = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
     denominador_valor = models.PositiveIntegerField(verbose_name='' , blank=True, null=True) 
-    resultado = models.PositiveIntegerField(verbose_name='' , blank=True, null=True) 
+    resultado = models.CharField(max_length=100, verbose_name='', blank=True, null=True)
 
     def __str__(self):
         fila = 'Nombre: ' + self.nombre + ' - ' + 'Descripcíon: ' + self.descripcion

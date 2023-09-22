@@ -109,6 +109,7 @@ let periodo_num = document.getElementById("id_numerador_periodo")
 let periodo_den = document.getElementById("id_denominador_periodo")
 let numerador_campo = document.getElementById("id_numerador")
 let denominador_campo = document.getElementById("id_denominador")
+let formula_campo = document.getElementById("id_formula")
 let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
 let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
@@ -171,7 +172,7 @@ function cargarPeriodos_num(e){
 
   periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
-    periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    periodo_num.innerHTML += `<option value = "${data[i]["metrica"]}" selescted>${data[i]["año_historico"]}</option>`
   }
   })
   .catch((error) => {
@@ -206,11 +207,11 @@ function cargarMedida_num(e){
   });
 }
 
-function cargarValor_num(e){
-    numerador_id = e.target.value //devuelve undefined
-    console.log(e);
-    const data = { user_id: numerador_id} 
-    let url = " {% url 'instancias' %} " 
+function cargarValor_num(e){    
+  numerador_id = e.target.value //devuelve undefined
+  console.log(numerador_id);
+  const data = { user_id: numerador_id} 
+  let url = " {% url 'instancias' %} " 
 
   fetch(url, { //Hace la request HTTP
     method: 'POST',
@@ -255,7 +256,7 @@ function cargarPeriodos_den(e){
 
   periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
-    periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    periodo_den.innerHTML += `<option value = "${data[i]["metrica"]}" selescted>${data[i]["año_historico"]}</option>`
   }
   })
   .catch((error) => {
@@ -315,6 +316,21 @@ function cargarValor_den(e){
   });
 }
 
+formula_campo.addEventListener("change", resetearFormula)//Carga el valor del denomindor
+function resetearFormula(e){    
+  seleccion = e.target.value //devuelve undefined
+  if (seleccion == ''){
+    document.getElementById("id_numerador_medida").value = ''
+    document.getElementById("id_denominador_medida").value = ''
+    document.getElementById("id_numerador_valor").value = ''
+    document.getElementById("id_denominador_valor").value = ''
+    document.getElementById("id_resultado").value = ''
+    periodo_den.selectedIndex = 0;
+    periodo_num.selectedIndex = 0;
+    numerador_campo.selectedIndex = 0;
+    denominador_campo.selectedIndex = 0;
+  }
+}
 
 //Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
 boton.addEventListener("click", calcular)
@@ -324,51 +340,48 @@ function calcular(){
   let medida_den = document.getElementById("id_denominador_medida")
   let formula_field = document.getElementById("id_formula")
   let valor_field = document.getElementById("id_resultado") 
+  let periodo_den_campo = periodo_den.options[periodo_den.selectedIndex].textContent
+  let periodo_num_campo = periodo_num.options[periodo_num.selectedIndex].textContent
 
   if (formula_field.value == 'Tasa de Variacion'){
-    if ( periodo_num.value != periodo_den.value){
+    if ( periodo_num_campo != periodo_den_campo){
       if (medida_num.value == medida_den.value){
         let result = ((valor_num.value / valor_den.value) - 1) * 100  
-        console.log(result);
         valor_field.value = result
       }else{
         alert('Las unidades de medida deben ser iguales');
-        valor_field.value = '';
+        valor_field.value = 'ERROR';
       }
     }else{
       alert('Los periodos deben ser distintos')
-      valor_field.value = ''
-      console.log(periodo_num.value);
-      console.log(periodo_den.value);
+      valor_field.value = 'ERROR'
     ;}
   }
   else if (formula_field.value == 'Porcentaje'){
-    if ( periodo_num.value == periodo_den.value){
+    if ( periodo_num_campo == periodo_den_campo){
       if (medida_num.value == medida_den.value){
         let result = (valor_num.value / valor_den.value) * 100  
-        console.log(result);
         valor_field.value = result        
       }else{
         alert('Las unidades de medida deben ser iguales')
-        valor_field.value = '';
+        valor_field.value = 'ERROR';
       ;}
     }else{
       alert('Los periodos deben ser iguales');
-      valor_field.value = '';
+      valor_field.value = 'ERROR';
     }
   }
   else if (formula_field.value == 'Promedio'){
-    if ( periodo_num.value == periodo_num.value){
+    if ( periodo_num_campo == periodo_den_campo){
       if ( medida_num.value != medida_den.value){
         let result = (valor_num.value / valor_den.value) * 100  
-        console.log(result);
         valor_field.value = result        
       }else{
         alert('Las unidades de medida deben ser distintas');
-        valor_field.value = '';}
+        valor_field.value = 'ERROR';}
     }else{
       alert('Las periodos deben ser iguales');
-      valor_field.value = '';
+      valor_field.value = 'ERROR';
     }
   }else{
     alert('No se ha seleccionado ningun tipo de formula');

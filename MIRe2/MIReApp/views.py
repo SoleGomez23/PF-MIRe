@@ -50,6 +50,7 @@ def crear_indicadores(request):
     formulario2 = IndicadorForm(request.POST or None, request.FILES or None)
     
     # Procesar el formulario de creación de indicadores
+    
     if formulario2.is_valid():
         formulario2.save()
         messages.success(request, '¡Indicador creado exitosamente!', extra_tags='alta-exitosa')
@@ -143,3 +144,18 @@ def tipos(request):
     tipos = Tipo.objects.filter(ambito__id=data['user_id'])
     print(tipos)
     return JsonResponse(list(tipos.values("id", "nombre")), safe=False)
+
+def instancias(request):
+    data = json.loads(request.body)
+    print(data['user_id'])
+    instances = HistorialMetrica.objects.filter(metrica__id=data['user_id'])
+    print(instances)
+    return JsonResponse(list(instances.values("metrica", "año_historico", "valor_historico")), safe=False)
+
+def medidas(request):
+    data = json.loads(request.body)
+    metrics = Metrica.objects.filter(id=data['user_id'])
+    print('ggggggggggggg')
+    print(metrics)
+    return JsonResponse(list(metrics.values("unidad_medida")), safe=False)
+

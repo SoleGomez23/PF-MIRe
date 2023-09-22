@@ -26,8 +26,12 @@ class IndicadorForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
+            if i not in ["nombre", "descripcion", "ambito", "tipo", "frecuencia", "formula", "numerador", "denominador", "numerador_periodo", "denominador_periodo"]:
+                self.fields[i].disabled = True
         
         self.fields['tipo'].queryset = Tipo.objects.none()
+        self.fields['numerador_periodo'].queryset = Tipo.objects.none()
+        self.fields['denominador_periodo'].queryset = Tipo.objects.none()
         if 'ambito' in self.data:
             try:
                 ambito_id = int(self.data.get('ambito'))

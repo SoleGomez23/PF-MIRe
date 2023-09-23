@@ -296,7 +296,10 @@ li a:hover {
 h2{
     color: #965FB8;
 }
-
+h1{
+    color: #965FB8;
+    font-size: 300%;
+}
 button {
     color:rgb(255, 255, 255);
     background-color: #D7A5FF
@@ -378,4 +381,16 @@ h5{
     border-radius: 5px; /* Bordes redondeados */
     margin: 0 auto; /* Centrar horizontalmente */
     width: 40%; /* Ancho del mensaje */
+}
+
+.horizontal-fields {
+    display: flex;
+    flex-direction: row; /* Por defecto, es row, pero aquí lo menciono explícitamente */
+    justify-content: space-between; /* Espaciado uniforme entre elementos */
+    align-items: flex-start; /* Alineación vertical al principio */
+  }
+  
+.field {
+    flex: 1; /* Hace que ambos elementos .field ocupen un espacio igual */
+    margin-right: 10px; /* Espacio entre los elementos .field */
 }

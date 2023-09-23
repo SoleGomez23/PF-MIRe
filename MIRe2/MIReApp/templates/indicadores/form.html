@@ -15,17 +15,20 @@
         <label for="{{ formulario2.frecuencia.id_for_label }}" class="form-label">{{ formulario2.frecuencia.label }}</label>
         {{ formulario2.frecuencia }}  
       </div>
-      <div class="col-12 help-text">{{ formulario2.frecuencia.errors }}</div>     
-      <div class="mb-3">
-        <label for="{{ formulario2.ambito.id_for_label }}" class="form-label">{{ formulario2.ambito.label }}</label>
-        {{ formulario2.ambito }}  
-      </div>
-      <div class="col-12 help-text">{{ formulario2.ambito.errors }}</div>      
-      <div class="mb-3">
-        <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
-        {{ formulario2.tipo }}  
-      </div>
-      <div class="col-12 help-text">{{ formulario2.tipo.errors }}</div>      
+      <div class="col-12 help-text">{{ formulario2.frecuencia.errors }}</div>    
+      <div class="horizontal-fields">
+        <div class="field">
+          <label for="{{ formulario2.ambito.id_for_label }}" class="form-label">{{ formulario2.ambito.label }}</label>
+          {{ formulario2.ambito }}  
+          <div class="help-text">{{ formulario2.ambito.errors }}</div>
+        </div>
+        
+        <div class="field">
+          <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
+          {{ formulario2.tipo }}  
+          <div class="help-text">{{ formulario2.tipo.errors }}</div>
+        </div>
+      </div>      
       <div class="mb-3">
         <label for="{{ formulario2.formula.id_for_label }}" class="form-label">{{ formulario2.formula.label }}</label>
         {{ formulario2.formula }}  
@@ -33,22 +36,24 @@
       <div class="col-12 help-text">{{ formulario2.formula.errors }}</div>  
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
       </div>
+      <h6>Seleccione numerador:</h6>
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
-        <label>metrica numerador</label> 
+        <label>Métrica:</label> 
         {{ formulario2.numerador }} 
-        <label>periodo numerador</label> 
+        <label>Período:</label> 
         {{ formulario2.numerador_periodo }} 
       </div>
+      <h6>Seleccione denominador:</h6>
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
-        <label>metrica denominador</label> 
+        <label>Métrica:</label> 
         {{ formulario2.denominador }} 
-        <label>periodo denominador</label> 
+        <label>Período:</label> 
         {{ formulario2.denominador_periodo }} 
       </div>
       <br>
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
-        <div style="margin:auto">
-          (
+        <div style="margin:auto " >
+          <h1>(</h1>
         </div>
         <div class="field-wrapper">
           {{ formulario2.numerador_medida }}  
@@ -59,29 +64,29 @@
           {{ formulario2.denominador_valor }}  
         </div>            
         <div style="margin:auto">
-          -1   
+          <h6>-1</h6>   
         </div>      
         <div style="margin:auto">
-          )
+          <h1>)</h1>
         </div>        
         <div style="margin:auto">
-          x100
+          <h6>x100</h6>
         </div>        
         <div style="margin:auto">
-          =
+          <h6>=</h6>
         </div>
         <div style="margin:auto">
           {{ formulario2.resultado }}
-          <button id="miBoton" type="button" style="background-color:#0003C0">Calcular</button>
+          <button class='rounded-4 fw-bold 'id="miBoton" type="button" style="margin-left: 32%; color: #965FB8;border-color: #965FB8;border-radius: 4px;">Calcular</button>
         </div>
         <div style="margin:auto">
-          %
+          <h6>%</h6>
         </div>
       </div>
       
-  
-  <input name="" id="" class="btn btn-success" style="background-color: #965FB8;border-color: #a020b0;" type="submit" value="Confirmar">
-  <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;" href="{% url 'indicadores' %}" role="button">Cancelar</a>
+  <br>
+  <input name="" id="" class="btn btn-success" style="background-color: #965FB8;border-color: #965FB8; margin-left:17%;" type="submit" value="Confirmar">
+  <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;margin-left: 0,5%;" href="{% url 'indicadores' %}" role="button">Cancelar</a>
 
 </form>
 

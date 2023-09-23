@@ -38,42 +38,57 @@
       </div>
       <h6>Seleccione numerador:</h6>
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
-        <label>Métrica:</label> 
-        {{ formulario2.numerador }} 
-        <label>Período:</label> 
-        {{ formulario2.numerador_periodo }} 
+        <div style="flex: 1;">
+          <label style="margin-right: 5px;">Métrica</label> 
+          {{ formulario2.numerador }}
+        </div>
+        <div style="flex: 0,5;">
+          <label style="margin-right: 5px;">Unidad de Medida</label> 
+          {{ formulario2.numerador_medida }}
+        </div>
+        <div style="flex: 0,5;"> 
+          <label style="margin-right: 5px;">Período</label> 
+          {{ formulario2.numerador_periodo }}
+        </div>
       </div>
       <h6>Seleccione denominador:</h6>
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
-        <label>Métrica:</label> 
-        {{ formulario2.denominador }} 
-        <label>Período:</label> 
-        {{ formulario2.denominador_periodo }} 
+        <div style="flex: 1;">
+          <label style="margin-right: 5px;">Métrica</label> 
+          {{ formulario2.denominador }}
+        </div>
+        <div style="flex: 0,5;">
+          <label style="margin-right: 5px;">Unidad de Medida</label> 
+          {{ formulario2.denominador_medida }}
+        </div>
+        <div style="flex: 0,5;"> 
+          <label style="margin-right: 5px;">Período</label> 
+          {{ formulario2.denominador_periodo }}
+        </div>
       </div>
       <br>
-      <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
-        <div style="margin:auto " >
-          <h1>(</h1>
-        </div>
-        <div class="field-wrapper">
-          {{ formulario2.numerador_medida }}  
-          {{ formulario2.denominador_medida }}  
-        </div>
-        <div class="field-wrapper">
-          {{ formulario2.numerador_valor }}  
-          {{ formulario2.denominador_valor }}  
-        </div>            
-        <div style="margin:auto">
-          <h6>-1</h6>   
-        </div>      
-        <div style="margin:auto">
-          <h1>)</h1>
-        </div>        
-        <div style="margin:auto">
-          <h6>x100</h6>
-        </div>        
-        <div style="margin:auto">
-          <h6>=</h6>
+      <div class="horizontal-fields" style="display: flex; flex-direction: row; align-items: center;">
+        <label style="margin-right: 10px;">Fórmula:</label>
+        <div style="display: flex; align-items: center;">
+            <div style="margin: auto;">
+                <h1>(</h1>
+            </div>
+            <div class="field-wrapper">
+                {{ formulario2.numerador_valor }}  
+                {{ formulario2.denominador_valor }}  
+            </div>            
+            <div style="margin: auto;">
+                <h6>-1</h6>   
+            </div>      
+            <div style="margin: auto;">
+                <h1>)</h1>
+            </div>        
+            <div style="margin: auto;">
+                <h6>x100</h6>
+            </div>        
+            <div style="margin: auto;">
+                <h6>=</h6>
+            </div>
         </div>
         <div style="margin:auto">
           {{ formulario2.resultado }}

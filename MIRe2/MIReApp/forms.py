@@ -19,7 +19,6 @@ class IndicadorForm(forms.ModelForm):
         model = Indicador
         fields = '__all__'       
         widgets = {
-            'descripcion': forms.TextInput(attrs={'readonly': 'readonly'}),
             'numerador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
             'denominador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
             'numerador_valor': forms.TextInput(attrs={'readonly': 'readonly'}),

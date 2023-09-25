@@ -63,6 +63,7 @@ class Indicador(models.Model):
         return fila
     
 class HistorialMetrica(models.Model):
+    id = models.AutoField(primary_key=True)
     metrica = models.ForeignKey(Metrica, on_delete=models.CASCADE)
     año_historico = models.PositiveIntegerField()
     valor_historico = models.PositiveIntegerField(default=0)  # Agrega un valor predeterminado

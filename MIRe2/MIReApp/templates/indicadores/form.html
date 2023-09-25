@@ -1,4 +1,4 @@
-<form enctype="multipart/form-data" method="post">
+<form id= "miFormulario" enctype="multipart/form-data" method="post">
   {% csrf_token %}  
   
       <div class="mb-3">
@@ -160,14 +160,15 @@ function cargarTipos(e){
   })
   .catch((error) => {
     console.error('Error:', error);
-  });
+  });//Le agrega la clase de select para que funcione como un dropdown
+  let select = document.getElementsByTagName("select")
+  console.log(select)
+  for(let i = 0; i <select.length; i++){
+    console.log(i);
+    select[i].classList.add("form-select")
+  }
 }
-//Le agrega la clase de select para que funcione como un dropdown
-let select = document.getElementsByTagName("select")
-console.log(select)
-for(let i = 0; i <select.length; i++){
-  select[i].classList.add("form-select")
-}
+
 
 
 numerador_campo.addEventListener("change", cargarPeriodos_num)//carga los los periodos del numerador
@@ -189,15 +190,21 @@ function cargarPeriodos_num(e){
   .then(response => response.json())
   .then(data => { 
   // console.log('Success:', data[0]['año_historico']); 
-
+  console.log(data);
   periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
-    periodo_num.innerHTML += `<option value = "${data[i]["metrica"]}" selescted>${data[i]["año_historico"]}</option>`
+    periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
   }
   })
   .catch((error) => {
     console.error('Error:', error);
-  });
+  });//Le agrega la clase de select para que funcione como un dropdown
+  // let select = document.getElementsByTagName("select")
+  // console.log(select)
+  // for(let i = 0; i <select.length; i++){
+  //   console.log(i);
+  //   select[i].classList.add("form-select")
+  // }
 }
 
 function cargarMedida_num(e){
@@ -231,7 +238,7 @@ function cargarValor_num(e){
   numerador_id = e.target.value //devuelve undefined
   console.log(numerador_id);
   const data = { user_id: numerador_id} 
-  let url = " {% url 'instancias' %} " 
+  let url = " {% url 'valores' %} " 
 
   fetch(url, { //Hace la request HTTP
     method: 'POST',
@@ -276,12 +283,18 @@ function cargarPeriodos_den(e){
 
   periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
   for(let i = 0; i<data.length; i++){
-    periodo_den.innerHTML += `<option value = "${data[i]["metrica"]}" selescted>${data[i]["año_historico"]}</option>`
+    periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
   }
   })
   .catch((error) => {
     console.error('Error:', error);
-  });
+  });//Le agrega la clase de select para que funcione como un dropdown
+  // let select = document.getElementsByTagName("select")
+  // console.log(select)
+  // for(let i = 0; i <select.length; i++){
+  //   console.log(i);
+  //   select[i].classList.add("form-select")
+  // }
 }
 
 function cargarMedida_den(e){
@@ -314,7 +327,7 @@ function cargarValor_den(e){
     denominador_id = e.target.value //devuelve undefined
     console.log(denominador_id);
     const data = { user_id: denominador_id} 
-    let url = " {% url 'instancias' %} " 
+    let url = " {% url 'valores' %} " 
 
   fetch(url, { //Hace la request HTTP
     method: 'POST',
@@ -407,5 +420,6 @@ function calcular(){
     alert('No se ha seleccionado ningun tipo de formula');
   }
 };
+
 
 </script>

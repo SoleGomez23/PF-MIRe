@@ -47,22 +47,20 @@ def crear_metricas(request):
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
 def crear_indicadores(request):
-    formulario2 = IndicadorForm(request.POST or None, request.FILES or None)
-    
-    # Procesar el formulario de creación de indicadores
-    
-    if formulario2.is_valid():
-        formulario2.save()
-        messages.success(request, '¡Indicador creado exitosamente!', extra_tags='alta-exitosa')
-        return redirect('indicadores')
+    if request.method == 'POST':
+        formulario2 = IndicadorForm(request.POST or None, request.FILES or None)   
+        if formulario2.is_valid():
+            formulario2.save()
+            messages.success(request, '¡Indicador creado exitosamente!', extra_tags='alta-exitosa')
+            return redirect('indicadores')
+        else:
+            print_fields(request)
+        # Obtener la lista de métricas para mostrar en la tabla
+    else:
+        formulario2 = IndicadorForm()
 
-    # Obtener la lista de métricas para mostrar en la tabla
-    metricas = Metrica.objects.all()
-    
-    context = {
-        'formulario2': formulario2,
-        'metricas': metricas,
-    }
+    metricas = Metrica.objects.all()        
+    context = { 'formulario2': formulario2, 'metricas': metricas }
 
     return render(request, 'indicadores/crear.html', context)
 
@@ -150,7 +148,7 @@ def instancias(request):
     print(data['user_id'])
     instances = HistorialMetrica.objects.filter(metrica__id=data['user_id'])
     print(instances)
-    return JsonResponse(list(instances.values("metrica", "año_historico", "valor_historico")), safe=False)
+    return JsonResponse(list(instances.values("id", "año_historico")), safe=False)
 
 def medidas(request):
     data = json.loads(request.body)
@@ -158,4 +156,28 @@ def medidas(request):
     print('ggggggggggggg')
     print(metrics)
     return JsonResponse(list(metrics.values("unidad_medida")), safe=False)
+
+def valores(request):
+    data = json.loads(request.body)
+    print(data['user_id'])
+    instances = HistorialMetrica.objects.filter(id=data['user_id'])
+    print(instances)
+    return JsonResponse(list(instances.values("id", "valor_historico")), safe=False)
+
+def print_fields(request):#esta vista solo sirve para debugear
+    print('nombre: '+ request.POST["nombre"])
+    print('descripcion: ' + request.POST["descripcion"])
+    print('frecuencia: ' + request.POST["frecuencia"])
+    print('ambito: ' + request.POST["ambito"])
+    print('tipo: ' + request.POST["tipo"])
+    print('formula: ' + request.POST["formula"])
+    print('numerador: ' + request.POST["numerador"])
+    print('denominador: ' + request.POST["denominador"])
+    print('numerador_periodo: ' + request.POST["numerador_periodo"])
+    print('denominador_periodo: ' + request.POST["denominador_periodo"])
+    print('numerador_medida: ' + request.POST["numerador_medida"])
+    print('denominador_medida: ' + request.POST["denominador_medida"])
+    print('numerador_valor: ' + request.POST["numerador_valor"])
+    print('denominador_valor: ' + request.POST["denominador_valor"])
+    print('resultado: ' + request.POST["resultado"])
 

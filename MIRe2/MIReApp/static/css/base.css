@@ -394,3 +394,24 @@ h5{
     flex: 1; /* Hace que ambos elementos .field ocupen un espacio igual */
     margin-right: 10px; /* Espacio entre los elementos .field */
 }
+
+
+.numerator, .denominator {
+    display: block; /* Hacer que las etiquetas ocupen todo el ancho */
+}
+
+.fraction-line {
+    border-top: 5px solid black; /* Ajustar el estilo de la línea, como el color y el grosor */
+    margin-top: 5px; /* Ajustar el margen superior de la línea según sea necesario */
+    width: 50%; /* Ajustar el ancho de la línea según sea necesario */
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.linea {
+    border-top: 1px solid black;
+    height: 2px;
+    max-width: 200px;
+    padding: 0;
+    margin: 20px auto 0 auto;
+  }

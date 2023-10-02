@@ -29,9 +29,10 @@
           <div class="help-text">{{ formulario2.tipo.errors }}</div>
         </div>
       </div>    
+      <br>
       <div class="mb-3">
         <label for="{{ formulario2.formula.id_for_label }}" class="form-label">{{ formulario2.formula.label }}</label>
-        <select onchange="mostrarOcultarElemenos(this)"  name="formula" id="">
+        <select onchange="mostrarOcultarElemenos(this)"  name="formula" id="id_formula">
           <option value="Promedio">Promedio</option>
           <option value="Tasa de Variacion">Tasa de Variacion</option>
           <option value="Porcentaje">Porcentaje</option>
@@ -81,7 +82,7 @@
             </div>
             <div class="field-wrapper" style="width: 22%;">
               {{ formulario2.numerador_valor }}
-              <h6 style="margin-left: 4px;">────────</h6>
+              <h6 style="margin-left: 4px;">───────</h6>
               {{ formulario2.denominador_valor }}
             </div>   
 
@@ -135,6 +136,8 @@ const csrftoken = getCookie('csrftoken');
 //Defino los botones/campos que necesito "escuchar"
 let valor_num = document.getElementById("id_numerador_valor")
 let valor_den = document.getElementById("id_denominador_valor")
+let medida_num = document.getElementById("id_numerador_medida")
+let medida_den = document.getElementById("id_denominador_medida")
 let periodo_num = document.getElementById("id_numerador_periodo")
 let periodo_den = document.getElementById("id_denominador_periodo")
 let numerador_campo = document.getElementById("id_numerador")
@@ -143,6 +146,14 @@ let formula_campo = document.getElementById("id_formula")
 let ambito_field = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
 let tipo_field = document.getElementById("id_tipo")
 let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
+
+//Le agrego la clase a los input select para que se vean bien
+let select = document.getElementsByTagName("select")
+console.log(select)
+for(let i = 0; i <select.length; i++){
+  console.log(i);
+  select[i].classList.add("form-select")
+}
 
 //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
 ambito_field.addEventListener("change", cargarTipos)
@@ -170,51 +181,43 @@ function cargarTipos(e){
   })
   .catch((error) => {
     console.error('Error:', error);
-  });//Le agrega la clase de select para que funcione como un dropdown
-  let select = document.getElementsByTagName("select")
-  console.log(select)
-  for(let i = 0; i <select.length; i++){
-    console.log(i);
-    select[i].classList.add("form-select")
-  }
+  })
 }
-
-
 
 numerador_campo.addEventListener("change", cargarPeriodos_num)//carga los los periodos del numerador
 numerador_campo.addEventListener("change", cargarMedida_num)//carga la unidad de medida del numerador
+numerador_campo.addEventListener("change", vaciarValor_num)//carga la unidad de medida del numerador
 periodo_num.addEventListener("change", cargarValor_num)// carga el valor del numerador
 function cargarPeriodos_num(e){
     numerador_id = e.target.value 
     const data = { user_id: numerador_id} 
     let url = " {% url 'instancias' %} " 
-
-  fetch(url, { 
+  
+  if (numerador_id === ''){
+    periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
+    medida_num.value = ''
+  }else{
+    fetch(url, { 
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
     body: JSON.stringify(data), 
-  })
-  .then(response => response.json())
-  .then(data => { 
-  // console.log('Success:', data[0]['año_historico']); 
-  console.log(data);
-  periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
-  for(let i = 0; i<data.length; i++){
-    periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    })
+    .then(response => response.json())
+    .then(data => { 
+    // console.log('Success:', data[0]['año_historico']); 
+    console.log(data);
+    periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
+    for(let i = 0; i<data.length; i++){
+      periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
   }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });//Le agrega la clase de select para que funcione como un dropdown
-  // let select = document.getElementsByTagName("select")
-  // console.log(select)
-  // for(let i = 0; i <select.length; i++){
-  //   console.log(i);
-  //   select[i].classList.add("form-select")
-  // }
 }
 
 function cargarMedida_num(e){
@@ -244,8 +247,13 @@ function cargarMedida_num(e){
   });
 }
 
+function vaciarValor_num(e){
+  numerador_valor = document.getElementById('id_numerador_valor')
+  numerador_valor.value = ''
+}
+
 function cargarValor_num(e){    
-  numerador_id = e.target.value //devuelve undefined
+  numerador_id = e.target.value
   console.log(numerador_id);
   const data = { user_id: numerador_id} 
   let url = " {% url 'valores' %} " 
@@ -270,41 +278,44 @@ function cargarValor_num(e){
   });
 }
 
+periodo_num.addEventListener("change", vaciarValor_num)
+periodo_den.addEventListener("change", vaciarValor_den)
 
 denominador_campo.addEventListener("change", cargarPeriodos_den)//Carga ls instancias del denominador
 denominador_campo.addEventListener("change", cargarMedida_den)//Carga la unidad de medida del denominador
+denominador_campo.addEventListener("change", vaciarValor_den)
 periodo_den.addEventListener("change", cargarValor_den)//Carga el valor del denomindor
 function cargarPeriodos_den(e){
     denominador_id = e.target.value
     const data = { user_id: denominador_id} 
     let url = " {% url 'instancias' %} " 
-
-  fetch(url, {
+  
+  if (denominador_id === ''){
+    periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
+    medida_den.value = ''
+  }
+  else{
+    fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRFToken': csrftoken
     },
     body: JSON.stringify(data), 
-  })
-  .then(response => response.json())
-  .then(data => { 
-  // console.log('Success:', data[0]['año_historico']);
+    })
+    .then(response => response.json())
+    .then(data => { 
+    // console.log('Success:', data[0]['año_historico']);
 
-  periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
-  for(let i = 0; i<data.length; i++){
-    periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
+    for(let i = 0; i<data.length; i++){
+      periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
   }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });//Le agrega la clase de select para que funcione como un dropdown
-  // let select = document.getElementsByTagName("select")
-  // console.log(select)
-  // for(let i = 0; i <select.length; i++){
-  //   console.log(i);
-  //   select[i].classList.add("form-select")
-  // }
 }
 
 function cargarMedida_den(e){
@@ -330,7 +341,12 @@ function cargarMedida_den(e){
   })
   .catch((error) => {
     console.error('Error:', error);
-  });
+  })
+}
+
+function vaciarValor_den(e){
+  denominador_valor = document.getElementById('id_denominador_valor')
+  denominador_valor.value = ''
 }
 
 function cargarValor_den(e){
@@ -348,17 +364,16 @@ function cargarValor_den(e){
     body: JSON.stringify(data), 
   })
   .then(response => response.json())
-  .then(data => { 
-  // console.log('Success:', data[0]['año_historico']);
-  
-  console.log(data[0]["valor_historico"]);
-  valor_den.value = data[0]["valor_historico"]
+  .then(data => {   
+    console.log(data[0]["valor_historico"]);
+    valor_den.value = data[0]["valor_historico"]
   })
   .catch((error) => {
     console.error('Error:', error);
   });
 }
 
+// Resetea todos los valores de la formula cuando se cambia el tipo de formula
 formula_campo.addEventListener("change", resetearFormula)//Carga el valor del denomindor
 function resetearFormula(e){    
   seleccion = e.target.value //devuelve undefined
@@ -378,95 +393,78 @@ function resetearFormula(e){
 //Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
 boton.addEventListener("click", calcular)
 function calcular(){
-  //Se definen todos los campos que voy a leer/escribir
   let medida_num = document.getElementById("id_numerador_medida")
   let medida_den = document.getElementById("id_denominador_medida")
   let formula_field = document.getElementById("id_formula")
   let valor_field = document.getElementById("id_resultado") 
   let periodo_den_campo = periodo_den.options[periodo_den.selectedIndex].textContent
   let periodo_num_campo = periodo_num.options[periodo_num.selectedIndex].textContent
-
-  if (formula_field.value == 'Tasa de Variacion'){
-    if ( periodo_num_campo != periodo_den_campo){
-      if (medida_num.value == medida_den.value){
-        let result = ((valor_num.value / valor_den.value) - 1) * 100  
-        valor_field.value = result.toFixed(2)
+  console.log(formula_field);
+  if (valor_num.value !== '' && valor_den.value !== '') {
+    if (formula_field.value == 'Tasa de Variacion'){
+      if ( periodo_num_campo != periodo_den_campo){
+        if (medida_num.value == medida_den.value){
+          let result = ((valor_num.value / valor_den.value) - 1) * 100  
+          valor_field.value = result.toFixed(2)
+        }else{
+          alert('Las unidades de medida deben ser iguales');
+          valor_field.value = 'ERROR';
+        }
       }else{
-        alert('Las unidades de medida deben ser iguales');
+        alert('Los periodos deben ser distintos')
+        valor_field.value = 'ERROR';
+      }
+    }
+    else if (formula_field.value == 'Porcentaje'){
+      if ( periodo_num_campo == periodo_den_campo){
+        if (medida_num.value == medida_den.value){
+          let result = (valor_num.value / valor_den.value) * 100  
+          valor_field.value = result.toFixed(2)        
+        }else{
+          alert('Las unidades de medida deben ser iguales')
+          valor_field.value = 'ERROR';
+        }
+      }else{
+        alert('Los periodos deben ser iguales');
+        valor_field.value = 'ERROR';
+      }
+    }
+    else if (formula_field.value == 'Promedio'){
+      if ( periodo_num_campo == periodo_den_campo){
+        if ( medida_num.value != medida_den.value){
+          let result = (valor_num.value / valor_den.value) * 100  
+          valor_field.value = result.toFixed(2)        
+        }else{
+          alert('Las unidades de medida deben ser distintas');
+          valor_field.value = 'ERROR';}
+      }else{
+        alert('Las periodos deben ser iguales');
         valor_field.value = 'ERROR';
       }
     }else{
-      alert('Los periodos deben ser distintos')
-      valor_field.value = 'ERROR'
-    ;}
-  }
-  else if (formula_field.value == 'Porcentaje'){
-    if ( periodo_num_campo == periodo_den_campo){
-      if (medida_num.value == medida_den.value){
-        let result = (valor_num.value / valor_den.value) * 100  
-        valor_field.value = result.toFixed(2)        
-      }else{
-        alert('Las unidades de medida deben ser iguales')
-        valor_field.value = 'ERROR';
-      ;}
-    }else{
-      alert('Los periodos deben ser iguales');
-      valor_field.value = 'ERROR';
+      alert('No se ha seleccionado ningun tipo de formula');
     }
   }
-  else if (formula_field.value == 'Promedio'){
-    if ( periodo_num_campo == periodo_den_campo){
-      if ( medida_num.value != medida_den.value){
-        let result = (valor_num.value / valor_den.value) * 100  
-        valor_field.value = result.toFixed(2)        
-      }else{
-        alert('Las unidades de medida deben ser distintas');
-        valor_field.value = 'ERROR';}
-    }else{
-      alert('Las periodos deben ser iguales');
-      valor_field.value = 'ERROR';
-    }
-  }else{
-    alert('No se ha seleccionado ningun tipo de formula');
+  else{
+    alert('No se pudo calcular el indicador');
+  }}
+
+  // Esta funcion oculta los div de "-1" y "%" de la formula
+  function mostrarOcultarElemenos(selectElement) {
+  var divMenosUno = document.getElementById("divMenosUno");
+  var porcentaje = document.getElementById("porcentaje");
+
+  if (selectElement.value === "Tasa de Variacion") {
+    divMenosUno.style.display = "block"; // Muestra el div
+  } else {
+    divMenosUno.style.display = "none"; // Oculta el div
   }
-};
+  if (selectElement.value !== "Promedio") {
+    porcentaje.style.display = "block"; // Muestra el div
+  } else {
+    porcentaje.style.display = "none"; // Oculta el div
+  }
 
-  // document.addEventListener("DOMContentLoaded", function() {
-  //   const formula = document.querySelector("#{{ formulario2.formula.id_for_label }}"); // Utiliza el id_for_label del campo de frecuencia
-  //   const menos_uno = document.getElementById("menos_uno"); // Utiliza el id_for_label del campo de año
-
-  //   // Ocultar el campo de año al principio
-  //   menos_uno.parentElement.style.display = "none";
-  //   menos_uno.setAttribute("disabled", "disabled");
-
-  //   formula.addEventListener("change", function() {
-  //     if (formula.value === "Tasa de Variacion") {
-  //       console.log("entro");
-  //       menos_uno.parentElement.style.display = "block";
-  //       menos_uno.removeAttribute("disabled");
-  //     } else {
-  //       console.log("no entro");
-  //       menos_uno.parentElement.style.display = "none";
-  //       menos_uno.setAttribute("disabled", "disabled");
-  //     }
-  //   });
-  // });
-
-    function mostrarOcultarElemenos(selectElement) {
-    var divMenosUno = document.getElementById("divMenosUno");
-    var porcentaje = document.getElementById("porcentaje");
-
-    if (selectElement.value === "Tasa de Variacion") {
-      divMenosUno.style.display = "block"; // Muestra el div
-    } else {
-      divMenosUno.style.display = "none"; // Oculta el div
-    }
-    if (selectElement.value !== "Promedio") {
-      porcentaje.style.display = "block"; // Muestra el div
-    } else {
-      porcentaje.style.display = "none"; // Oculta el div
-    }
-  
 }
 
 </script>

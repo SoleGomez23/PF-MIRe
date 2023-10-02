@@ -74,14 +74,11 @@ class MetricaFormEditar(forms.ModelForm):
 
 class IndicadorFormEditar(forms.ModelForm):
     class Meta:
-        model = Indicador        
+        model = Indicador   
+        fields = ['descripcion', 'ambito', 'tipo']        
         widgets = {
-            'numerador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'denominador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'numerador_valor': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'resultado': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
         }
-        exclude = ['nombre', 'frecuencia']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -97,8 +94,6 @@ class IndicadorFormEditar(forms.ModelForm):
                 pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
         elif self.instance.pk:
             self.fields['tipo'].queryset = self.instance.ambito.tipo_set.order_by('nombre')
-        self.fields['numerador_periodo'].queryset = Tipo.objects.none()
-        self.fields['denominador_periodo'].queryset = Tipo.objects.none()
 
 
 class IndicadorFormVer(forms.ModelForm):

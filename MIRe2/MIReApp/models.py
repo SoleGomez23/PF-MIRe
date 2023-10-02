@@ -57,6 +57,7 @@ class Indicador(models.Model):
     numerador_valor = models.PositiveIntegerField(verbose_name='', blank=True, null=True) 
     denominador_valor = models.PositiveIntegerField(verbose_name='' , blank=True, null=True) 
     resultado = models.CharField(max_length=100, verbose_name='', blank=True, null=True)
+    estado = models.CharField(max_length=100, verbose_name='Descripción', blank=True, null=True) 
 
     def __str__(self):
         fila = 'Nombre: ' + self.nombre + ' - ' + 'Descripcíon: ' + self.descripcion

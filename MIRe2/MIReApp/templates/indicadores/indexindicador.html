@@ -48,6 +48,8 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Ámbito</th>
                             <th scope="col">Tipo</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Estado</th>
                             
                         </tr>
                     </thead>
@@ -59,10 +61,12 @@
                             <td>{{ indi.descripcion }}</td>
                             <td>{{ indi.ambito }}</td>
                             <td>{{ indi.tipo }}</td>
+                            <td>{{ indi.resultado }}</td>
+                            <td> --- </td>
                             <td> 
                                 <a name="" id="" class="btn" href="{% url 'editar_indicador' indi.id %}"><i class="fa-solid fa-square-pen fa-lg"></i></a> <!--Boton editar-->
                                 <a class="btn" href="{% url 'ver_indicador' indi.id %}"><i class="fa-solid fa-eye fa-lg"></i>{{ indicador.titulo }}</a> <!--Boton ojito-->
-                                <a class="btn eliminarIndicador-btn" href="{% url 'eliminar_indicador' indi.id %}" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
+                                <a class="btn eliminarIndicador-btn" data-id="{{ item.id }}" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
                             </td>
                         </tr>
                         {% endfor %}

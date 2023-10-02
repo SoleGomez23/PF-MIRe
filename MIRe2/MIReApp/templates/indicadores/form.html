@@ -31,7 +31,11 @@
       </div>    
       <div class="mb-3">
         <label for="{{ formulario2.formula.id_for_label }}" class="form-label">{{ formulario2.formula.label }}</label>
-        {{ formulario2.formula }}  
+        <select onchange="mostrarOcultarElemenos(this)"  name="formula" id="">
+          <option value="Promedio">Promedio</option>
+          <option value="Tasa de Variacion">Tasa de Variacion</option>
+          <option value="Porcentaje">Porcentaje</option>
+        </select>
       </div>
       <div class="col-12 help-text">{{ formulario2.formula.errors }}</div>  
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
@@ -81,7 +85,7 @@
               {{ formulario2.denominador_valor }}
             </div>   
 
-            <div style="margin-left: 4px;">
+            <div id="divMenosUno" style="margin-left: 4px; display:none" >
                 <h6>-1</h6>   
             </div>      
             <div style="margin-left: 5px;">
@@ -98,7 +102,7 @@
               {{ formulario2.resultado }}
               <button class='rounded-4 fw-bold 'id="miBoton" type="button" style="border-radius: 3%; color:white;background-color: #965FB8;border-color: transparent;">Calcular</button>
             </div>
-            <div style="margin-left: 3px;">
+            <div id="porcentaje" style="margin-left: 3px; display:none">
               <h6>%</h6>
             </div>
         </div>
@@ -386,7 +390,7 @@ function calcular(){
     if ( periodo_num_campo != periodo_den_campo){
       if (medida_num.value == medida_den.value){
         let result = ((valor_num.value / valor_den.value) - 1) * 100  
-        valor_field.value = result
+        valor_field.value = result.toFixed(2)
       }else{
         alert('Las unidades de medida deben ser iguales');
         valor_field.value = 'ERROR';
@@ -400,7 +404,7 @@ function calcular(){
     if ( periodo_num_campo == periodo_den_campo){
       if (medida_num.value == medida_den.value){
         let result = (valor_num.value / valor_den.value) * 100  
-        valor_field.value = result        
+        valor_field.value = result.toFixed(2)        
       }else{
         alert('Las unidades de medida deben ser iguales')
         valor_field.value = 'ERROR';
@@ -414,7 +418,7 @@ function calcular(){
     if ( periodo_num_campo == periodo_den_campo){
       if ( medida_num.value != medida_den.value){
         let result = (valor_num.value / valor_den.value) * 100  
-        valor_field.value = result        
+        valor_field.value = result.toFixed(2)        
       }else{
         alert('Las unidades de medida deben ser distintas');
         valor_field.value = 'ERROR';}
@@ -427,5 +431,42 @@ function calcular(){
   }
 };
 
+  // document.addEventListener("DOMContentLoaded", function() {
+  //   const formula = document.querySelector("#{{ formulario2.formula.id_for_label }}"); // Utiliza el id_for_label del campo de frecuencia
+  //   const menos_uno = document.getElementById("menos_uno"); // Utiliza el id_for_label del campo de año
+
+  //   // Ocultar el campo de año al principio
+  //   menos_uno.parentElement.style.display = "none";
+  //   menos_uno.setAttribute("disabled", "disabled");
+
+  //   formula.addEventListener("change", function() {
+  //     if (formula.value === "Tasa de Variacion") {
+  //       console.log("entro");
+  //       menos_uno.parentElement.style.display = "block";
+  //       menos_uno.removeAttribute("disabled");
+  //     } else {
+  //       console.log("no entro");
+  //       menos_uno.parentElement.style.display = "none";
+  //       menos_uno.setAttribute("disabled", "disabled");
+  //     }
+  //   });
+  // });
+
+    function mostrarOcultarElemenos(selectElement) {
+    var divMenosUno = document.getElementById("divMenosUno");
+    var porcentaje = document.getElementById("porcentaje");
+
+    if (selectElement.value === "Tasa de Variacion") {
+      divMenosUno.style.display = "block"; // Muestra el div
+    } else {
+      divMenosUno.style.display = "none"; // Oculta el div
+    }
+    if (selectElement.value !== "Promedio") {
+      porcentaje.style.display = "block"; // Muestra el div
+    } else {
+      porcentaje.style.display = "none"; // Oculta el div
+    }
+  
+}
 
 </script>

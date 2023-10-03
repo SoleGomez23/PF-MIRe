@@ -41,8 +41,10 @@ def crear_metricas(request):
         formulario.save()
         messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
         t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo'])
-        if t.year:
+        if t.frecuencia == 'Anual':
             historial_metrica(request, t.id, t.valor, t.year, band)
+        elif t.frecuencia == 'Mensual':
+            historial_metrica(request, t.id, t.valor, t.year, t.month, band)
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
@@ -104,28 +106,42 @@ def eliminar_indicadores(request, id):
     messages.success(request, '¡Indicador eliminado exitosamente!', extra_tags='alta-exitosa')
     return redirect('indicadores')
 
-def historial_metrica(request, metrica_id, valor=0, año=0, band=False):
+def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
 
     if band:
-        print(año)
-        historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año, valor_historico=valor)
-        historial_metrica.save()
+        if metrica.frecuencia == 'Anual':
+            print(año)
+            historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año, valor_historico=valor)
+            historial_metrica.save()
+        elif metrica.frecuencia == 'Mensual':
+            print(año)
+            historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año, mes_historico=mes, valor_historico=valor)
+            historial_metrica.save()
         
     else:
 
         if request.method == 'POST':
             nuevo_año = int(request.POST['nuevo_año'])
+            nuevo_mes = request.POST['nuevo_mes']
             nuevo_valor = int(request.POST['nuevo_valor'])
 
             # Verificar si el nuevo año ya está en el historial
-            if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año).exists():
-                messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
-            else:
-                historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
-                historial_metrica.save()
-                messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
+            if metrica.frecuencia == 'Anual':
+                if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año).exists():
+                    messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
+                else:
+                    historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, valor_historico=nuevo_valor)
+                    historial_metrica.save()
+                    messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
+            elif metrica.frecuencia == 'Mensual':
+                if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año, mes_historico=nuevo_mes).exists():
+                    messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
+                else:
+                    historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, mes_historico=nuevo_mes, valor_historico=nuevo_valor)
+                    historial_metrica.save()
+                    messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
 
             return redirect('historial_metrica', metrica_id=metrica_id)
 

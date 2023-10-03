@@ -4,8 +4,7 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db import models
  
-FRECUENCIAS = (('Bianual','Bianual'), ('Anual', 'Anual'), ('Semestral','Semestral'), ('Mensual','Mensual')
-)
+FRECUENCIAS = (('Cuatrienal','Cuatrienal'),('Bianual','Bianual'), ('Anual', 'Anual'), ('Semestral','Semestral'), ('Mensual','Mensual'))
 FORMULAS = (('Promedio','Promedio'), ('Tasa de Variacion','Tasa de Variacion'), ('Porcentaje','Porcentaje'))
 MESES = (('Enero','Enero'),('Febrero','Febrero'),('Marzo','Marzo'),('Abril','Abril'),('Mayo','Mayo'),('Junio','Junio'),('Julio','Julio'),('Agosto','Agosto'),('Septiembre','Septiembre'),('Octubre','Octubre'),('Noviembre','Noviembre'),('Diciembre','Diciembre'))
 SEMESTRES = (('Enero-Junio', 'Enero-Junio'),('Julio-Diciembre', 'Julio-Diciembre'))
@@ -44,7 +43,7 @@ class Metrica(models.Model):
         verbose_name='Ingrese año:',
         validators=[validate_year]
     )
-    month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True,)
+    month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
     semestral = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
     year2 = models.PositiveIntegerField(
         blank=True,
@@ -91,6 +90,9 @@ class HistorialMetrica(models.Model):
     metrica = models.ForeignKey(Metrica, on_delete=models.CASCADE)
     año_historico = models.PositiveIntegerField()
     valor_historico = models.PositiveIntegerField(default=0)  # Agrega un valor predeterminado
+    mes_historico = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
+    año2_historico = models.PositiveIntegerField( blank=True, null=True)
+    semestre_historico = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
 
     def __str__(self):
         return f"{self.año_historico}"

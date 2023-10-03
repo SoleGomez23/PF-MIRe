@@ -26,12 +26,19 @@
             {%  include 'metricas/form.html' %}
             <script>
 
+              frecuencia =   document.getElementById('id_frecuencia')
               year1 = document.getElementById('id_year')
               year1.addEventListener('change', autocompeltarYear2)
               function autocompeltarYear2(e){
-                console.log('entro');
-                year2 = document.getElementById('id_year2')
-                year2.value = parseInt(year1.value) + 1
+                if ( frecuencia.value == 'Bianual' ){
+                  console.log('entro');
+                  year2 = document.getElementById('id_year2')
+                  year2.value = parseInt(year1.value) + 1
+                }else if ( frecuencia.value == 'Cuatrienal' ){
+                  console.log('entro');
+                  year2 = document.getElementById('id_year2')
+                  year2.value = parseInt(year1.value) + 3
+                }
               }
 
               document.addEventListener("DOMContentLoaded", function() {
@@ -82,7 +89,7 @@
                     monthField.setAttribute("disabled", "disabled");
                     year2Field.parentElement.style.display = "none";
                     year2Field.setAttribute("disabled", "disabled");
-                  } else if (frecuenciaField.value === "Bianual"){
+                  } else if (frecuenciaField.value === "Bianual" || frecuenciaField.value === "Cuatrienal"){
                     yearField.parentElement.style.display = "block";
                     yearField.removeAttribute("disabled");
                     year2Field.parentElement.style.display = "block";

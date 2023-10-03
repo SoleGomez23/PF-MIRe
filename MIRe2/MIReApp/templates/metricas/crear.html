@@ -25,21 +25,81 @@
             <h4 style="color: #965FB8">Nueva métrica</h4>
             {%  include 'metricas/form.html' %}
             <script>
+
+              year1 = document.getElementById('id_year')
+              year1.addEventListener('change', autocompeltarYear2)
+              function autocompeltarYear2(e){
+                console.log('entro');
+                year2 = document.getElementById('id_year2')
+                year2.value = parseInt(year1.value) + 1
+              }
+
               document.addEventListener("DOMContentLoaded", function() {
                 const frecuenciaField = document.querySelector("#{{ formulario.frecuencia.id_for_label }}"); // Utiliza el id_for_label del campo de frecuencia
                 const yearField = document.querySelector("#{{ formulario.year.id_for_label }}"); // Utiliza el id_for_label del campo de año
-            
+                const monthField = document.querySelector("#{{ formulario.month.id_for_label }}");
+                const semestralField = document.querySelector("#{{ formulario.semestral.id_for_label }}"); // Utiliza el id_for_label del campo de frecuencia
+                const year2Field = document.querySelector("#{{ formulario.year2.id_for_label }}"); 
+
                 // Ocultar el campo de año al principio
                 yearField.parentElement.style.display = "none";
                 yearField.setAttribute("disabled", "disabled");
+                year2Field.parentElement.style.display = "none";
+                year2Field.setAttribute("disabled", "disabled");
+                monthField.parentElement.style.display = "none";
+                monthField.setAttribute("disabled", "disabled");
+                semestralField.parentElement.style.display = "none";
+                semestralField.setAttribute("disabled", "disabled");
             
                 frecuenciaField.addEventListener("change", function() {
                   if (frecuenciaField.value === "Anual") {
                     yearField.parentElement.style.display = "block";
                     yearField.removeAttribute("disabled");
-                  } else {
+                    // Ocultar y deshabilitar el campo de semestre y mes
+                    monthField.parentElement.style.display = "none";
+                    monthField.setAttribute("disabled", "disabled");
+                    semestralField.parentElement.style.display = "none";
+                    semestralField.setAttribute("disabled", "disabled");
+                    year2Field.parentElement.style.display = "none";
+                    year2Field.setAttribute("disabled", "disabled");
+                  } else if(frecuenciaField.value === "Mensual"){
+                    yearField.parentElement.style.display = "block";
+                    yearField.removeAttribute("disabled");
+                    monthField.parentElement.style.display = "block";
+                    monthField.removeAttribute("disabled");    
+                    // Ocultar y deshabilitar el campo de semestre
+                    semestralField.parentElement.style.display = "none";
+                    semestralField.setAttribute("disabled", "disabled");
+                    year2Field.parentElement.style.display = "none";
+                    year2Field.setAttribute("disabled", "disabled");
+                  } else if (frecuenciaField.value === "Semestral"){
+                    yearField.parentElement.style.display = "block";
+                    yearField.removeAttribute("disabled");
+                    semestralField.parentElement.style.display = "block";
+                    semestralField.removeAttribute("disabled");
+                    // Ocultar y deshabilitar el campo de mes
+                    monthField.parentElement.style.display = "none";
+                    monthField.setAttribute("disabled", "disabled");
+                    year2Field.parentElement.style.display = "none";
+                    year2Field.setAttribute("disabled", "disabled");
+                  } else if (frecuenciaField.value === "Bianual"){
+                    yearField.parentElement.style.display = "block";
+                    yearField.removeAttribute("disabled");
+                    year2Field.parentElement.style.display = "block";
+                    year2Field.removeAttribute("disabled");
+                    // Ocultar y deshabilitar el campo de semestre y mes
+                    monthField.parentElement.style.display = "none";
+                    monthField.setAttribute("disabled", "disabled");
+                    semestralField.parentElement.style.display = "none";
+                    semestralField.setAttribute("disabled", "disabled");                    
+                  }
+                  else{
                     yearField.parentElement.style.display = "none";
                     yearField.setAttribute("disabled", "disabled");
+                    monthField.parentElement.style.display = "none";
+                    monthField.setAttribute("disabled", "disabled");
+                    semestralField.parentElement.style.display = "none";
+                    semestralField.setAttribute("disabled", "disabled");
                   }
                 });
               });

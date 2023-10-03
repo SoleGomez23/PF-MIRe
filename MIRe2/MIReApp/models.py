@@ -1,12 +1,23 @@
 from django.core.validators import MinValueValidator
 from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.db import models
  
 FRECUENCIAS = (('Bianual','Bianual'), ('Anual', 'Anual'), ('Semestral','Semestral'), ('Mensual','Mensual')
 )
 FORMULAS = (('Promedio','Promedio'), ('Tasa de Variacion','Tasa de Variacion'), ('Porcentaje','Porcentaje'))
-
+MESES = (('Enero','Enero'),('Febrero','Febrero'),('Marzo','Marzo'),('Abril','Abril'),('Mayo','Mayo'),('Junio','Junio'),('Julio','Julio'),('Agosto','Agosto'),('Septiembre','Septiembre'),('Octubre','Octubre'),('Noviembre','Noviembre'),('Diciembre','Diciembre'))
+SEMESTRES = (('Enero-Junio', 'Enero-Junio'),('Julio-Diciembre', 'Julio-Diciembre'))
 # Create your models here.
+
+def validate_year(value):
+    current_year = timezone.now().year
+    if value < 2010 or value > current_year:
+        raise ValidationError(
+            f"El año debe estar en el rango de 2010 a {current_year}."
+        )
+
 class Metrica(models.Model):
     id = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=100, 
@@ -27,7 +38,19 @@ class Metrica(models.Model):
                                         ])
     valor = models.IntegerField(verbose_name='Valor', validators=[MinValueValidator(0, message="El valor no puede ser negativo")], default=0)
     frecuencia = models.CharField(max_length=10, choices=FRECUENCIAS)
-    year = models.PositiveIntegerField(blank=True, null=True,verbose_name='Ingrese año:')
+    year = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Ingrese año:',
+        validators=[validate_year]
+    )
+    month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True,)
+    semestral = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
+    year2 = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name='Segundo año',
+    )
 
     def __str__(self):
         fila = self.titulo

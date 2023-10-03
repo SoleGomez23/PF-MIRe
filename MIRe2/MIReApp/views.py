@@ -181,3 +181,4 @@ def print_fields(request):#esta vista solo sirve para debugear
     print('denominador_valor: ' + request.POST["denominador_valor"])
     print('resultado: ' + request.POST["resultado"])
 
+

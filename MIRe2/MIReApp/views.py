@@ -41,10 +41,7 @@ def crear_metricas(request):
         formulario.save()
         messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
         t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo'])
-        if t.frecuencia == 'Anual':
-            historial_metrica(request, t.id, t.valor, t.year, band)
-        elif t.frecuencia == 'Mensual':
-            historial_metrica(request, t.id, t.valor, t.year, t.month, band)
+        historial_metrica(request, t.id, t.valor, t.year, t.month, band)
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
@@ -109,16 +106,10 @@ def eliminar_indicadores(request, id):
 def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
-
+    
     if band:
-        if metrica.frecuencia == 'Anual':
-            print(año)
-            historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año, valor_historico=valor)
-            historial_metrica.save()
-        elif metrica.frecuencia == 'Mensual':
-            print(año)
-            historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año, mes_historico=mes, valor_historico=valor)
-            historial_metrica.save()
+        historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año,  mes_historico=mes, valor_historico=valor)
+        historial_metrica.save()
         
     else:
 

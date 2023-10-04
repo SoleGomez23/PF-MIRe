@@ -22,18 +22,9 @@
                     <br>
                     <table class="table rounded-4" style="background-color: #D7A5FF; width: flex;">
                         <tr>
-                            {% if metrica.frecuencia == 'Anual' %}
-                                <th>Año</th>                            
-                                <th>Valor</th>
-                            {% endif %}
                             {% if metrica.frecuencia == 'Mensual' %}
                                 <th>Año</th>
                                 <th>Mes</th>
-                                <th>Valor</th>
-                            {% endif %}
-                            {% if metrica.frecuencia == 'Bianual' %}
-                                <th>Año inicio</th>
-                                <th>Año fin</th>
                                 <th>Valor</th>
                             {% endif %}
                             {% if metrica.frecuencia == 'Semestral' %}
@@ -41,75 +32,54 @@
                                 <th>Semestre</th>
                                 <th>Valor</th>
                             {% endif %}
-                            {% if metrica.frecuencia == 'Cuatrienal' %}
+                            {% if metrica.frecuencia == 'Anual' %}
+                                <th>Año</th>                            
+                                <th>Valor</th>
+                            {% endif %}
+                            {% if metrica.frecuencia == 'Bianual' or metrica.frecuencia == 'Cuatrienal'%}
                                 <th>Año inicio</th>
                                 <th>Año fin</th>
                                 <th>Valor</th>
-                            {% endif %}
-                            
+                            {% endif %}                            
                         </tr>
+
                         {% for item in historial %}
                             <tr>
-                                {% if metrica.frecuencia == 'Anual' %}
-                                    <td scope="row">{{ item.año_historico }}</td>
-                               
-                                    <td>{{ item.valor_historico }}</td>
-                                {% endif %}
-                                {% if metrica.frecuencia == 'Mensual' %}
-                                    <td scope="row">{{ item.año_historico }}</td>                               
+                                <td scope="row">{{ item.año_historico }}</td>
+                                {% if metrica.frecuencia == 'Mensual' %}                              
                                     <td scope="row">{{ item.mes_historico }}</td>
-                                    <td>{{ item.valor_historico }}</td>
                                 {% endif %}
-                                {% if metrica.frecuencia == 'Bianual' %}
-                                    <td scope="row">{{ item.año_historico }}</td>                               
-                                    <td scope="row">----</td>
-                                    <td>{{ item.valor_historico }}</td>
+                                {% if metrica.frecuencia == 'Bianual' or metrica.frecuencia == 'Cuatrienal' %} 
+                                    <td scope="row">{{ item.año2_historico }}</td>   
                                 {% endif %}
-                                {% if metrica.frecuencia == 'Cuatrienal' %}
-                                    <td scope="row">{{ item.año_historico }}</td>                               
-                                    <td scope="row">----</td>
-                                    <td>{{ item.valor_historico }}</td>
+                                {% if metrica.frecuencia == 'Semestral' %} 
+                                    <td scope="row">{{ item.semestre_historico }}</td>     
                                 {% endif %}
-                                {% if metrica.frecuencia == 'Semestral' %}
-                                    <td scope="row">{{ item.año_historico }}</td>                               
-                                    <td scope="row">----</td>
-                                    <td>{{ item.valor_historico }}</td>
-                                {% endif %}
+                                <td>{{ item.valor_historico }}</td>
                                 <td><a class="btn eliminar-btn" data-id="{{ item.id }}" style="background-color: #f60;" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
                             </tr>
-                        {% endfor %}
+                        {% endfor %}                        
                     </table>
+
                     <br>
                     <h6>Agregar nueva instancia:</h6>
                     <form method="post">
                         {% csrf_token %}
-                        {% if metrica.frecuencia == 'Anual' %}
-                            <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
-                            <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
-                        {% endif %}
+                        <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
                         {% if metrica.frecuencia == 'Mensual' %}
-                            <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
                             <input type="string" name="nuevo_mes" required class="rounded-3" placeholder="Ingrese mes" style="border-color: #965FB8;">
-                            <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
-                        {% endif %}
-                        {% if metrica.frecuencia == 'Bianual' %}
-                            <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
-                            <input type="number" name="nuevo_año2" required class="rounded-3" placeholder="Ingrese año2" style="border-color: #965FB8;">
-                            <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
                         {% endif %}
                         {% if metrica.frecuencia == 'Semestral' %}
-                            <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
                             <input type="number" name="nuevo_semestre" required class="rounded-3" placeholder="Ingrese semenstre" style="border-color: #965FB8;">
-                            <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
                         {% endif %}
-                        {% if metrica.frecuencia == 'Cuatrienal' %}
-                            <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
-                            <input type="number" name="nuevo_año2" required class="rounded-3" placeholder="Ingrese año 2" style="border-color: #965FB8;">
-                            <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
+                        {% if metrica.frecuencia == 'Bianual' or  metrica.frecuencia == 'Cuatrienal' %}
+                            <input type="number" name="nuevo_año2" required class="rounded-3" placeholder="Ingrese año2" style="border-color: #965FB8;">
                         {% endif %}
+                        <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
                         <button type="submit" class="btn rounded-4 fw-bold" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">Agregar</button>
                     </form>
                 </body>
+
                 {% if messages %}
                 <ul class="messages">
                     {% for message in messages %}

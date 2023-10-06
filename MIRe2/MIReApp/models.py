@@ -38,11 +38,10 @@ class Metrica(models.Model):
     valor = models.IntegerField(verbose_name='Valor', validators=[MinValueValidator(0, message="El valor no puede ser negativo")], default=0)
     frecuencia = models.CharField(max_length=10, choices=FRECUENCIAS)
     year = models.PositiveIntegerField(
-        blank=True,
-        null=True,
         verbose_name='Ingrese año:',
         validators=[validate_year]
     )
+    #month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True, validators=[validate_month_required])
     month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
     semestral = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
     year2 = models.PositiveIntegerField(

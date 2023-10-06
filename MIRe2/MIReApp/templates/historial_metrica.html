@@ -18,7 +18,7 @@
                 <title>Historico de la métrica</title>
                 
                 <body>
-                    <h2>{{ metrica.titulo }}</h2>
+                    <h2>{{ metrica.frecuencia }}</h2>
                     <br>
                     <table class="table rounded-4" style="background-color: #D7A5FF; width: flex;">
                         <tr>
@@ -65,15 +65,33 @@
                     <h6>Agregar nueva instancia:</h6>
                     <form method="post">
                         {% csrf_token %}
-                        <input type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
+                        <input id="id_year" type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
                         {% if metrica.frecuencia == 'Mensual' %}
-                            <input type="string" name="nuevo_mes" required class="rounded-3" placeholder="Ingrese mes" style="border-color: #965FB8;">
+                        <select id="meses" name="nuevo_mes" style="border-color: #965FB8;">
+                            <option value="Enero">Enero</option>
+                            <option value="Febrero">Febrero</option>
+                            <option value="Marzo">Marzo</option>
+                            <option value="Abril">Abril</option>
+                            <option value="Mayo">Mayo</option>
+                            <option value="Junio">Junio</option>
+                            <option value="Julio">Julio</option>
+                            <option value="Agosto">Agosto</option>
+                            <option value="Septiembre">Septiembre</option>
+                            <option value="Octubre">Octubre</option>
+                            <option value="Noviembre">Noviembre</option>
+                            <option value="Diciembre">Diciembre</option>
+                        </select>
+                        <!-- <input type="string" name="nuevo_mes" required class="rounded-3" placeholder="Ingrese mes" style="border-color: #965FB8;"> -->
                         {% endif %}
-                        {% if metrica.frecuencia == 'Semestral' %}
-                            <input type="number" name="nuevo_semestre" required class="rounded-3" placeholder="Ingrese semenstre" style="border-color: #965FB8;">
+                        {% if metrica.frecuencia == 'Semestral' %}                        
+                        <select id="semestre" name="nuevo_semestre" style="border-color: #965FB8;">
+                            <option value="Enero-Junio">Enero-Junio</option>
+                            <option value="Julio-Diciembre">Julio-Diciembre</option>
+                        </select>
+                            <!-- <input type="number" name="nuevo_semestre" required class="rounded-3" placeholder="Ingrese semenstre" style="border-color: #965FB8;"> -->
                         {% endif %}
                         {% if metrica.frecuencia == 'Bianual' or  metrica.frecuencia == 'Cuatrienal' %}
-                            <input type="number" name="nuevo_año2" required class="rounded-3" placeholder="Ingrese año2" style="border-color: #965FB8;">
+                            <input id="id_year2" type="number" name="nuevo_año2" readonly value="Este es un campo de solo lectura" required class="rounded-3" placeholder="año fin" style="border-color: #965FB8;">
                         {% endif %}
                         <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
                         <button type="submit" class="btn rounded-4 fw-bold" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">Agregar</button>
@@ -95,6 +113,23 @@
                             altaExitosaMessage.style.display = 'none';
                         }
                     }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
+                   
+                    var frecuencia = "{{ metrica.frecuencia }}";
+                    // frecuencia =   document.getElementById('id_frecuencia')
+                    year1 = document.getElementById('id_year')
+                    // console.log(year1.value);
+                    year1.addEventListener('change', autocompeltarYear2)
+                    function autocompeltarYear2(e){
+                        if ( frecuencia == 'Bianual' ){
+                        year2 = document.getElementById('id_year2')
+                        year2.value = parseInt(year1.value) + 1
+                        }else if ( frecuencia == 'Cuatrienal' ){
+                        console.log('entro');
+                        year2 = document.getElementById('id_year2')
+                        year2.value = parseInt(year1.value) + 3
+                        }
+                    }
+
                 </script>
 
     </div>

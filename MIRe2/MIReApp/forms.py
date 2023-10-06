@@ -25,6 +25,18 @@ class IndicadorForm(forms.ModelForm):
             'numerador_valor': forms.TextInput(attrs={'readonly': 'readonly'}),
             'resultado': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        frec = cleaned_data.get('frecuencia')
+        mes = cleaned_data.get('month')
+
+        # Verificar si campo1 tiene el valor "opción" y campo2 está en blanco o es None
+        if frec == "Mensual" and (not mes or mes.strip() == ''):
+            raise forms.ValidationError("Mes es obligatorio cuando Campo1 tiene el valor 'opción'")
+
+        return cleaned_data
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for i in self.fields:

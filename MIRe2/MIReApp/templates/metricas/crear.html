@@ -110,7 +110,51 @@
                   }
                 });
               });
+
+              const semestralField = document.querySelector("#{{ formulario.semestral.id_for_label }}");
+              const monthField = document.querySelector("#{{ formulario.month.id_for_label }}");
+              const frecuenciaField = document.querySelector("#{{ formulario.frecuencia.id_for_label }}");
+              document.addEventListener("DOMContentLoaded", function() {
+              frecuenciaField.addEventListener("change", function() {
+                if (frecuenciaField.value === "Mensual") {
+                  // Si la frecuencia es Mensual, habilitar el campo de mes y hacerlo requerido
+                  monthField.parentElement.style.display = "block";
+                  monthField.removeAttribute("disabled");
+                  monthField.required = true;
+
+                  // Deshabilitar el campo de semestre si no es necesario
+                  semestralField.parentElement.style.display = "none";
+                  semestralField.setAttribute("disabled", "disabled");
+                  semestralField.required = false;
+                } else if (frecuenciaField.value === "Semestral") {
+                  // Si la frecuencia es Semestral, habilitar el campo de semestre y hacerlo requerido
+                  semestralField.parentElement.style.display = "block";
+                  semestralField.removeAttribute("disabled");
+                  semestralField.required = true;
+
+                  // Deshabilitar el campo de mes si no es necesario
+                  monthField.parentElement.style.display = "none";
+                  monthField.setAttribute("disabled", "disabled");
+                  monthField.required = false;
+                } else {
+                  // Si la frecuencia no es Mensual ni Semestral, ocultar ambos campos y deshabilitarlos
+                  monthField.parentElement.style.display = "none";
+                  monthField.setAttribute("disabled", "disabled");
+                  monthField.required = false;
+                  semestralField.parentElement.style.display = "none";
+                  semestralField.setAttribute("disabled", "disabled");
+                  semestralField.required = false;
+                }
+              });
+
+            });
+
+
             </script>
+
+          
+
+
         </div>
         <div class="card-footer text-muted" style="background-color: #D7A5FF;">
             

@@ -62,7 +62,13 @@
                             <td>{{ indi.ambito }}</td>
                             <td>{{ indi.tipo }}</td>
                             <td>{{ indi.resultado }}</td>
-                            <td> --- </td>
+                            {% if indi.numerador_medida == None and indi.denominador_medida == None and indi.numerador_valor == None and indi.denominador_valor == None %}
+                                <td> 🔴⚫⚫ </td>
+                            {% elif indi.numerador_medida != None and indi.denominador_medida != None and indi.numerador_valor != None and indi.denominador_valor != None %} 
+                                <td> ⚫⚫🟢 </td>
+                            {% else %}
+                                <td> ⚫🟡⚫</td>
+                            {% endif %}
                             <td> 
                                 <a name="" id="" class="btn" href="{% url 'editar_indicador' indi.id %}"><i class="fa-solid fa-square-pen fa-lg"></i></a> <!--Boton editar-->
                                 <a class="btn" href="{% url 'ver_indicador' indi.id %}"><i class="fa-solid fa-eye fa-lg"></i>{{ indicador.titulo }}</a> <!--Boton ojito-->

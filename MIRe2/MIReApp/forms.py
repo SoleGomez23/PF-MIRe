@@ -6,14 +6,14 @@ class MetricaForm(forms.ModelForm):
         model = Metrica
         fields = '__all__'
         widgets = {
-            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 1}),        
-            'year2': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 1}), #Define las dimensiones del input
+            'year2': forms.TextInput(attrs={'readonly': 'readonly'}), #Hace que el campo sea de solo lectura
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for i in self.fields:
-            self.fields[i].widget.attrs.update({'class':'form-control'})
+            self.fields[i].widget.attrs.update({'class':'form-control'}) #Le agrega la clase form control a todos los campos
 
 class IndicadorForm(forms.ModelForm):
     class Meta:
@@ -31,7 +31,7 @@ class IndicadorForm(forms.ModelForm):
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
         
-        self.fields['tipo'].queryset = Tipo.objects.none()
+        self.fields['tipo'].queryset = Tipo.objects.none() #Hace el dropdonw de tipo esté vacio al principio
         if 'ambito' in self.data:
             try:
                 ambito_id = int(self.data.get('ambito'))
@@ -101,7 +101,7 @@ class IndicadorFormEditar(forms.ModelForm):
 class IndicadorFormVer(forms.ModelForm):
     class Meta:
         model = Indicador
-        fields = ['descripcion','ambito','tipo']
+        fields = ['descripcion','ambito','tipo'] #Especifico los campos que voy a mostrar 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

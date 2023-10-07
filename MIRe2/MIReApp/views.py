@@ -2,10 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .models import Indicador, Metrica, HistorialMetrica, Tipo
-from .forms import MetricaForm
-from .forms import MetricaFormEditar
-from .forms import IndicadorFormEditar
-from .forms import IndicadorForm
+from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar
 import json
 
 def inicio(request):
@@ -152,11 +149,9 @@ def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
                     historial_metrica.save()
                     messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
 
-
             return redirect('historial_metrica', metrica_id=metrica_id)
 
         return render(request, 'instancias/index.html', {'metrica': metrica, 'historial': historial})
-
 
 def eliminar_historial_metrica(request, historial_id):
     historial = HistorialMetrica.objects.get(id=historial_id)

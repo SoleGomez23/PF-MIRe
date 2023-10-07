@@ -12,9 +12,7 @@ SEMESTRES = (('Enero-Junio', 'Enero-Junio'),('Julio-Diciembre', 'Julio-Diciembre
 def validate_year(value):
     current_year = timezone.now().year
     if value < 2010 or value > current_year:
-        raise ValidationError(
-            f"El año debe estar en el rango de 2010 a {current_year}."
-        )
+        raise ValidationError(f"El año debe estar en el rango de 2010 a {current_year}.")
 
 class Metrica(models.Model):
     id = models.AutoField(primary_key=True)
@@ -81,7 +79,7 @@ class HistorialMetrica(models.Model):
     año_historico = models.PositiveIntegerField()
     valor_historico = models.PositiveIntegerField(default=0)  # Agrega un valor predeterminado
     mes_historico = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
-    año2_historico = models.PositiveIntegerField( blank=True, null=True)
+    año2_historico = models.PositiveIntegerField(blank=True, null=True)
     semestre_historico = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
 
     def __str__(self):

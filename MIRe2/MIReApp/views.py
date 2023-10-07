@@ -1,14 +1,11 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib import messages
+from django.http import HttpResponse, JsonResponse
 from .models import Indicador, Metrica, HistorialMetrica, Tipo
 from .forms import MetricaForm
 from .forms import MetricaFormEditar
 from .forms import IndicadorFormEditar
 from .forms import IndicadorForm
-from .forms import IndicadorFormVer
-from django.shortcuts import get_object_or_404, render
-from django.contrib import messages
-from django.http import JsonResponse
 import json
 
 def inicio(request):
@@ -24,10 +21,10 @@ def metricas(request):
     metricas = Metrica.objects.all()
     ultimos_valores = list()
     for u in metricas:
-        if HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'):
-            t = list(HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'))[-1]
-            u.valor = str(t.valor_historico)
-            u.year = str(t.año_historico)
+        if HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'): 
+            t = list(HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'))[-1] #Obtengo el la ultima instancia de la metrica
+            u.valor = str(t.valor_historico) #Agrego en el campo valor, el valor de la ultima instancia 
+            u.year = str(t.año_historico) #Agrego en el campo año, el año de la ultima instancia
     return render(request, 'metricas/index.html', {'metrica': metricas})
 
 def indicadores(request):
@@ -37,16 +34,12 @@ def indicadores(request):
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
     if formulario.is_valid():
-        band = True
-        if request.POST['frecuencia'] == 'Mensual':
-            if request.POST['month'] == '':
-                messages.error(request, 'Error: el mes es obligatorio')
-        else:
-            formulario.save()
-            messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
-            t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo'])
-            historial_metrica(request, t.id, t.valor, t.year, t.month, band)
-            return redirect('metricas')
+        band = True 
+        formulario.save()
+        messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
+        t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo']) 
+        historial_metrica(request, t.id, t.valor, t.year, t.month, band) #Le paso los valores de la metrica a historial_metrica para crear su primera instancia
+        return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
 def crear_indicadores(request):
@@ -56,9 +49,6 @@ def crear_indicadores(request):
             formulario2.save()
             messages.success(request, '¡Indicador creado exitosamente!', extra_tags='alta-exitosa')
             return redirect('indicadores')
-        else:
-            print_fields(request)
-        # Obtener la lista de métricas para mostrar en la tabla
     else:
         formulario2 = IndicadorForm()
 
@@ -111,15 +101,15 @@ def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
     
-    if band:
+    if band: #Si band es true entro a historial_metrica porque una metrica acaba de ser creada, entonces se debe crear su primera instancia con los datos que recibio por parametro
         historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año,  mes_historico=mes, valor_historico=valor)
         historial_metrica.save()
         
-    else:
+    else: #Si band es falso, no es una metrica nueva
 
         if request.method == 'POST':
-            nuevo_año = int(request.POST['nuevo_año'])
-            nuevo_valor = int(request.POST['nuevo_valor'])
+            nuevo_año = int(request.POST['nuevo_año']) #Obteniene el año que quiere ingresar el usuario
+            nuevo_valor = int(request.POST['nuevo_valor']) #Obteniene el valor que quiere ingresar el usuario
 
             # Verificar si el nuevo año ya está en el historial
             if metrica.frecuencia == 'Anual':
@@ -165,7 +155,7 @@ def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
 
             return redirect('historial_metrica', metrica_id=metrica_id)
 
-        return render(request, 'historial_metrica.html', {'metrica': metrica, 'historial': historial})
+        return render(request, 'instancias/index.html', {'metrica': metrica, 'historial': historial})
 
 
 def eliminar_historial_metrica(request, historial_id):
@@ -176,45 +166,19 @@ def eliminar_historial_metrica(request, historial_id):
 def tipos(request):
     data = json.loads(request.body)
     tipos = Tipo.objects.filter(ambito__id=data['user_id'])
-    print(tipos)
     return JsonResponse(list(tipos.values("id", "nombre")), safe=False)
 
 def instancias(request):
     data = json.loads(request.body)
-    print(data['user_id'])
     instances = HistorialMetrica.objects.filter(metrica__id=data['user_id'])
-    print(instances)
     return JsonResponse(list(instances.values("id", "año_historico")), safe=False)
 
 def medidas(request):
     data = json.loads(request.body)
     metrics = Metrica.objects.filter(id=data['user_id'])
-    print('ggggggggggggg')
-    print(metrics)
     return JsonResponse(list(metrics.values("unidad_medida")), safe=False)
 
 def valores(request):
     data = json.loads(request.body)
-    print(data['user_id'])
     instances = HistorialMetrica.objects.filter(id=data['user_id'])
-    print(instances)
     return JsonResponse(list(instances.values("id", "valor_historico")), safe=False)
-
-def print_fields(request):#esta vista solo sirve para debugear
-    print('nombre: '+ request.POST["nombre"])
-    print('descripcion: ' + request.POST["descripcion"])
-    print('frecuencia: ' + request.POST["frecuencia"])
-    print('ambito: ' + request.POST["ambito"])
-    print('tipo: ' + request.POST["tipo"])
-    print('formula: ' + request.POST["formula"])
-    print('numerador: ' + request.POST["numerador"])
-    print('denominador: ' + request.POST["denominador"])
-    print('numerador_periodo: ' + request.POST["numerador_periodo"])
-    print('denominador_periodo: ' + request.POST["denominador_periodo"])
-    print('numerador_medida: ' + request.POST["numerador_medida"])
-    print('denominador_medida: ' + request.POST["denominador_medida"])
-    print('numerador_valor: ' + request.POST["numerador_valor"])
-    print('denominador_valor: ' + request.POST["denominador_valor"])
-    print('resultado: ' + request.POST["resultado"])
-
-

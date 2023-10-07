@@ -16,19 +16,20 @@
         {{ formulario2.frecuencia }}  
       </div>
       <div class="col-12 help-text">{{ formulario2.frecuencia.errors }}</div>    
+
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row">
         <div style="flex: 1;margin-right: 10px;">
           <label for="{{ formulario2.ambito.id_for_label }}" class="form-label">{{ formulario2.ambito.label }}</label>
           {{ formulario2.ambito }}  
           <div class="help-text">{{ formulario2.ambito.errors }}</div>
-        </div>
-        
+        </div>        
         <div  style="flex: 1;">
           <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
           {{ formulario2.tipo }}  
           <div class="help-text">{{ formulario2.tipo.errors }}</div>
         </div>
-      </div>    
+      </div>  
+
       <br>
       <div class="mb-3">
         <label for="{{ formulario2.formula.id_for_label }}" class="form-label">{{ formulario2.formula.label }}</label>
@@ -38,6 +39,7 @@
           <option value="Porcentaje">Porcentaje</option>
         </select>
       </div>
+      
       <div class="col-12 help-text">{{ formulario2.formula.errors }}</div>  
       <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
       </div>

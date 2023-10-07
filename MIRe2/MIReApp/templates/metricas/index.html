@@ -38,20 +38,19 @@
             <div class="table-responsive">
                 <table class="table rounded-4" style="background-color: #D7A5FF;">
                     <thead>
-                        <tr>
+                        <tr> <!-- Titulo de las columnas --->
                             <th scope="col">ID</th>
                             <th scope="col">Título</th>
                             <th scope="col">Unidad de medida</th>
                             <th scope="col">Frecuencia</th>
                             <th scope="col">Ultimo valor</th>
                             <th scope="col">Fecha</th>
-                            <th scope="col">Acciones</th>
-                            
+                            <th scope="col">Acciones</th>                            
                         </tr>
                     </thead>
                     <tbody>
-                        {% for metri in metrica %}
-                        <tr class="">
+                        {% for metri in metrica %} <!-- El for recorre todos las metricas --->
+                        <tr class=""> <!-- Contenido de las filas --->
                             <td scope="row">{{ metri.id }}</td>
                             <td>{{ metri.titulo }}</td>
                             <td>{{ metri.unidad_medida }}</td>

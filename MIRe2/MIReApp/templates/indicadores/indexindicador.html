@@ -28,13 +28,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> 
 
     <div class="col-md-10 card" style="text-align: left;">
+
         <div class="card-header" style="background-color: #D7A5FF;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span><a href="{% url 'inicio' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color:white;border-color: white;border-width: 2px;">⪻ Inicio</a></span>
-                <span><h2>MIS INDICADORES</h2></span>
-            </div>
-            
+
+                <span>  <!-- Boton para volver atras--->
+                    <a href="{% url 'inicio' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color:white;border-color: white;border-width: 2px;">⪻ Inicio</a>
+                </span>
+
+                <span> <!-- Titulo del cuadro --->
+                    <h2>MIS INDICADORES</h2>
+                </span>
+
+            </div>            
         </div>
+
         <div class="card-body">
             <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
             <br>
@@ -42,23 +50,21 @@
             <div class="table-responsive">
                 <table class="table rounded-4" style="background-color: #D7A5FF;">
                     <thead>
-                        <tr>
+                        <tr> <!-- Titulo de las columnas --->
                             <th scope="col">ID</th>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Descripción</th>
                             <th scope="col">Ámbito</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Valor</th>
-                            <th scope="col">Estado</th>
-                            
+                            <th scope="col">Estado</th>  
+                            <th scope="col">Acciones</th>                           
                         </tr>
                     </thead>
                     <tbody>
-                        {% for indi in indicador %}
-                        <tr class="">
+                        {% for indi in indicador %} <!-- El for recorre todos los indicadores --->
+                        <tr class=""> <!-- Contenido de las filas --->
                             <td scope="row">{{ indi.id }}</td>
                             <td>{{ indi.nombre }}</td>
-                            <td>{{ indi.descripcion }}</td>
                             <td>{{ indi.ambito }}</td>
                             <td>{{ indi.tipo }}</td>
                             <td>{{ indi.resultado }}</td>
@@ -67,7 +73,7 @@
                             {% elif indi.numerador_medida != None and indi.denominador_medida != None and indi.numerador_valor != None and indi.denominador_valor != None %} 
                                 <td> ⚫⚫🟢 </td>
                             {% else %}
-                                <td> ⚫🟡⚫</td>
+                                <td> ⚫🟡⚫ </td>
                             {% endif %}
                             <td> 
                                 <a name="" id="" class="btn" href="{% url 'editar_indicador' indi.id %}"><i class="fa-solid fa-square-pen fa-lg"></i></a> <!--Boton editar-->
@@ -84,11 +90,13 @@
         <div class="card-footer text-muted" style="background-color: #D7A5FF;">
         </div>
     </div>
-    <!--Bloque JS para eliminacion de indicador-->
     <script>
+        
+        // Esta funcion se ejecuta cuando se carga la pagina
         document.addEventListener("DOMContentLoaded", function() {
             const eliminarButtons = document.querySelectorAll(".eliminarIndicador-btn");
             
+            // Esta funcion se ejecuta cuando se cliquea en eliminar indicador
             eliminarButtons.forEach(button => {
                 button.addEventListener("click", function() {
                     const indicadorId = this.getAttribute("data-id");
@@ -122,6 +130,5 @@
 
 </div>
 </center>
-
 
 {% endblock %}

@@ -1,3 +1,4 @@
+<!-- Este es el archivo que se llamaba historial_metrica, le cambie el nombre para seguir el formato -->
 {% extends "base.html" %}
 
 {% block titulo %} Histórico {% endblock %}
@@ -21,7 +22,7 @@
                     <h2>{{ metrica.frecuencia }}</h2>
                     <br>
                     <table class="table rounded-4" style="background-color: #D7A5FF; width: flex;">
-                        <tr>
+                        <tr> <!-- El ttulo de las columnas varia segun la frecuancia de la metrica -->
                             {% if metrica.frecuencia == 'Mensual' %}
                                 <th>Año</th>
                                 <th>Mes</th>
@@ -44,7 +45,7 @@
                         </tr>
 
                         {% for item in historial %}
-                            <tr>
+                            <tr> <!-- Los campos que se mostraran varian segun la frecuancia de la metrica -->
                                 <td scope="row">{{ item.año_historico }}</td>
                                 {% if metrica.frecuencia == 'Mensual' %}                              
                                     <td scope="row">{{ item.mes_historico }}</td>
@@ -63,32 +64,30 @@
 
                     <br>
                     <h6>Agregar nueva instancia:</h6>
-                    <form method="post">
-                        {% csrf_token %}
+                    <form method="post"> <!-- Formulario para nueva instancia -->
+                        {% csrf_token %} <!-- Los imputs variarian segun la frecuencia, excepto año y valor -->
                         <input id="id_year" type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
                         {% if metrica.frecuencia == 'Mensual' %}
-                        <select id="meses" name="nuevo_mes" style="border-color: #965FB8;">
-                            <option value="Enero">Enero</option>
-                            <option value="Febrero">Febrero</option>
-                            <option value="Marzo">Marzo</option>
-                            <option value="Abril">Abril</option>
-                            <option value="Mayo">Mayo</option>
-                            <option value="Junio">Junio</option>
-                            <option value="Julio">Julio</option>
-                            <option value="Agosto">Agosto</option>
-                            <option value="Septiembre">Septiembre</option>
-                            <option value="Octubre">Octubre</option>
-                            <option value="Noviembre">Noviembre</option>
-                            <option value="Diciembre">Diciembre</option>
-                        </select>
-                        <!-- <input type="string" name="nuevo_mes" required class="rounded-3" placeholder="Ingrese mes" style="border-color: #965FB8;"> -->
+                            <select id="meses" name="nuevo_mes" style="border-color: #965FB8;">
+                                <option value="Enero">Enero</option>
+                                <option value="Febrero">Febrero</option>
+                                <option value="Marzo">Marzo</option>
+                                <option value="Abril">Abril</option>
+                                <option value="Mayo">Mayo</option>
+                                <option value="Junio">Junio</option>
+                                <option value="Julio">Julio</option>
+                                <option value="Agosto">Agosto</option>
+                                <option value="Septiembre">Septiembre</option>
+                                <option value="Octubre">Octubre</option>
+                                <option value="Noviembre">Noviembre</option>
+                                <option value="Diciembre">Diciembre</option>
+                            </select>
                         {% endif %}
-                        {% if metrica.frecuencia == 'Semestral' %}                        
-                        <select id="semestre" name="nuevo_semestre" style="border-color: #965FB8;">
-                            <option value="Enero-Junio">Enero-Junio</option>
-                            <option value="Julio-Diciembre">Julio-Diciembre</option>
-                        </select>
-                            <!-- <input type="number" name="nuevo_semestre" required class="rounded-3" placeholder="Ingrese semenstre" style="border-color: #965FB8;"> -->
+                        {% if metrica.frecuencia == 'Semestral' %}                       
+                            <select id="semestre" name="nuevo_semestre" style="border-color: #965FB8;">
+                                <option value="Enero-Junio">Enero-Junio</option>
+                                <option value="Julio-Diciembre">Julio-Diciembre</option>
+                            </select>
                         {% endif %}
                         {% if metrica.frecuencia == 'Bianual' or  metrica.frecuencia == 'Cuatrienal' %}
                             <input id="id_year2" type="number" name="nuevo_año2" readonly value="Este es un campo de solo lectura" required class="rounded-3" placeholder="año fin" style="border-color: #965FB8;">
@@ -99,38 +98,12 @@
                 </body>
 
                 {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
-
-                <script>
-                    setTimeout(function() {
-                        var altaExitosaMessage = document.querySelector('.messages .alta-exitosa');
-                        if (altaExitosaMessage) {
-                            altaExitosaMessage.style.display = 'none';
-                        }
-                    }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
-                   
-                    var frecuencia = "{{ metrica.frecuencia }}";
-                    // frecuencia =   document.getElementById('id_frecuencia')
-                    year1 = document.getElementById('id_year')
-                    // console.log(year1.value);
-                    year1.addEventListener('change', autocompeltarYear2)
-                    function autocompeltarYear2(e){
-                        if ( frecuencia == 'Bianual' ){
-                        year2 = document.getElementById('id_year2')
-                        year2.value = parseInt(year1.value) + 1
-                        }else if ( frecuencia == 'Cuatrienal' ){
-                        console.log('entro');
-                        year2 = document.getElementById('id_year2')
-                        year2.value = parseInt(year1.value) + 3
-                        }
-                    }
-
-                </script>
 
     </div>
     <div class="card-footer text-muted" style="background-color: #D7A5FF;">
@@ -139,8 +112,32 @@
 </div> 
 <br> 
 </center>
-<!-- El siguiente bloque es js-->
-<script>
+
+<script>                   
+    // Esta funcion quita el mensaje de exito despues de un tiempo
+    setTimeout(function() {
+        var altaExitosaMessage = document.querySelector('.messages .alta-exitosa');
+        if (altaExitosaMessage) {
+            altaExitosaMessage.style.display = 'none';
+        }
+    }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
+
+    let frecuencia = "{{ metrica.frecuencia }}";
+    year1 = document.getElementById('id_year')
+    year1.addEventListener('change', autocompeltarYear2)
+    // Esta funcion autocompleta los campos de año2 en las metricas bianuales y cuatrianuales 
+    function autocompeltarYear2(e){
+        if ( frecuencia == 'Bianual' ){
+        year2 = document.getElementById('id_year2')
+        year2.value = parseInt(year1.value) + 1
+        }else if ( frecuencia == 'Cuatrienal' ){
+        console.log('entro');
+        year2 = document.getElementById('id_year2')
+        year2.value = parseInt(year1.value) + 3
+        }
+    }
+    
+    // Esta funcion elimina la instancia si se hace clic en el boton de eliminar instancia
     document.addEventListener("DOMContentLoaded", function() {
         const eliminarButtons = document.querySelectorAll(".eliminar-btn");
         

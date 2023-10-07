@@ -8,7 +8,6 @@ FRECUENCIAS = (('Cuatrienal','Cuatrienal'),('Bianual','Bianual'), ('Anual', 'Anu
 FORMULAS = (('Promedio','Promedio'), ('Tasa de Variacion','Tasa de Variacion'), ('Porcentaje','Porcentaje'))
 MESES = (('Enero','Enero'),('Febrero','Febrero'),('Marzo','Marzo'),('Abril','Abril'),('Mayo','Mayo'),('Junio','Junio'),('Julio','Julio'),('Agosto','Agosto'),('Septiembre','Septiembre'),('Octubre','Octubre'),('Noviembre','Noviembre'),('Diciembre','Diciembre'))
 SEMESTRES = (('Enero-Junio', 'Enero-Junio'),('Julio-Diciembre', 'Julio-Diciembre'))
-# Create your models here.
 
 def validate_year(value):
     current_year = timezone.now().year
@@ -27,7 +26,7 @@ class Metrica(models.Model):
                                                  message="El nombre no puede contener caracteres especiales.",
                                                  code='invalid_nombre')
                               ])
-    descripcion = models.TextField(max_length=100, verbose_name='Descripción', blank=True, null=True) 
+    descripcion = models.TextField(max_length=100, verbose_name='Descripción', blank=True, null=True)  #blank=True y null=True permiten que el campo se envie vacio 
     unidad_medida = models.CharField(max_length=100, 
                                         verbose_name='Unidad de Medida',
                                         validators= [
@@ -37,18 +36,10 @@ class Metrica(models.Model):
                                         ])
     valor = models.IntegerField(verbose_name='Valor', validators=[MinValueValidator(0, message="El valor no puede ser negativo")], default=0)
     frecuencia = models.CharField(max_length=10, choices=FRECUENCIAS)
-    year = models.PositiveIntegerField(
-        verbose_name='Ingrese año:',
-        validators=[validate_year]
-    )
-    #month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True, validators=[validate_month_required])
+    year = models.PositiveIntegerField(verbose_name='Ingrese año:', validators=[validate_year])
     month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
     semestral = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
-    year2 = models.PositiveIntegerField(
-        blank=True,
-        null=True,
-        verbose_name='Segundo año',
-    )
+    year2 = models.PositiveIntegerField(blank=True, null=True, verbose_name='Segundo año')
 
     def __str__(self):
         fila = self.titulo

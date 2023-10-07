@@ -8,17 +8,23 @@
 <div class="card col-md-6" style="text-align: left;">
     <div class="card-header fw-bold" style="background-color: #D7A5FF;color: #fff;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span><a href="{% url 'indicadores' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">← Volver</a></span>
-            <span><h2>INDICADORES</h2></span>
+
+            <span> <!-- Boton para volver atras -->
+                <a href="{% url 'indicadores' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">← Volver</a>
+            </span>
+            <span> <!-- Titulo del cuadro -->
+                <h2>INDICADORES</h2>
+            </span>
+
         </div>
     </div>
+
     <div class="card-body">
-        <h4 class="card-title" style="color: #965FB8;">Editar Indicador</h4>
-        
-        {% include 'indicadores/form2.html' with formulario2=formulario2 %}
+        <h4 class="card-title" style="color: #965FB8;">Editar Indicador</h4>        
+        {% include 'indicadores/form_editar.html' with formulario2=formulario2 %}
     </div>
-    <div class="card-footer text-muted" style="background-color: #D7A5FF;">  
-    </div>
+    <div class="card-footer text-muted" style="background-color: #D7A5FF;"></div>
+
 </div>
 </center>
 {% endblock %}

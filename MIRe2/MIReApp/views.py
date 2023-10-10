@@ -165,8 +165,12 @@ def tipos(request):
 
 def instancias(request):
     data = json.loads(request.body)
+    metrics = Metrica.objects.filter(id=data['user_id'])
+    frec2 = list(metrics.values("frecuencia"))
+    frec = frec2[0]["frecuencia"]
     instances = HistorialMetrica.objects.filter(metrica__id=data['user_id'])
-    return JsonResponse(list(instances.values("id", "año_historico")), safe=False)
+    data = [{'id': instance['id'], 'año_historico': instance['año_historico'], 'año2_historico': instance['año2_historico'], 'frecuencia': frec} for instance in instances.values() ]
+    return JsonResponse(data, safe=False)
 
 def medidas(request):
     data = json.loads(request.body)

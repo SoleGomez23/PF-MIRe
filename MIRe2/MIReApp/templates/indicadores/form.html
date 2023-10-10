@@ -212,8 +212,15 @@ function cargarPeriodos_num(e){
     // console.log('Success:', data[0]['año_historico']); 
     console.log(data);
     periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
-    for(let i = 0; i<data.length; i++){
-      periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    if (data[0]["frecuencia"] === "Bianual"){
+      console.log(data[0]["año2_historico"]);
+      for(let i = 0; i<data.length; i++){
+        periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["año2_historico"]}</option>`
+      }
+    }else{
+      for(let i = 0; i<data.length; i++){
+        periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+      }
     }
     })
     .catch((error) => {

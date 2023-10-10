@@ -88,7 +88,7 @@ def ver_indicador(request, id):
     indicador = get_object_or_404(Indicador, id=id)
     return render(request, 'indicadores/indicador.html', {'indicador': indicador})
 
-def eliminar_indicadores(request, id):
+def eliminar_indicador(request, id):
     indicadores = Indicador.objects.get(id=id)
     indicadores.delete()
     messages.success(request, '¡Indicador eliminado exitosamente!', extra_tags='alta-exitosa')

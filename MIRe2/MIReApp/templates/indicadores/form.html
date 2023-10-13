@@ -34,7 +34,8 @@
       <div class="mb-3">
         <label for="{{ formulario2.formula.id_for_label }}" class="form-label">{{ formulario2.formula.label }}</label>
         <select onchange="mostrarOcultarElemenos(this)"  name="formula" id="id_formula">
-          <option value="Promedio">Promedio</option>
+          <option value="">---------</option>
+          <option value="Promedio">Inversión promedio</option>
           <option value="Tasa de Variacion">Tasa de Variacion</option>
           <option value="Porcentaje">Porcentaje</option>
         </select>
@@ -136,6 +137,7 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 //Defino los botones/campos que necesito "escuchar"
+let frecuencia_indi = document.getElementById("id_frecuencia")
 let valor_num = document.getElementById("id_numerador_valor")
 let valor_den = document.getElementById("id_denominador_valor")
 let medida_num = document.getElementById("id_numerador_medida")
@@ -186,6 +188,40 @@ function cargarTipos(e){
   })
 }
 
+//Este evento carga la lista de Metricas segun la frecuencia elegida por el usuario, se ejecuta al seleccionar una frecuencia
+frecuencia_indi.addEventListener("change", cargarMetricas)
+function cargarMetricas(e){
+    frec_id = e.target.value 
+    const data = { user_id: frec_id} 
+    let url = " {% url 'listarMetricas' %} " 
+    console.log('hola');
+
+  fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), 
+  })
+  .then(response => response.json())
+  .then(data => { 
+  console.log('hola');
+
+  numerador_campo.innerHTML = `<option value = "" selescted>---------------</option>`
+  for(let i = 0; i<data.length; i++){
+    numerador_campo.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["titulo"]}</option>`
+  }
+  denominador_campo.innerHTML = `<option value = "" selescted>---------------</option>`
+  for(let i = 0; i<data.length; i++){
+    denominador_campo.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["titulo"]}</option>`
+  }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  })
+}
+
 numerador_campo.addEventListener("change", cargarPeriodos_num)//carga los los periodos del numerador
 numerador_campo.addEventListener("change", cargarMedida_num)//carga la unidad de medida del numerador
 numerador_campo.addEventListener("change", vaciarValor_num)//carga la unidad de medida del numerador
@@ -195,7 +231,7 @@ function cargarPeriodos_num(e){
     const data = { user_id: numerador_id} 
     let url = " {% url 'instancias' %} " 
   
-  if (numerador_id === ''){
+  if (numerador_id === ''){  //Si se deselecciono el periodo, se borra el valor del numerador
     periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
     medida_num.value = ''
   }else{
@@ -212,14 +248,23 @@ function cargarPeriodos_num(e){
     // console.log('Success:', data[0]['año_historico']); 
     console.log(data);
     periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
-    if (data[0]["frecuencia"] === "Bianual"){
+    if (data[0]["frecuencia"] === "Cuatrienal" || data[0]["frecuencia"] === "Bianual" ){
       console.log(data[0]["año2_historico"]);
       for(let i = 0; i<data.length; i++){
-        periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["año2_historico"]}</option>`
+        periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} - ${data[i]["año2_historico"]}</option>`
       }
-    }else{
+    } else if (data[0]["frecuencia"] === "Semestral"){
+      console.log(data[0]["año2_historico"]);
+      for(let i = 0; i<data.length; i++){
+        periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["semestre_historico"]}</option>`
+      }
+    } else if(data[0]["frecuencia"] === "Anual"){
       for(let i = 0; i<data.length; i++){
         periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+      }
+    } else if(data[0]["frecuencia"] === "Mensual"){
+      for(let i = 0; i<data.length; i++){
+        periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["mes_historico"]}</option>`
       }
     }
     })
@@ -299,7 +344,7 @@ function cargarPeriodos_den(e){
     const data = { user_id: denominador_id} 
     let url = " {% url 'instancias' %} " 
   
-  if (denominador_id === ''){
+  if (denominador_id === ''){ //Si se deselecciono el periodo, se borra el valor del denominador
     periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
     medida_den.value = ''
   }
@@ -314,11 +359,26 @@ function cargarPeriodos_den(e){
     })
     .then(response => response.json())
     .then(data => { 
-    // console.log('Success:', data[0]['año_historico']);
 
     periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
-    for(let i = 0; i<data.length; i++){
-      periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+    if (data[0]["frecuencia"] === "Cuatrienal" || data[0]["frecuencia"] === "Bianual" ){
+      console.log(data[0]["año2_historico"]);
+      for(let i = 0; i<data.length; i++){
+        periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} - ${data[i]["año2_historico"]}</option>`
+      }
+    } else if (data[0]["frecuencia"] === "Semestral"){
+      console.log(data[0]["año2_historico"]);
+      for(let i = 0; i<data.length; i++){
+        periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["semestre_historico"]}</option>`
+      }
+    } else if(data[0]["frecuencia"] === "Anual"){
+      for(let i = 0; i<data.length; i++){
+        periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+      }
+    } else if(data[0]["frecuencia"] === "Mensual"){
+      for(let i = 0; i<data.length; i++){
+        periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["mes_historico"]}</option>`
+      }
     }
     })
     .catch((error) => {
@@ -343,7 +403,6 @@ function cargarMedida_den(e){
   })
   .then(response => response.json())
   .then(data => { 
-  // console.log('Success:', data[0]['año_historico']);
   
   console.log(data[0]["unidad_medida"]);
   medida_den.value = data[0]["unidad_medida"]
@@ -359,7 +418,7 @@ function vaciarValor_den(e){
 }
 
 function cargarValor_den(e){
-    denominador_id = e.target.value //devuelve undefined
+    denominador_id = e.target.value 
     console.log(denominador_id);
     const data = { user_id: denominador_id} 
     let url = " {% url 'valores' %} " 

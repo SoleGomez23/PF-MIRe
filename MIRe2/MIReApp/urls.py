@@ -8,6 +8,7 @@ urlpatterns = [
     path('tipos', views.tipos, name = "tipos"),
     path('valores', views.valores, name = "valores"),
     path('medidas', views.medidas, name = "medidas"),
+    path('listarMetricas', views.listarMetricas, name = "listarMetricas"),
     path('instancias', views.instancias, name = "instancias"),
     path('nosotros', views.nosotros, name='nosotros'),
     path('metricas', views.metricas, name='metricas'),

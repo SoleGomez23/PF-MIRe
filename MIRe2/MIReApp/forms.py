@@ -31,6 +31,9 @@ class IndicadorForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
+
+        self.fields['denominador'].queryset = Metrica.objects.none()
+        self.fields['numerador'].queryset = Metrica.objects.none()
         
         self.fields['tipo'].queryset = Tipo.objects.none() #Hace el dropdonw de tipo esté vacio al principio
         if 'ambito' in self.data:

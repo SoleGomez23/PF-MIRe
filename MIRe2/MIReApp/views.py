@@ -169,7 +169,7 @@ def instancias(request):
     frec2 = list(metrics.values("frecuencia"))
     frec = frec2[0]["frecuencia"]
     instances = HistorialMetrica.objects.filter(metrica__id=data['user_id'])
-    data = [{'id': instance['id'], 'año_historico': instance['año_historico'], 'año2_historico': instance['año2_historico'], 'frecuencia': frec} for instance in instances.values() ]
+    data = [{'id': instance['id'], 'año_historico': instance['año_historico'], 'año2_historico': instance['año2_historico'], 'semestre_historico': instance['semestre_historico'], 'mes_historico': instance['mes_historico'], 'frecuencia': frec} for instance in instances.values() ]
     return JsonResponse(data, safe=False)
 
 def medidas(request):
@@ -181,3 +181,9 @@ def valores(request):
     data = json.loads(request.body)
     instances = HistorialMetrica.objects.filter(id=data['user_id'])
     return JsonResponse(list(instances.values("id", "valor_historico")), safe=False)
+
+def listarMetricas(request):
+    data = json.loads(request.body)
+    metricas = Metrica.objects.filter(frecuencia=data['user_id'])
+    print(list(metricas.values("id", "titulo")))
+    return JsonResponse(list(metricas.values("id", "titulo")), safe=False)

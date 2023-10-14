@@ -18,7 +18,7 @@ class MetricaForm(forms.ModelForm):
 class InstanciaForm(forms.ModelForm):
     class Meta:
         model = HistorialMetrica
-        fields = '__all__'#widget=forms.TextInput(attrs={'placeholder': 'Año'})    
+        fields = '__all__'  
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

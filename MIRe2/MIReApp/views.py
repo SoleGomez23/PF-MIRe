@@ -40,18 +40,12 @@ def crear_metricas(request):
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
 def crear_indicadores(request):
-    print('llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll')
-    print(request.method)
     if request.method == 'POST':
         formulario2 = IndicadorForm(request.POST or None, request.FILES or None)   
         if formulario2.is_valid():
             formulario2.save()
             messages.success(request, '¡Indicador creado exitosamente!', extra_tags='alta-exitosa')
             return redirect('indicadores')
-        else:
-            print(formulario2.errors)
-            print(type(request.POST['numerador']))
-            print(type(request.POST['ambito']))
     else:
         formulario2 = IndicadorForm()
 

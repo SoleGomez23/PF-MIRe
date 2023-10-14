@@ -15,6 +15,18 @@ class MetricaForm(forms.ModelForm):
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'}) #Le agrega la clase form control a todos los campos
 
+class InstanciaForm(forms.ModelForm):
+    class Meta:
+        model = HistorialMetrica
+        fields = '__all__'#widget=forms.TextInput(attrs={'placeholder': 'Año'})    
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["año_historico"].widget.attrs.update({'placeholder': 'Ingrese año'})
+        self.fields["valor_historico"].widget.attrs.update({'placeholder': 'Ingrese valor'})
+        self.fields["valor_historico"].widget.attrs.update({'placeholder': 'Año fin valor'})
+        self.fields["año2_historico"].widget.attrs.update({'readonly': 'readonly'})
+
 class IndicadorForm(forms.ModelForm):
     class Meta:
         model = Indicador

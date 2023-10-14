@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .models import Indicador, Metrica, HistorialMetrica, Tipo
-from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar
+from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm
 import json
 
 def inicio(request):
@@ -26,7 +26,7 @@ def metricas(request):
 
 def indicadores(request):
     indicadores = Indicador.objects.all()
-    return render(request, 'indicadores/indexindicador.html', {'indicador': indicadores})
+    return render(request, 'indicadores/index.html', {'indicador': indicadores})
 
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
@@ -40,12 +40,18 @@ def crear_metricas(request):
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
 def crear_indicadores(request):
+    print('llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll')
+    print(request.method)
     if request.method == 'POST':
         formulario2 = IndicadorForm(request.POST or None, request.FILES or None)   
         if formulario2.is_valid():
             formulario2.save()
             messages.success(request, '¡Indicador creado exitosamente!', extra_tags='alta-exitosa')
             return redirect('indicadores')
+        else:
+            print(formulario2.errors)
+            print(type(request.POST['numerador']))
+            print(type(request.POST['ambito']))
     else:
         formulario2 = IndicadorForm()
 
@@ -86,7 +92,7 @@ def editar_indicadores(request, id):
 
 def ver_indicador(request, id):
     indicador = get_object_or_404(Indicador, id=id)
-    return render(request, 'indicadores/indicador.html', {'indicador': indicador})
+    return render(request, 'indicadores/detalles.html', {'indicador': indicador})
 
 def eliminar_indicador(request, id):
     indicadores = Indicador.objects.get(id=id)
@@ -96,6 +102,7 @@ def eliminar_indicador(request, id):
 
 def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)
+    formulario = InstanciaForm(request.POST or None, request.FILES or None)
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
     
     if band: #Si band es true entro a historial_metrica porque una metrica acaba de ser creada, entonces se debe crear su primera instancia con los datos que recibio por parametro
@@ -105,8 +112,8 @@ def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
     else: #Si band es falso, no es una metrica nueva
 
         if request.method == 'POST':
-            nuevo_año = int(request.POST['nuevo_año']) #Obteniene el año que quiere ingresar el usuario
-            nuevo_valor = int(request.POST['nuevo_valor']) #Obteniene el valor que quiere ingresar el usuario
+            nuevo_año = int(request.POST['año_historico']) #Obteniene el año que quiere ingresar el usuario
+            nuevo_valor = int(request.POST['valor_historico']) #Obteniene el valor que quiere ingresar el usuario
 
             # Verificar si el nuevo año ya está en el historial
             if metrica.frecuencia == 'Anual':
@@ -117,7 +124,7 @@ def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
                     historial_metrica.save()
                     messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
             elif metrica.frecuencia == 'Mensual':
-                nuevo_mes = request.POST['nuevo_mes']
+                nuevo_mes = request.POST['mes_historico']
                 if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año, mes_historico=nuevo_mes).exists():
                     messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
                 else:
@@ -125,23 +132,15 @@ def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
                     historial_metrica.save()
                     messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
             elif metrica.frecuencia == 'Semestral':                
-                nuevo_semestre = request.POST['nuevo_semestre']
+                nuevo_semestre = request.POST['semestre_historico']
                 if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año, semestre_historico=nuevo_semestre).exists():
                     messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
                 else:
                     historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, semestre_historico=nuevo_semestre, valor_historico=nuevo_valor)
                     historial_metrica.save()
                     messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
-            elif metrica.frecuencia == 'Cuatrienal':
-                nuevo_año2 = int(request.POST['nuevo_año2'])
-                if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año, año2_historico=nuevo_año2).exists():
-                    messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
-                else:
-                    historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, año2_historico=nuevo_año2, valor_historico=nuevo_valor)
-                    historial_metrica.save()
-                    messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
-            elif metrica.frecuencia == 'Bianual':
-                nuevo_año2 = int(request.POST['nuevo_año2'])
+            elif (metrica.frecuencia == 'Bianual') or (metrica.frecuencia == 'Cuatrianual' ):
+                nuevo_año2 = int(request.POST['año2_historico'])
                 if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año, año2_historico=nuevo_año2).exists():
                     messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')
                 else:
@@ -151,7 +150,7 @@ def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
 
             return redirect('historial_metrica', metrica_id=metrica_id)
 
-        return render(request, 'instancias/index.html', {'metrica': metrica, 'historial': historial})
+        return render(request, 'instancias/index.html', {'metrica': metrica, 'historial': historial, 'formulario':formulario})
 
 def eliminar_historial_metrica(request, historial_id):
     historial = HistorialMetrica.objects.get(id=historial_id)

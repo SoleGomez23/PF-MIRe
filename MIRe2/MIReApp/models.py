@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.db import models
  
 FRECUENCIAS = (('Cuatrienal','Cuatrienal'),('Bianual','Bianual'), ('Anual', 'Anual'), ('Semestral','Semestral'), ('Mensual','Mensual'))
-FORMULAS = (('Promedio','Promedio'), ('Tasa de Variacion','Tasa de Variacion'), ('Porcentaje','Porcentaje'))
+FORMULAS = (('Inversion promedio','Inversion promedio'), ('Tasa de variacion','Tasa de variacion'), ('Porcentaje','Porcentaje'))
 MESES = (('Enero','Enero'),('Febrero','Febrero'),('Marzo','Marzo'),('Abril','Abril'),('Mayo','Mayo'),('Junio','Junio'),('Julio','Julio'),('Agosto','Agosto'),('Septiembre','Septiembre'),('Octubre','Octubre'),('Noviembre','Noviembre'),('Diciembre','Diciembre'))
 SEMESTRES = (('Enero-Junio', 'Enero-Junio'),('Julio-Diciembre', 'Julio-Diciembre'))
 
@@ -77,8 +77,8 @@ class HistorialMetrica(models.Model):
     id = models.AutoField(primary_key=True)
     metrica = models.ForeignKey(Metrica, on_delete=models.CASCADE)
     año_historico = models.PositiveIntegerField()
-    valor_historico = models.PositiveIntegerField(default=0)  # Agrega un valor predeterminado
-    mes_historico = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
+    valor_historico = models.PositiveIntegerField()  # Agrega un valor predeterminado
+    mes_historico = models.CharField(max_length=20, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
     año2_historico = models.PositiveIntegerField(blank=True, null=True)
     semestre_historico = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
 

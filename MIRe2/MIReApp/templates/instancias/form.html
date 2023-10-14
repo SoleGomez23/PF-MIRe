@@ -1,0 +1,74 @@
+<form method="post">
+    {% csrf_token %}  
+    <div class="horizontal-fields" style="display:flex" style="flex-direction:row">
+        <div style="flex: 1;">
+            {{ formulario.año_historico }}
+            <div class="help-text">{{ formulario2.ambito.errors }}</div>
+        </div>  
+
+        {% if metrica.frecuencia == 'Mensual' %}
+            <div style="flex: 1;">
+                {{ formulario.mes_historico }}
+                <div class="help-text">{{ formulario2.mes_historico.errors }}</div>
+            </div>        
+        {% endif %}
+
+        {% if metrica.frecuencia == 'Semestral' %} 
+            <div style="flex: 1;">
+                {{ formulario.semestre_historico }}
+                <div class="help-text">{{ formulario2.semestre_historico.errors }}</div>
+            </div>        
+        {% endif %}
+        
+        {% if metrica.frecuencia == 'Bianual' or  metrica.frecuencia == 'Cuatrienal' %}
+            <div style="flex: 1;">
+                {{ formulario.año2_historico }}
+                <div class="help-text">{{ formulario2.año_historico2.errors }}</div>
+            </div>    
+        {% endif %}
+              
+        <div style="flex: 1;">
+            {{ formulario.valor_historico }} 
+            <div class="help-text">{{ formulario.valor_historico.errors }}</div>
+        </div>
+
+        <div  style="flex: 1;">
+            <button type="submit" class="btn rounded-4 fw-bold" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">Agregar</button>
+        </div>
+    </div>
+    
+</form>
+
+<script>
+
+    let frecuencia = "{{ metrica.frecuencia }}";
+    year1 = document.querySelector("#{{ formulario.año_historico.id_for_label }}");
+    year1.addEventListener('change', autocompeltarYear2)
+    // Esta funcion autocompleta los campos de año2 en las metricas bianuales y cuatrianuales 
+    function autocompeltarYear2(e){
+        if ( frecuencia == 'Bianual' ){
+        year2 = document.querySelector("#{{ formulario.año2_historico.id_for_label }}");
+        year2.value = parseInt(year1.value) + 1
+        }else if ( frecuencia == 'Cuatrienal' ){
+        year2 = document.querySelector("#{{ formulario.año2_historico.id_for_label }}");
+        year2.value = parseInt(year1.value) + 3
+        }
+    }
+
+</script>
+  
+<style>
+    /* Estilos para los campos de entrada (inputs) */
+    input {
+        border-radius: 10px; /* Ajusta el valor para controlar el redondeo de los bordes */
+        border: 2px solid #965FB8; /* Puedes personalizar el borde según tus preferencias */
+        padding: 2px; /* Añade espacio adicional alrededor del texto en el input */
+        width: 100%;
+    }
+    select {
+        border-radius: 10px; /* Ajusta el valor para controlar el redondeo de los bordes */
+        border: 2px solid #965FB8; /* Puedes personalizar el borde según tus preferencias */
+        padding: 3px; /* Añade espacio adicional alrededor del texto en el input */
+        width: 100%;
+    }
+</style>

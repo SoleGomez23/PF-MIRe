@@ -26,22 +26,19 @@
                             {% if metrica.frecuencia == 'Mensual' %}
                                 <th>Año</th>
                                 <th>Mes</th>
-                                <th>Valor</th>
                             {% endif %}
                             {% if metrica.frecuencia == 'Semestral' %}
                                 <th>Año</th>
                                 <th>Semestre</th>
-                                <th>Valor</th>
                             {% endif %}
                             {% if metrica.frecuencia == 'Anual' %}
-                                <th>Año</th>                            
-                                <th>Valor</th>
+                                <th>Año</th>               
                             {% endif %}
                             {% if metrica.frecuencia == 'Bianual' or metrica.frecuencia == 'Cuatrienal'%}
                                 <th>Año inicio</th>
                                 <th>Año fin</th>
-                                <th>Valor</th>
-                            {% endif %}                            
+                            {% endif %} 
+                            <th>Valor</th>                           
                         </tr>
 
                         {% for item in historial %}
@@ -64,37 +61,7 @@
 
                     <br>
                     <h6>Agregar nueva instancia:</h6>
-                    <form method="post"> <!-- Formulario para nueva instancia -->
-                        {% csrf_token %} <!-- Los imputs variarian segun la frecuencia, excepto año y valor -->
-                        <input id="id_year" type="number" name="nuevo_año" required class="rounded-3"  placeholder="Ingrese año" style="border-color: #965FB8;">
-                        {% if metrica.frecuencia == 'Mensual' %}
-                            <select id="meses" name="nuevo_mes" style="border-color: #965FB8;">
-                                <option value="Enero">Enero</option>
-                                <option value="Febrero">Febrero</option>
-                                <option value="Marzo">Marzo</option>
-                                <option value="Abril">Abril</option>
-                                <option value="Mayo">Mayo</option>
-                                <option value="Junio">Junio</option>
-                                <option value="Julio">Julio</option>
-                                <option value="Agosto">Agosto</option>
-                                <option value="Septiembre">Septiembre</option>
-                                <option value="Octubre">Octubre</option>
-                                <option value="Noviembre">Noviembre</option>
-                                <option value="Diciembre">Diciembre</option>
-                            </select>
-                        {% endif %}
-                        {% if metrica.frecuencia == 'Semestral' %}                       
-                            <select id="semestre" name="nuevo_semestre" style="border-color: #965FB8;">
-                                <option value="Enero-Junio">Enero-Junio</option>
-                                <option value="Julio-Diciembre">Julio-Diciembre</option>
-                            </select>
-                        {% endif %}
-                        {% if metrica.frecuencia == 'Bianual' or  metrica.frecuencia == 'Cuatrienal' %}
-                            <input id="id_year2" type="number" name="nuevo_año2" readonly value="Este es un campo de solo lectura" required class="rounded-3" placeholder="año fin" style="border-color: #965FB8;">
-                        {% endif %}
-                        <input type="number" name="nuevo_valor" required class="rounded-3" placeholder="Ingrese valor" style="border-color: #965FB8;">
-                        <button type="submit" class="btn rounded-4 fw-bold" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">Agregar</button>
-                    </form>
+                    {%  include 'instancias/form.html' %}
                 </body>
 
                 {% if messages %}
@@ -121,21 +88,6 @@
             altaExitosaMessage.style.display = 'none';
         }
     }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
-
-    let frecuencia = "{{ metrica.frecuencia }}";
-    year1 = document.getElementById('id_year')
-    year1.addEventListener('change', autocompeltarYear2)
-    // Esta funcion autocompleta los campos de año2 en las metricas bianuales y cuatrianuales 
-    function autocompeltarYear2(e){
-        if ( frecuencia == 'Bianual' ){
-        year2 = document.getElementById('id_year2')
-        year2.value = parseInt(year1.value) + 1
-        }else if ( frecuencia == 'Cuatrienal' ){
-        console.log('entro');
-        year2 = document.getElementById('id_year2')
-        year2.value = parseInt(year1.value) + 3
-        }
-    }
     
     // Esta funcion elimina la instancia si se hace clic en el boton de eliminar instancia
     document.addEventListener("DOMContentLoaded", function() {

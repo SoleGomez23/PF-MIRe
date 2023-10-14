@@ -44,8 +44,26 @@ class IndicadorForm(forms.ModelForm):
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
 
+              
         self.fields['denominador'].queryset = Metrica.objects.none()
+        if 'denominador' in self.data:
+            try:
+                denominador_id = int(self.data.get('denominador'))
+                self.fields['denominador'].queryset = Metrica.objects.filter(id=denominador_id).order_by('id')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
+        elif self.instance.pk:
+            self.fields['denominador'].queryset = self.instance.denominador.tipo_set.order_by('id')
+              
         self.fields['numerador'].queryset = Metrica.objects.none()
+        if 'numerador' in self.data:
+            try:
+                numerador_id = int(self.data.get('numerador'))
+                self.fields['numerador'].queryset = Metrica.objects.filter(id=numerador_id).order_by('id')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
+        elif self.instance.pk:
+            self.fields['numerador'].queryset = self.instance.numerador.tipo_set.order_by('id')
         
         self.fields['tipo'].queryset = Tipo.objects.none() #Hace el dropdonw de tipo esté vacio al principio
         if 'ambito' in self.data:

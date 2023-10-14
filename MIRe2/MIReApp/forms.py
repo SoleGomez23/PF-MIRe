@@ -44,6 +44,16 @@ class IndicadorForm(forms.ModelForm):
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
 
+        
+        self.fields['tipo'].queryset = Tipo.objects.none() #Hace el dropdonw de tipo esté vacio al principio
+        if 'ambito' in self.data:
+            try:
+                ambito_id = int(self.data.get('ambito')) #obtiene el ambito selecciono el usuario, self.data es el formulario que se envia
+                self.fields['tipo'].queryset = Tipo.objects.filter(ambito_id=ambito_id).order_by('nombre') #le da a tipo el formato de la clas "Tipo" y que no sea solo un numero, es importante para los campos de tipo clave foranea
+            except (ValueError, TypeError):
+                pass  #si entra aca el usuario no ingreso un ambito correcto, el formulario es incorrecto
+        elif self.instance.pk:
+            self.fields['tipo'].queryset = self.instance.ambito.tipo_set.order_by('nombre')
               
         self.fields['denominador'].queryset = Metrica.objects.none()
         if 'denominador' in self.data:
@@ -51,7 +61,7 @@ class IndicadorForm(forms.ModelForm):
                 denominador_id = int(self.data.get('denominador'))
                 self.fields['denominador'].queryset = Metrica.objects.filter(id=denominador_id).order_by('id')
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
+                pass  
         elif self.instance.pk:
             self.fields['denominador'].queryset = self.instance.denominador.tipo_set.order_by('id')
               
@@ -59,21 +69,13 @@ class IndicadorForm(forms.ModelForm):
         if 'numerador' in self.data:
             try:
                 numerador_id = int(self.data.get('numerador'))
+                print(self.data)
+                print(numerador_id)
                 self.fields['numerador'].queryset = Metrica.objects.filter(id=numerador_id).order_by('id')
             except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
+                pass  
         elif self.instance.pk:
             self.fields['numerador'].queryset = self.instance.numerador.tipo_set.order_by('id')
-        
-        self.fields['tipo'].queryset = Tipo.objects.none() #Hace el dropdonw de tipo esté vacio al principio
-        if 'ambito' in self.data:
-            try:
-                ambito_id = int(self.data.get('ambito'))
-                self.fields['tipo'].queryset = Tipo.objects.filter(ambito_id=ambito_id).order_by('nombre')
-            except (ValueError, TypeError):
-                pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
-        elif self.instance.pk:
-            self.fields['tipo'].queryset = self.instance.ambito.tipo_set.order_by('nombre')
 
         self.fields['numerador_periodo'].queryset = HistorialMetrica.objects.none()
         if 'numerador_periodo' in self.data:

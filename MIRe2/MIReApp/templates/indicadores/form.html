@@ -298,8 +298,10 @@ function cargarMedida_num(e){
 }
 
 function vaciarValor_num(e){
-  valor_num.value = ''
-}
+    let resultado_campo = document.getElementById("id_resultado")
+    valor_num.value = ''
+    resultado_campo.value = ''
+  }
 
 function cargarValor_num(e){    
   numerador_id = e.target.value
@@ -407,7 +409,9 @@ function cargarMedida_den(e){
 }
 
 function vaciarValor_den(e){
+  let resultado_campo = document.getElementById("id_resultado")
   valor_den.value = ''
+  resultado_campo.value = ''
 }
 
 function cargarValor_den(e){

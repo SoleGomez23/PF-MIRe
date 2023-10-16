@@ -35,7 +35,7 @@ def crear_metricas(request):
         formulario.save()
         messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
         t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo']) 
-        historial_metrica(request, t.id, t.valor, t.year, t.month, band) #Le paso los valores de la metrica a historial_metrica para crear su primera instancia
+        historial_metrica(request, t.id, t.valor, t.year2, t.year, t.semestral, t.month, band) #Le paso los valores de la metrica a historial_metrica para crear su primera instancia
         return redirect('metricas')
     return render(request, 'metricas/crear.html', {'formulario': formulario})  
 
@@ -84,23 +84,19 @@ def editar_indicadores(request, id):
     
     return render(request, 'indicadores/editar.html', {'formulario2': formulario2, 'indicador':indicador})
 
-def ver_indicador(request, id):
-    indicador = get_object_or_404(Indicador, id=id)
-    return render(request, 'indicadores/detalles.html', {'indicador': indicador})
-
 def eliminar_indicador(request, id):
     indicadores = Indicador.objects.get(id=id)
     indicadores.delete()
     messages.success(request, '¡Indicador eliminado exitosamente!', extra_tags='alta-exitosa')
     return redirect('indicadores')
 
-def historial_metrica(request, metrica_id, valor=0, año=0, mes=0, band=False):
+def historial_metrica(request, metrica_id, valor=0, año2=0, año=0, semestral=0, mes=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)
     formulario = InstanciaForm(request.POST or None, request.FILES or None)
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
     
     if band: #Si band es true entro a historial_metrica porque una metrica acaba de ser creada, entonces se debe crear su primera instancia con los datos que recibio por parametro
-        historial_metrica = HistorialMetrica(metrica=metrica, año_historico=año,  mes_historico=mes, valor_historico=valor)
+        historial_metrica = HistorialMetrica(metrica=metrica, año2_historico=año2, año_historico=año, semestre_historico=semestral, mes_historico=mes, valor_historico=valor)
         historial_metrica.save()
         
     else: #Si band es falso, no es una metrica nueva

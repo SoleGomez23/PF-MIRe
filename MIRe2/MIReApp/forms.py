@@ -113,9 +113,12 @@ class MetricaFormEditar(forms.ModelForm):
 class IndicadorFormEditar(forms.ModelForm):
     class Meta:
         model = Indicador   
-        fields = ['descripcion', 'ambito', 'tipo'] #Especifico los campos que voy a mostrar       
+        fields = '__all__' #Especifico los campos que voy a mostrar       
         widgets = {
-            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
+            'nombre': forms.Textarea(attrs={'cols': 10, 'rows': 1}),  
+            'nombre': forms.TextInput(attrs={'readonly': 'readonly'}),      
+            'frecuencia': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'formula': forms.TextInput(attrs={'readonly': 'readonly'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -137,7 +140,7 @@ class IndicadorFormEditar(forms.ModelForm):
 class IndicadorFormVer(forms.ModelForm):
     class Meta:
         model = Indicador
-        fields = ['descripcion','ambito','tipo'] 
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

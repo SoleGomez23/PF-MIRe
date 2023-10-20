@@ -1,0 +1,539 @@
+<form id= "miFormulario" enctype="multipart/form-data" method="post">
+    {% csrf_token %}  
+    
+        <div class="mb-3">
+          <label for="{{ formulario2.nombre.id_for_label }}" class="form-label">{{ formulario2.nombre.label }}</label>
+          {{ formulario2.nombre }}  
+        </div>
+        <div class="col-12 help-text">{{ formulario2.nombre.errors }}</div>
+        <div class="mb-3">
+          <label for="{{ formulario2.descripcion.id_for_label }}" class="form-label">{{ formulario2.descripcion.label }}</label>
+          {{ formulario2.descripcion }}  
+        </div>
+        <div class="col-12 help-text">{{ formulario2.descripcion.errors }}</div>      
+        <div class="mb-3">
+          <label for="{{ formulario2.frecuencia.id_for_label }}" class="form-label">{{ formulario2.frecuencia.label }}</label>
+          {{ formulario2.frecuencia }}  
+        </div>
+        <div class="col-12 help-text">{{ formulario2.frecuencia.errors }}</div>    
+  
+        <div class="horizontal-fields" style="display:flex" style="flex-direction:row">
+          <div style="flex: 1;margin-right: 10px;">
+            <label for="{{ formulario2.ambito.id_for_label }}" class="form-label">{{ formulario2.ambito.label }}</label>
+            {{ formulario2.ambito }}  
+            <div class="help-text">{{ formulario2.ambito.errors }}</div>
+          </div>        
+          <div  style="flex: 1;">
+            <label for="{{ formulario2.tipo.id_for_label }}" class="form-label">{{ formulario2.tipo.label }}</label>
+            {{ formulario2.tipo }}  
+            <div class="help-text">{{ formulario2.tipo.errors }}</div>
+          </div>
+        </div>  
+  
+        <br>
+        <div class="mb-3">
+          <label for="{{ formulario2.formula.id_for_label }}" class="form-label">{{ formulario2.formula.label }}</label>
+          {{ formulario2.formula }}  
+          <div class="help-text">{{ formulario2.tipo.errors }}</div>
+        </div>
+        
+        <div class="col-12 help-text">{{ formulario2.formula.errors }}</div>  
+        <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
+        </div>
+        <h6>Seleccione numerador:</h6>
+        <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
+          <div style="flex: 1;">
+            <label style="margin-right: 5px;">Métrica</label> 
+            {{ formulario2.numerador }}
+          </div>
+          <div style="flex: 0,5; margin-left: 10px;">
+            <label style="margin-right: 5px;">Unidad de Medida</label> 
+            {{ formulario2.numerador_medida }}
+          </div>
+          <div style="flex: 0,5; margin-left: 10px"> 
+            <label style="margin-right: 5px;">Período</label> 
+            {{ formulario2.numerador_periodo }}
+          </div>
+        </div>
+        <br>
+        <h6>Seleccione denominador:</h6>
+        <div class="horizontal-fields" style="display:flex" style="flex-direction:row" >
+          <div style="flex: 1;">
+            <label style="margin-right: 5px;">Métrica</label> 
+            {{ formulario2.denominador }}
+          </div>
+          <div style="flex: 0,5;margin-left: 10px">
+            <label style="margin-right: 10px;">Unidad de Medida</label> 
+            {{ formulario2.denominador_medida }}
+          </div>
+          <div style="flex: 0,5;margin-left: 10px"> 
+            <label style="margin-right: 5px;">Período</label> 
+            {{ formulario2.denominador_periodo }}
+          </div>
+        </div>
+        <br>
+        <center>
+        <div class="horizontal-fields" style="margin-left:17%;">
+          <h6 style="margin-right: 12px;"><br><br>Fórmula:</h6>
+          <div style="display: flex; align-items: center;">
+              <div style="margin-right: 14px;">
+                  <h1>(</h1>
+              </div>
+              <div class="field-wrapper" style="width: 22%;">
+                {{ formulario2.numerador_valor }}
+                <h6 style="margin-left: 4px;">───────</h6>
+                {{ formulario2.denominador_valor }}
+              </div>   
+  
+              <div id="divMenosUno" style="margin-left: 4px; display:none" >
+                  <h6>-1</h6>   
+              </div>      
+              <div style="margin-left: 5px;">
+                  <h1>)</h1>
+              </div>        
+              <div style="margin-left: 2px;">
+                  <h6>x100</h6>
+              </div>        
+              <div style="margin-left: 2px;margin-right: 2px;">
+                  <h6>=</h6>
+              </div>
+          
+              <div style="width: 30%; height: 50px">
+                {{ formulario2.resultado }}
+                <button class='rounded-4 fw-bold 'id="miBoton" type="button" style="border-radius: 3%; color:white;background-color: #965FB8;border-color: transparent;">Calcular</button>
+              </div>
+              <div id="porcentaje" style="margin-left: 3px; display:none">
+                <h6>%</h6>
+              </div>
+          </div>
+        </div>
+        </center>
+        <br>
+  
+    <input name="" id="" class="btn btn-success min-content" style="background-color: #965FB8;border-color: #965FB8;margin-left: 206px;" type="submit" value="Confirmar">
+    <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;margin-left:5px;" href="{% url 'indicadores' %}" role="button">Cancelar</a>
+  
+  </form>
+  
+  <script>
+  
+  function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+  //Defino los botones/campos que necesito "escuchar"
+  let frecuencia_indi = document.getElementById("id_frecuencia")
+  let valor_num = document.getElementById("id_numerador_valor")
+  let valor_den = document.getElementById("id_denominador_valor")
+  let medida_num = document.getElementById("id_numerador_medida")
+  let medida_den = document.getElementById("id_denominador_medida")
+  let periodo_num = document.getElementById("id_numerador_periodo")
+  let periodo_den = document.getElementById("id_denominador_periodo")
+  let numerador_campo = document.getElementById("id_numerador")
+  let denominador_campo = document.getElementById("id_denominador")
+  let formula_campo = document.getElementById("id_formula")
+  let valor_campo = document.getElementById("id_resultado") 
+  let ambito_campo = document.getElementById("id_ambito")//Los id de los campos es igual al nombre del atributo en models.py, precedido de un "id_"
+  let tipo_campo = document.getElementById("id_tipo")
+  let boton = document.getElementById("miBoton");//El id del boton debe ser igual al id con el que defini el boton en el formulario (arriba)
+  
+  //Le agrego la clase a los input select para que se vean bien
+  let select = document.getElementsByTagName("select")
+  console.log(select)
+  for(let i = 0; i <select.length; i++){
+    console.log(i);
+    select[i].classList.add("form-select")
+  }
+  
+  //Este evento carga la lista de Tipos, se ejecuta al seleccionar un ambito
+  ambito_campo.addEventListener("change", cargarTipos)
+  function cargarTipos(e){
+      ambito_id = e.target.value //Selecciona el id del ambito elegido por el usuario
+      const data = { user_id: ambito_id} //Agrega el ambito a un objeto 
+      let url = " {% url 'tipos' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
+  
+    fetch(url, { //Hace la request HTTP
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    })
+    .then(response => response.json())
+    .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+    console.log('Success:', data[0]['nombre']);
+    //Se agrega al dropdown todos los elementos recibidos:
+    tipo_campo.innerHTML = `<option value = "" selescted>---------------</option>`
+    for(let i = 0; i<data.length; i++){
+      tipo_campo.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["nombre"]}</option>`
+    }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+  }
+  
+  //Este evento carga la lista de Metricas segun la frecuencia elegida por el usuario, se ejecuta al seleccionar una frecuencia
+//   frecuencia_indi.addEventListener("change", cargarMetricas)
+  document.addEventListener("DOMContentLoaded", cargarMetricas)
+  function cargarMetricas(){
+      frec_id = frecuencia_indi.value
+      valor_anterior_num = numerador_campo.value
+      valor_anterior_den = denominador_campo.value
+      const data = { user_id: frec_id} 
+      let url = " {% url 'listarMetricas' %} " 
+      console.log('hola');
+  
+    fetch(url, { //Hace la request HTTP
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), 
+    })
+    .then(response => response.json())
+    .then(data => { 
+    console.log('hola');
+  
+    numerador_campo.innerHTML = `<option value = "" selescted>---------------</option>`
+    for(let i = 0; i<data.length; i++){
+      numerador_campo.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["titulo"]}</option>`
+    }
+    denominador_campo.innerHTML = `<option value = "" selescted>---------------</option>`
+    for(let i = 0; i<data.length; i++){
+      denominador_campo.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["titulo"]}</option>`
+    }
+    numerador_campo.value = valor_anterior_num;
+    denominador_campo.value = valor_anterior_den;
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+  }
+  
+  numerador_campo.addEventListener("change", cargarPeriodos_num)//carga los los periodos del numerador
+  numerador_campo.addEventListener("change", cargarMedida_num)//carga la unidad de medida del numerador
+  numerador_campo.addEventListener("change", vaciarValor_num)//carga la unidad de medida del numerador
+  document.addEventListener("DOMContentLoaded", cargarPeriodos_num)
+  periodo_num.addEventListener("change", cargarValor_num)// carga el valor del numerador
+  function cargarPeriodos_num(e){
+      numerador_id = numerador_campo.value 
+      periodo_anterior = periodo_num.value
+      const data = { user_id: numerador_id} 
+      let url = " {% url 'instancias' %} " 
+    
+    if (numerador_id === ''){  //Si se deselecciono el periodo, se borra el valor del numerador
+      periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
+      medida_num.value = ''
+    }else{
+      fetch(url, { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), 
+      })
+      .then(response => response.json())
+      .then(data => { 
+      // console.log('Success:', data[0]['año_historico']); 
+      console.log(data);
+      periodo_num.innerHTML = `<option value = "" selescted>---------------</option>`
+      if (data[0]["frecuencia"] === "Cuatrienal" || data[0]["frecuencia"] === "Bianual" ){
+        console.log(data[0]["año2_historico"]);
+        for(let i = 0; i<data.length; i++){
+          periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} - ${data[i]["año2_historico"]}</option>`
+        }
+      } else if (data[0]["frecuencia"] === "Semestral"){
+        console.log(data[0]["año2_historico"]);
+        for(let i = 0; i<data.length; i++){
+          periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["semestre_historico"]}</option>`
+        }
+      } else if(data[0]["frecuencia"] === "Anual"){
+        for(let i = 0; i<data.length; i++){
+          periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+        }
+      } else if(data[0]["frecuencia"] === "Mensual"){
+        for(let i = 0; i<data.length; i++){
+          periodo_num.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["mes_historico"]}</option>`
+        }
+      }
+      periodo_num.value = periodo_anterior    
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+    }
+  }
+  
+  function cargarMedida_num(e){
+      numerador_id = e.target.value 
+      console.log(numerador_id);
+      const data = { user_id: numerador_id} 
+      let url = " {% url 'medidas' %} " 
+  
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), 
+    })
+    .then(response => response.json())
+    .then(data => { 
+    // console.log('Success:', data[0]['año_historico']);
+    
+    console.log(data[0]["unidad_medida"]);
+    medida_num.value = data[0]["unidad_medida"]
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+  
+  function vaciarValor_num(e){
+    let resultado_campo = document.getElementById("id_resultado")
+    valor_num.value = ''
+    resultado_campo
+    resultado_campo.value = ''
+    console.log('hola');
+  }
+  
+  function cargarValor_num(e){    
+    numerador_id = e.target.value
+    console.log(numerador_id);
+    const data = { user_id: numerador_id} 
+    let url = " {% url 'valores' %} " 
+  
+    fetch(url, { //Hace la request HTTP
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), 
+    })
+    .then(response => response.json())
+    .then(data => { 
+    // console.log('Success:', data[0]['año_historico']);
+    
+    console.log(data[0]["valor_historico"]);
+    valor_num.value = data[0]["valor_historico"]
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+  
+  periodo_num.addEventListener("change", vaciarValor_num)
+  periodo_den.addEventListener("change", vaciarValor_den)
+  
+  denominador_campo.addEventListener("change", cargarPeriodos_den)//Carga ls instancias del denominador
+  denominador_campo.addEventListener("change", cargarMedida_den)//Carga la unidad de medida del denominador
+  denominador_campo.addEventListener("change", vaciarValor_den)
+  document.addEventListener("DOMContentLoaded", cargarPeriodos_den)
+  periodo_den.addEventListener("change", cargarValor_den)//Carga el valor del denomindor
+  function cargarPeriodos_den(e){
+      denominador_id = denominador_campo.value 
+      periodo_anterior = periodo_den.value
+      const data = { user_id: denominador_id} 
+      let url = " {% url 'instancias' %} " 
+    
+    if (denominador_id === ''){ //Si se deselecciono el periodo, se borra el valor del denominador
+      periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
+      medida_den.value = ''
+    }
+    else{
+      fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), 
+      })
+      .then(response => response.json())
+      .then(data => { 
+  
+      periodo_den.innerHTML = `<option value = "" selescted>---------------</option>`
+      if (data[0]["frecuencia"] === "Cuatrienal" || data[0]["frecuencia"] === "Bianual" ){
+        console.log(data[0]["año2_historico"]);
+        for(let i = 0; i<data.length; i++){
+          periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} - ${data[i]["año2_historico"]}</option>`
+        }
+      } else if (data[0]["frecuencia"] === "Semestral"){
+        console.log(data[0]["año2_historico"]);
+        for(let i = 0; i<data.length; i++){
+          periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["semestre_historico"]}</option>`
+        }
+      } else if(data[0]["frecuencia"] === "Anual"){
+        for(let i = 0; i<data.length; i++){
+          periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]}</option>`
+        }
+      } else if(data[0]["frecuencia"] === "Mensual"){
+        for(let i = 0; i<data.length; i++){
+          periodo_den.innerHTML += `<option value = "${data[i]["id"]}" selescted>${data[i]["año_historico"]} | ${data[i]["mes_historico"]}</option>`
+        }
+      }
+      periodo_den.value = periodo_anterior
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      })
+    }
+  }
+  
+  function cargarMedida_den(e){
+    denominador_id = e.target.value 
+    const data = { user_id: denominador_id} 
+    let url = " {% url 'medidas' %} " 
+  
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), 
+    })
+    .then(response => response.json())
+    .then(data => { 
+    
+    console.log(data[0]["unidad_medida"]);
+    medida_den.value = data[0]["unidad_medida"]
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+  }
+  
+  function vaciarValor_den(e){
+    valor_den.value = ''
+    resultado_campo.value = ''
+  }
+  
+  function cargarValor_den(e){
+      denominador_id = e.target.value 
+      console.log(denominador_id);
+      const data = { user_id: denominador_id} 
+      let url = " {% url 'valores' %} " 
+  
+    fetch(url, { //Hace la request HTTP
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrftoken
+      },
+      body: JSON.stringify(data), 
+    })
+    .then(response => response.json())
+    .then(data => {   
+      console.log(data[0]["valor_historico"]);
+      valor_den.value = data[0]["valor_historico"]
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  }
+  
+  // Cambia la forma de la formula si se cambia el tipo de formula y se borra los valores si se quita el tipo de formula
+  formula_campo.addEventListener("change", resetearFormula)//Carga el valor del denomindor
+  function resetearFormula(e){    
+    let seleccion = e.target.value //devuelve undefined    
+    let porcentaje = document.getElementById("porcentaje");
+    let divMenosUno = document.getElementById("divMenosUno");
+    if (seleccion === "Tasa de Variacion") {
+      divMenosUno.style.display = "block"; // Muestra el div
+    } else {
+      divMenosUno.style.display = "none"; // Oculta el div
+      console.log('No es tasa de variacion');
+    }
+    if (seleccion !== "Inversion promedio") {
+      porcentaje.style.display = "block"; // Muestra el div
+    } else {
+      porcentaje.style.display = "none"; // Oculta el div
+    }
+    if (seleccion == ''){
+      medida_num.value = ''
+      medida_den.value = ''
+      valor_num.value = ''
+      valor_den.value = ''
+      valor_campo.value = ''
+      periodo_den.selectedIndex = 0;
+      periodo_num.selectedIndex = 0;
+      numerador_campo.selectedIndex = 0;
+      denominador_campo.selectedIndex = 0;
+    }
+  }
+  
+  //Este evento calcula el valor del indicador, se ejecuta al hacer clic en el boton "Calcular"
+  boton.addEventListener("click", calcular)
+  function calcular(){
+    let periodo_den_campo = periodo_den.options[periodo_den.selectedIndex].textContent
+    let periodo_num_campo = periodo_num.options[periodo_num.selectedIndex].textContent
+    console.log(formula_campo);
+    if (valor_num.value !== '' && valor_den.value !== '') {
+      if (formula_campo.value == 'Tasa de variacion'){
+        if ( periodo_num_campo != periodo_den_campo){
+          if (medida_num.value == medida_den.value){
+            let result = ((valor_num.value / valor_den.value) - 1) * 100  
+            valor_campo.value = result.toFixed(2)
+          }else{
+            alert('Las unidades de medida deben ser iguales');
+            valor_campo.value = 'ERROR';
+          }
+        }else{
+          alert('Los periodos deben ser distintos')
+          valor_campo.value = 'ERROR';
+        }
+      }
+      else if (formula_campo.value == 'Porcentaje'){
+        if ( periodo_num_campo == periodo_den_campo){
+          if (medida_num.value == medida_den.value){
+            let result = (valor_num.value / valor_den.value) * 100  
+            valor_campo.value = result.toFixed(2)        
+          }else{
+            alert('Las unidades de medida deben ser iguales')
+            valor_campo.value = 'ERROR';
+          }
+        }else{
+          alert('Los periodos deben ser iguales');
+          valor_campo.value = 'ERROR';
+        }
+      }
+      else if (formula_campo.value == 'Inversion promedio'){
+        if ( periodo_num_campo == periodo_den_campo){
+          if ( medida_num.value != medida_den.value){
+            let result = (valor_num.value / valor_den.value) * 100  
+            valor_campo.value = result.toFixed(2)        
+          }else{
+            alert('Las unidades de medida deben ser distintas');
+            valor_campo.value = 'ERROR';}
+        }else{
+          alert('Las periodos deben ser iguales');
+          valor_campo.value = 'ERROR';
+        }
+      }else{
+        alert('No se ha seleccionado ningun tipo de formula');
+      }
+    }
+    else{
+      alert('No se pudo calcular el indicador');
+    }}
+  
+  </script>
+  

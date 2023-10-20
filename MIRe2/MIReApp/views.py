@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
-from .models import Indicador, Metrica, HistorialMetrica, Tipo
-from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm
+from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa
+from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm
 import json
 
 def inicio(request):
@@ -176,3 +176,21 @@ def listarMetricas(request):
     metricas = Metrica.objects.filter(frecuencia=data['user_id'])
     print(list(metricas.values("id", "titulo")))
     return JsonResponse(list(metricas.values("id", "titulo")), safe=False)
+
+def programas(request):
+    programs = Programa.objects.all()
+    return render(request, 'programas/index.html', {'programas': programs})
+
+def crear_programa(request):
+    if request.method == 'POST':
+        formulario = ProgramaForm(request.POST or None, request.FILES or None)   
+        if formulario.is_valid():
+            formulario.save()
+            messages.success(request, '¡Programa creado exitosamente!', extra_tags='alta-exitosa')
+            return redirect('programas')
+    else:
+        formulario = ProgramaForm()
+        
+    context = { 'formulario': formulario }
+
+    return render(request, 'programas/crear.html', context)

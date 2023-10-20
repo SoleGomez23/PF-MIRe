@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block titulo %} Lista de Programas {% endblock %}
+
+{% block contenido %} 
+<br>
+<br>
+<br>
+<center>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <script>
+        setTimeout(function() {
+            var altaExitosaMessage = document.querySelector('.messages .alta-exitosa');
+            if (altaExitosaMessage) {
+                altaExitosaMessage.style.display = 'none';
+            }
+        }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
+    </script>
+
+    <!--Font Awesome: utilizado para importar css dibujos de editar y eliminar-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"> 
+
+    <div class="col-md-10 card" style="text-align: left;">
+
+        <div class="card-header" style="background-color: #D7A5FF;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+
+                <span>  <!-- Boton para volver atras--->
+                    <a href="{% url 'inicio' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color:white;border-color: white;border-width: 2px;">⪻ Inicio</a>
+                </span>
+
+                <span> <!-- Titulo del cuadro --->
+                    <h2>MIS PROGRAMAS</h2>
+                </span>
+
+            </div>            
+        </div>
+
+        <div class="card-body">
+            <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_programa' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo programa</a>
+            <br>
+            <br>
+            <div class="table-responsive">
+                <table class="table rounded-4" style="background-color: #D7A5FF;">
+                    <thead>
+                        <tr> <!-- Titulo de las columnas --->
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Objetivo</th>
+                            <th scope="col">Duracion</th>    
+                            <th scope="col">Acciones</th>                     
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prog in programas %} <!-- El for recorre todos los indicadores --->
+                        <tr class=""> <!-- Contenido de las filas --->
+                            <td scope="row">{{ prog.id }}</td>
+                            <td>{{ prog.nombre }}</td>
+                            <td>{{ prog.descripcion }}</td>
+                            <td>{{ prog.objetivo }}</td>
+                            <td>{{ prog.duracion }}</td>
+                            <td>
+                                Botones
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        <div class="card-footer text-muted" style="background-color: #D7A5FF;">
+        </div>
+    </div>
+
+</center>
+
+{% endblock %}

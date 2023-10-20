@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Metrica, Indicador, Tipo, HistorialMetrica
+from .models import Metrica, Indicador, Tipo, HistorialMetrica, Programa
 
 class MetricaForm(forms.ModelForm):
     class Meta:
@@ -14,6 +14,17 @@ class MetricaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'}) #Le agrega la clase form control a todos los campos
+
+class ProgramaForm(forms.ModelForm):
+    class Meta:
+        model = Programa
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.fields:
+            self.fields[i].widget.attrs.update({'class':'form-control'}) #Le agrega la clase form control a todos los campos
+
 
 class InstanciaForm(forms.ModelForm):
     class Meta:

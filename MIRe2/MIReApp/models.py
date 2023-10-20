@@ -97,3 +97,14 @@ class Tipo(models.Model):
     
     def __str__(self):
         return self.nombre
+
+    
+class Programa(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50)
+    objetivo = models.CharField(max_length=20)
+    duracion = models.CharField(max_length=20)
+
+    def __str__(self):
+        return f"{self.nombre}"

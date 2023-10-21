@@ -4,38 +4,26 @@
 {% block titulo %} Agregar nuevo programa {% endblock %}
 
 {% block contenido %} 
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div style="display: flex">
-    <!-- Formulario de creación de indicadores -->
-    <div class="card col-md-12" style="text-align: left;">
-        <div class="card-header fw-bold " style="background-color: #D7A5FF;color: #000000;">
-            <div style="display: flex; justify-content: flex-end; width: 100%;">
-                <h2 style="color: #965FB8;">PROGRAMAS</h2>
-            </div>  
+    <!-- Formulario de creación de programass -->
+    <div class="col-md-12 card" style="text-align: left;width: 500px; height: 400px;">
+        <div class="col-md-12 card-header fw-bold" style="background-color: #D7A5FF;color: #000000;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span>
+                    <a href="{% url 'programas' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">⪻ Volver</a>
+                </span>
+                <span>
+                    <h2 style="color: #965FB8;">PROGRAMAS</h2>
+                </span>
+            </div>
         </div>
-        <div class="card-body" style="background-color: #D7A5FF;">
+        <div class="col-md-12 card-body" style="background-color: #D7A5FF;">
             <h4 style="color: #965FB8">Nuevo programa</h4>
             {%  include 'programas/form.html' %}
         </div>
-        <div class="card-footer text-muted" style="background-color: #D7A5FF;">
+        <div class="col-md-12 card-footer text-muted" style="background-color: #D7A5FF;">
         </div>
     </div>
-
-</div>
+<br>
 <br>
 
 

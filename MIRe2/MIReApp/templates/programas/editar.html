@@ -1,44 +1,31 @@
 {% extends "base.html" %}
 
-{% block titulo %} Editar indicador {% endblock %}
+{% block titulo %} Editar programa {% endblock %}
 
 {% block contenido %} 
 
 <center>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div class="card col-md-6" style="text-align: left;">
     <div class="card-header fw-bold" style="background-color: #D7A5FF;color: #fff;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
 
             <span> <!-- Boton para volver atras -->
-                <a href="{% url 'indicadores' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">← Volver</a>
+                <a href="{% url 'programas' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">⪻ Volver</a>
             </span>
             <span> <!-- Titulo del cuadro -->
-                <h2>INDICADORES</h2>
+                <h2 style="color: #965FB8;">PROGRAMAS</h2>
             </span>
 
         </div>
     </div>
-
     <div class="card-body">
-        <h4 class="card-title" style="color: #965FB8;">Editar Indicador</h4>        
-        {%  include 'indicadores/form_editar.html' %}
+        <h6 class="card-title" style="color: #965FB8;">Editar programa</h6>
+        <h2>{{ formulario.nombre.value }}</h2>
+        {%  include 'programas/form_editar.html' %}
+      
     </div>
-    <div class="card-footer text-muted" style="background-color: #D7A5FF;"></div>
 
+    <div class="card-footer text-muted" style="background-color: #D7A5FF;"></div>
 </div>
 </center>
 {% endblock %}

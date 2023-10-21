@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.db import models
+
  
 FRECUENCIAS = (('Cuatrienal','Cuatrienal'),('Bianual','Bianual'), ('Anual', 'Anual'), ('Semestral','Semestral'), ('Mensual','Mensual'))
 FORMULAS = (('Inversion promedio','Inversion promedio'), ('Tasa de variacion','Tasa de variacion'), ('Porcentaje','Porcentaje'))
@@ -101,9 +102,16 @@ class Tipo(models.Model):
     
 class Programa(models.Model):
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=100, 
+                              verbose_name='Nombre',
+                              unique= True,
+                              validators= [
+                                  RegexValidator(regex= r'^[a-zA-Z\s]*$',
+                                                 message="El nombre no puede contener caracteres especiales.",
+                                                 code='invalid_nombre')
+                              ])
     descripcion = models.CharField(max_length=50)
-    objetivo = models.CharField(max_length=20)
+    objetivo = models.CharField(max_length=100)
     duracion = models.CharField(max_length=20)
 
     def __str__(self):

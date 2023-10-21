@@ -415,3 +415,10 @@ h5{
     padding: 0;
     margin: 20px auto 0 auto;
   }
+
+.titulo-custom {
+font-size: 24px; /* Tamaño de fuente deseado */
+font-weight: bold; /* Estilo de fuente en negrita */
+color: #965FB8; /* Color de texto personalizado */
+/* Otros estilos deseados para el título */
+}

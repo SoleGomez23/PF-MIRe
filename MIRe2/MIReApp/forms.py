@@ -158,4 +158,15 @@ class IndicadorFormVer(forms.ModelForm):
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'})
         
-       
+
+class ProgramaFormEditar(forms.ModelForm):
+    class Meta:
+        model = Programa
+        fields = ['nombre','descripcion','objetivo','duracion']
+        widgets = {   
+            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.fields:
+            self.fields[i].widget.attrs.update({'class':'form-control'})

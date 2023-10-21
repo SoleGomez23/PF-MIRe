@@ -2,8 +2,9 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa
-from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm
+from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar
 import json
+from django.db.utils import IntegrityError  # Importa la excepción de integridad
 
 def inicio(request):
     return render(request, 'paginas/inicio.html')
@@ -194,3 +195,24 @@ def crear_programa(request):
     context = { 'formulario': formulario }
 
     return render(request, 'programas/crear.html', context)
+
+def editar_programas(request, id):
+    programa = get_object_or_404(Programa, id=id)
+    formulario = ProgramaFormEditar(request.POST or None, request.FILES or None, instance=programa)
+    if request.method == 'POST':
+        formulario = ProgramaFormEditar(request.POST, instance=programa)
+        try:
+            if formulario.is_valid():
+                formulario.save()
+                messages.success(request, '¡Cambios guardados exitosamente!', extra_tags='modificación-exitosa')
+                return redirect('programas')
+        except IntegrityError as e:
+            messages.error(request, 'Error al guardar los cambios: {}'.format(e), extra_tags='error-guardado')
+    
+    return render(request, 'programas/editar.html', {'formulario': formulario, 'programa':programa})
+
+def eliminar_programas(request, id):
+    programas = Programa.objects.get(id=id)
+    programas.delete()
+    messages.success(request, 'Programa eliminado exitosamente', extra_tags='elimicación-exitosa')
+    return redirect('programas')

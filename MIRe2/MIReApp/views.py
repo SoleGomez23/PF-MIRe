@@ -200,12 +200,14 @@ def editar_programas(request, id):
     programa = get_object_or_404(Programa, id=id)
     formulario = ProgramaFormEditar(request.POST or None, request.FILES or None, instance=programa)
     if request.method == 'POST':
-        formulario = ProgramaFormEditar(request.POST, instance=programa)
+        # formulario = ProgramaFormEditar(request.POST, instance=programa)
         try:
             if formulario.is_valid():
                 formulario.save()
                 messages.success(request, '¡Cambios guardados exitosamente!', extra_tags='modificación-exitosa')
                 return redirect('programas')
+            else:
+                print(formulario.errors)
         except IntegrityError as e:
             messages.error(request, 'Error al guardar los cambios: {}'.format(e), extra_tags='error-guardado')
     

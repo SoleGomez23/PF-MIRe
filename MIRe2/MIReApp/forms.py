@@ -162,7 +162,7 @@ class IndicadorFormVer(forms.ModelForm):
 class ProgramaFormEditar(forms.ModelForm):
     class Meta:
         model = Programa
-        fields = ['nombre','descripcion','objetivo','duracion']
+        fields = ['descripcion','objetivo','duracion']
         widgets = {   
             'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
         }

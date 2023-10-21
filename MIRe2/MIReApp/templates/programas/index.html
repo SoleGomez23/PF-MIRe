@@ -17,9 +17,12 @@
 
     <script>
         setTimeout(function() {
+            var modificacionExitosaMessage = document.querySelector('.messages .modificación-exitosa');
             var altaExitosaMessage = document.querySelector('.messages .alta-exitosa');
             if (altaExitosaMessage) {
                 altaExitosaMessage.style.display = 'none';
+            } else if (modificacionExitosaMessage){
+                modificacionExitosaMessage.style.display = 'none';
             }
         }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
     </script>

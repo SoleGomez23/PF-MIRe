@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
-from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa
+from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito
 from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar
 import json
 from django.db.utils import IntegrityError  # Importa la excepción de integridad
@@ -27,7 +27,10 @@ def metricas(request):
 
 def indicadores(request):
     indicadores = Indicador.objects.all()
-    return render(request, 'indicadores/index.html', {'indicador': indicadores})
+    tipos = Tipo.objects.all()
+    ambitos = Ambito.objects.all()
+    programas = Programa.objects.all()
+    return render(request, 'indicadores/index.html', {'indicador': indicadores,'tipos': tipos,'ambitos': ambitos,'programas': programas,})
 
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
@@ -153,6 +156,11 @@ def tipos(request):
     tipos = Tipo.objects.filter(ambito__id=data['user_id'])
     return JsonResponse(list(tipos.values("id", "nombre")), safe=False)
 
+def ambitos(request):
+    data = json.loads(request.body)
+    ambitos = Ambito.objects.filter(ambito__id=data['user_id'])
+    return JsonResponse(list(ambitos.values("id", "nombre")), safe=False)
+
 def instancias(request):
     data = json.loads(request.body)
     metrics = Metrica.objects.filter(id=data['user_id'])
@@ -181,6 +189,7 @@ def listarMetricas(request):
 def programas(request):
     programs = Programa.objects.all()
     return render(request, 'programas/index.html', {'programas': programs})
+
 
 def crear_programa(request):
     if request.method == 'POST':

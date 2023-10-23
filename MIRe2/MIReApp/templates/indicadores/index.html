@@ -44,8 +44,44 @@
         </div>
 
         <div class="card-body">
-            <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
-            <br>
+            
+            <div class="dropdown ">
+                <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
+                <a class="fw-bold" style="color: black;margin-left:62px ;text-decoration: none;">Filtrar por</a>
+                <button class="btn dropdown-toggle rounded-4" style="background-color: #D7A5FF;margin-left:12px" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Tipo
+                </button>
+                <div class="dropdown-menu">
+                <!-- No lo hice con for porque trae todos los tipos de indicadores existentes, es decir si hay 3 indicadores
+                     de tipo calidad en el dropdown aprece calidad calidad calidad -->
+                  <a class="dropdown-item" href="#">Calidad</a>
+                  <a class="dropdown-item" href="#">Eficacia</a>
+                  <a class="dropdown-item" href="#">Economía</a>
+                  <a class="dropdown-item" href="#">Eficiencia</a>
+                </div>
+                <button class="btn dropdown-toggle rounded-4" style="background-color: #D7A5FF;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Ámbito</button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Actividad</a>
+                  <a class="dropdown-item" href="#">Componente</a>
+                  <a class="dropdown-item" href="#">Propósito</a>
+                  <a class="dropdown-item" href="#">Fin</a>
+                </div>
+                <button class="btn border dropdown-toggle rounded-4" style="background-color: #D7A5FF;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Programa</button>
+                <div class="dropdown-menu">
+                    <!-- Este for trae los programas existentes de la bdd -->
+                    {% for programa in programas %}
+                        <a class="dropdown-item" href="#">{{ programa.nombre }}</a>
+                    {% endfor %}
+                </div>
+                <button class="btn dropdown-toggle rounded-4" style="background-color: #D7A5FF;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Perioricidad</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Anual</a>
+                    <a class="dropdown-item" href="#">Bianual</a>
+                    <a class="dropdown-item" href="#">Cuatrienal</a>
+                    <a class="dropdown-item" href="#">Semestral</a>
+                    <a class="dropdown-item" href="#">Mensual</a>
+                  </div>
+            </div>
             <br>
             <div class="table-responsive">
                 <table class="table rounded-4" style="background-color: #D7A5FF;">

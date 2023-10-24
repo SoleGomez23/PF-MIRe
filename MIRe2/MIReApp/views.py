@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito
-from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar
+from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar, ObjetivoForm
 import json
 from django.db.utils import IntegrityError  # Importa la excepción de integridad
 
@@ -227,3 +227,11 @@ def eliminar_programas(request, id):
     programas.delete()
     messages.success(request, 'Programa eliminado exitosamente', extra_tags='elimicación-exitosa')
     return redirect('programas')
+
+def objetivos(request):
+    form = ObjetivoForm()
+    context = {
+        "form": form
+    }
+    print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+    return render(request, "programas/objetivo.html", context)

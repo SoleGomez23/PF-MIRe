@@ -7,6 +7,10 @@
   <link type="text/css" href='{% static "css/base.css" %}' rel="stylesheet"/>
   <!-- Required meta tags -->
   <meta charset="utf-8">
+  <!-- el siguiente script te permite usar HTMX -->
+  <script src="https://unpkg.com/htmx.org@1.5.0"
+      integrity="sha384-oGA+prIp5Vchu6we2YkI51UtVzN9Jpx2Z7PnR1I78PnZlN8LkrCT4lqqqmDkyrvI"
+      crossorigin="anonymous"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS v5.2.1 -->
@@ -55,6 +59,11 @@
               {% block contenido %} {% endblock %}
             </div>
         </div>
+        <script>
+          document.body.addEventListener('htmx:configRequest', (event) => {
+              event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+          })
+        </script>
         
     </div>
   <!-- Bootstrap JavaScript Libraries -->

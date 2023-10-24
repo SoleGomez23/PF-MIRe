@@ -11,6 +11,7 @@ urlpatterns = [
     path('listarMetricas', views.listarMetricas, name = "listarMetricas"),
     path('instancias', views.instancias, name = "instancias"),
     path('nosotros', views.nosotros, name='nosotros'),
+    path('objetivos', views.objetivos, name='objetivos'),
     path('metricas', views.metricas, name='metricas'),
     path('error', views.error, name='error'),
     path('programas',views.programas, name='programas'),

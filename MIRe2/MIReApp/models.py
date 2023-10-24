@@ -116,3 +116,10 @@ class Programa(models.Model):
 
     def __str__(self):
         return f"{self.nombre}"
+
+class Objetivo(models.Model):
+    programa = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.nombre

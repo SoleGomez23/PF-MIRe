@@ -9,8 +9,12 @@
         <div class="mb-3">
           <label for="{{ formulario.objetivo.id_for_label }}" class="form-label">{{ formulario.objetivo.label }}</label>
           {{ formulario.objetivo }}  
-        </div>
+        </div>        
+        <button class="btn rounded-4 fw-bold" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;" type="button" hx-get="{% url 'objetivos' %}" hx-target="#objetivoforms" hx-swap="beforeend">
+          Agregar objetivo
+        </button>
         <div class="col-12 help-text">{{ formulario.objetivo.errors }}</div>
+        <div id="objetivoforms" class=""></div>
         <div class="mb-3">
           <label for="{{ formulario.duracion.id_for_label }}" class="form-label">{{ formulario.duracion.label }}</label>
           {{ formulario.duracion }}  

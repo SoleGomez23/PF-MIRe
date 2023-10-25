@@ -46,12 +46,13 @@
         </div>
 
         <div class="card-body">
-            <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
-            <a class="fw-bold" style="color: black;margin-left:62px ;text-decoration: none;">Filtrar por</a>
             
-            <form method="GET" action="{% url 'lista_indicadores' %}" class="form-inline">
+            
+            <form method="GET" action="{% url 'lista_indicadores' %}" class="d-flex flex-row">
+                <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
+                <a class="fw-bold" style="color: black;margin-left:62px ;text-decoration: none;">Filtrar por</a>
                 <div class="form-group">
-                    <select name="tipo" id="tipo" class="form-control">
+                    <select name="tipo" id="tipo" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="margin-left: 20px;width:min-content;border-color: #D7A5FF;border-width: 3px;">
                         <option value="">Tipo</option>
                         <option value="Calidad">Calidad</option>
                         <option value="Eficacia">Eficacia</option>
@@ -61,7 +62,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <select name="ambito" id="ambito" class="form-control">
+                    <select name="ambito" id="ambito" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="width:min-content;border-color: #D7A5FF;border-width: 3px;">
                         <option value="">Ámbito</option>
                         <option value="4">Actividad</option>
                         <option value="3">Componente</option>
@@ -71,7 +72,7 @@
                 </div>
               
                 <div class="form-group">
-                    <select name="programa" id="programa" class="form-control">
+                    <select name="programa" id="programa" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="width:min-content;border-color: #D7A5FF;border-width: 3px;">
                         <option value="">Programa</option>
                         {% for programa in programas %}
                             <option value="{{ programa.id }}">{{ programa.nombre }}</option>
@@ -80,7 +81,7 @@
                 </div>
             
                 <div class="form-group">
-                    <select name="periodicidad" id="periodicidad" class="form-control">
+                    <select name="periodicidad" id="periodicidad" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="width:min-content;border-color: #D7A5FF;border-width: 3px;">
                         <option value="">Periodicidad</option>
                         <option value="Anual">Anual</option>
                         <option value="Bianual">Bianual</option>
@@ -89,8 +90,8 @@
                         <option value="Mensual">Mensual</option>
                     </select>
                 </div> 
-            
-                <button type="submit" class="btn btn-primary">Filtrar</button>
+                
+                <button type="submit" class="btn rounded-4"style="background-color:#D7A5FF; color: #000000;border-color: #965FB8;border-width: 3px;width:min-content">Filtrar</button>
             </form>
             
             <br>

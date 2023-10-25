@@ -51,9 +51,8 @@
             
             <form method="GET" action="{% url 'lista_indicadores' %}" class="form-inline">
                 <div class="form-group">
-                    <label for="tipo">Tipo</label>
                     <select name="tipo" id="tipo" class="form-control">
-                        <option value="">Todos</option>
+                        <option value="">Tipo</option>
                         <option value="Calidad">Calidad</option>
                         <option value="Eficacia">Eficacia</option>
                         <option value="Economía">Economía</option>
@@ -62,9 +61,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="ambito">Ámbito</label>
                     <select name="ambito" id="ambito" class="form-control">
-                        <option value="">Todos</option>
+                        <option value="">Ámbito</option>
                         <option value="4">Actividad</option>
                         <option value="3">Componente</option>
                         <option value="2">Propósito</option>
@@ -73,9 +71,8 @@
                 </div>
               
                 <div class="form-group">
-                    <label for="programa">Programa</label>
                     <select name="programa" id="programa" class="form-control">
-                        <option value="">Todos</option>
+                        <option value="">Programa</option>
                         {% for programa in programas %}
                             <option value="{{ programa.nombre }}">{{ programa.nombre }}</option>
                         {% endfor %}
@@ -83,9 +80,8 @@
                 </div>
             
                 <div class="form-group">
-                    <label for="periodicidad">Periodicidad</label>
                     <select name="periodicidad" id="periodicidad" class="form-control">
-                        <option value="">Todos</option>
+                        <option value="">Periodicidad</option>
                         <option value="Anual">Anual</option>
                         <option value="Bianual">Bianual</option>
                         <option value="Cuatrienal">Cuatrienal</option>

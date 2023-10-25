@@ -6,6 +6,8 @@
 <br>
 <br>
 <br>
+<br>
+<br>
 <center>
     {% if messages %}
     <ul class="messages">
@@ -44,44 +46,57 @@
         </div>
 
         <div class="card-body">
+            <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
+            <a class="fw-bold" style="color: black;margin-left:62px ;text-decoration: none;">Filtrar por</a>
             
-            <div class="dropdown ">
-                <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
-                <a class="fw-bold" style="color: black;margin-left:62px ;text-decoration: none;">Filtrar por</a>
-                <button class="btn dropdown-toggle rounded-4" style="background-color: #D7A5FF;margin-left:12px" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Tipo
-                </button>
-                <div class="dropdown-menu">
-                <!-- No lo hice con for porque trae todos los tipos de indicadores existentes, es decir si hay 3 indicadores
-                     de tipo calidad en el dropdown aprece calidad calidad calidad -->
-                  <a class="dropdown-item" href="#">Calidad</a>
-                  <a class="dropdown-item" href="#">Eficacia</a>
-                  <a class="dropdown-item" href="#">Economía</a>
-                  <a class="dropdown-item" href="#">Eficiencia</a>
+            <form method="GET" action="{% url 'lista_indicadores' %}" class="form-inline">
+                <div class="form-group">
+                    <label for="tipo">Tipo</label>
+                    <select name="tipo" id="tipo" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="Calidad">Calidad</option>
+                        <option value="Eficacia">Eficacia</option>
+                        <option value="Economía">Economía</option>
+                        <option value="Eficiencia">Eficiencia</option>
+                    </select>
                 </div>
-                <button class="btn dropdown-toggle rounded-4" style="background-color: #D7A5FF;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Ámbito</button>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Actividad</a>
-                  <a class="dropdown-item" href="#">Componente</a>
-                  <a class="dropdown-item" href="#">Propósito</a>
-                  <a class="dropdown-item" href="#">Fin</a>
+                
+                <div class="form-group">
+                    <label for="ambito">Ámbito</label>
+                    <select name="ambito" id="ambito" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="4">Actividad</option>
+                        <option value="3">Componente</option>
+                        <option value="2">Propósito</option>
+                        <option value="1">Fin</option>
+                    </select>
                 </div>
-                <button class="btn border dropdown-toggle rounded-4" style="background-color: #D7A5FF;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Programa</button>
-                <div class="dropdown-menu">
-                    <!-- Este for trae los programas existentes de la bdd -->
-                    {% for programa in programas %}
-                        <a class="dropdown-item" href="#">{{ programa.nombre }}</a>
-                    {% endfor %}
+              
+                <div class="form-group">
+                    <label for="programa">Programa</label>
+                    <select name="programa" id="programa" class="form-control">
+                        <option value="">Todos</option>
+                        {% for programa in programas %}
+                            <option value="{{ programa.nombre }}">{{ programa.nombre }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                <button class="btn dropdown-toggle rounded-4" style="background-color: #D7A5FF;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Perioricidad</button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Anual</a>
-                    <a class="dropdown-item" href="#">Bianual</a>
-                    <a class="dropdown-item" href="#">Cuatrienal</a>
-                    <a class="dropdown-item" href="#">Semestral</a>
-                    <a class="dropdown-item" href="#">Mensual</a>
-                  </div>
-            </div>
+            
+                <div class="form-group">
+                    <label for="periodicidad">Periodicidad</label>
+                    <select name="periodicidad" id="periodicidad" class="form-control">
+                        <option value="">Todos</option>
+                        <option value="Anual">Anual</option>
+                        <option value="Bianual">Bianual</option>
+                        <option value="Cuatrienal">Cuatrienal</option>
+                        <option value="Semestral">Semestral</option>
+                        <option value="Mensual">Mensual</option>
+                    </select>
+                </div> 
+            
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </form>
+            
             <br>
             <div class="table-responsive">
                 <table class="table rounded-4" style="background-color: #D7A5FF;">

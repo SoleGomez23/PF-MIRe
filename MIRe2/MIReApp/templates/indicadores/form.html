@@ -10,7 +10,15 @@
         <label for="{{ formulario2.descripcion.id_for_label }}" class="form-label">{{ formulario2.descripcion.label }}</label>
         {{ formulario2.descripcion }}  
       </div>
-      <div class="col-12 help-text">{{ formulario2.descripcion.errors }}</div>      
+      <div class="col-12 help-text">{{ formulario2.descripcion.errors }}</div>   
+      <div class="mb-3">
+        <label for="{{ formulario2.programa.id_for_label }}" class="form-label">{{ formulario2.programa.label }}</label>
+        {{ formulario2.programa }}  
+      </div>
+      <div class="mb-3">
+        <label for="{{ formulario2.objetivo.id_for_label }}" class="form-label">{{ formulario2.objetivo.label }}</label>
+        {{ formulario2.objetivo }}  
+      </div>   
       <div class="mb-3">
         <label for="{{ formulario2.frecuencia.id_for_label }}" class="form-label">{{ formulario2.frecuencia.label }}</label>
         {{ formulario2.frecuencia }}  

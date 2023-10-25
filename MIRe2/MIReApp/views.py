@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
-from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito
-from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar
+from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito, Objetivos
+from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar, ObjetivoForm
 import json
 from django.db.utils import IntegrityError  # Importa la excepción de integridad
 
@@ -53,8 +53,10 @@ def crear_indicadores(request):
     else:
         formulario2 = IndicadorForm()
 
-    metricas = Metrica.objects.all()        
-    context = { 'formulario2': formulario2, 'metricas': metricas }
+    metricas = Metrica.objects.all()     
+    programas = Programa.objects.all()   
+    objetivos = Objetivos.objects.all()      
+    context = { 'formulario2': formulario2, 'metricas': metricas, 'programas':programas, 'objetivos': objetivos}
 
     return render(request, 'indicadores/crear.html', context)
 
@@ -190,12 +192,14 @@ def programas(request):
     programs = Programa.objects.all()
     return render(request, 'programas/index.html', {'programas': programs})
 
-
 def crear_programa(request):
+
     if request.method == 'POST':
         formulario = ProgramaForm(request.POST or None, request.FILES or None)   
         if formulario.is_valid():
             formulario.save()
+            prog = Programa.objects.get(nombre=formulario.cleaned_data['nombre'])
+            crear_objetivo(prog.id, prog.objetivo)
             messages.success(request, '¡Programa creado exitosamente!', extra_tags='alta-exitosa')
             return redirect('programas')
     else:
@@ -209,7 +213,6 @@ def editar_programas(request, id):
     programa = get_object_or_404(Programa, id=id)
     formulario = ProgramaFormEditar(request.POST or None, request.FILES or None, instance=programa)
     if request.method == 'POST':
-        # formulario = ProgramaFormEditar(request.POST, instance=programa)
         try:
             if formulario.is_valid():
                 formulario.save()
@@ -227,3 +230,42 @@ def eliminar_programas(request, id):
     programas.delete()
     messages.success(request, 'Programa eliminado exitosamente', extra_tags='elimicación-exitosa')
     return redirect('programas')
+
+def crear_objetivo(id, objetivo):
+    # Aca estaba el problema, cuando creo un objeto sin la plantilla HTML no tengo que usar el 
+    #ObjetivoForm (formulario), simplemente instancio el objeto con python
+    nuevo_objetivo = Objetivos()
+    nuevo_objetivo.programa = id
+    nuevo_objetivo.nombre = objetivo
+
+    # Guarda el objeto en la base de datos
+    nuevo_objetivo.save()
+
+    return JsonResponse({"success": True})
+
+def lista_indicadores(request):
+    # Estos son todos los id que tienen los tipos en la base de datos
+    # Por esto no andaba, buscabamos por nombre o por un id que no era el correcto
+    tipo_opciones = {
+        "Eficacia": ["1", "2", "4"],
+        "Eficiencia": ["3", "5", "8"],
+        "Calidad": ["6"],
+        "Economia": ["9"],
+    }
+    tipo = request.GET.get('tipo')
+    ambito = request.GET.get('ambito')
+    programa = request.GET.get('programa')
+    frecuencia = request.GET.get('periodicidad')
+    indicadores = Indicador.objects.all()
+
+    if tipo:
+        tipo = tipo_opciones[tipo]
+        indicadores = indicadores.filter(tipo__in=tipo)
+    if ambito:
+        indicadores = indicadores.filter(ambito=ambito)
+    if programa:
+        indicadores = indicadores.filter(programa=programa)
+    if frecuencia:
+        indicadores = indicadores.filter(frecuencia=frecuencia)
+
+    return render(request, 'indicadores/index.html', {'indicador': indicadores})

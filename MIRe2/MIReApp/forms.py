@@ -155,19 +155,7 @@ class IndicadorFormEditar(forms.ModelForm):
                 pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
         elif self.instance.pk:
             self.fields['tipo'].queryset = self.instance.ambito.tipo_set.order_by('nombre')
-
-
-class IndicadorFormVer(forms.ModelForm):
-    class Meta:
-        model = Indicador
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for i in self.fields:
-            self.fields[i].widget.attrs.update({'class':'form-control'})
-        
-
+      
 class ProgramaFormEditar(forms.ModelForm):
     class Meta:
         model = Programa

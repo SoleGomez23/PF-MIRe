@@ -57,6 +57,8 @@ class IndicadorForm(forms.ModelForm):
             'numerador_valor': forms.TextInput(attrs={'readonly': 'readonly'}),
             'denominador_valor': forms.TextInput(attrs={'readonly': 'readonly'}),
             'resultado': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'numerador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'denominador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -138,7 +140,14 @@ class IndicadorFormEditar(forms.ModelForm):
             'nombre': forms.Textarea(attrs={'cols': 10, 'rows': 1}),  
             'nombre': forms.TextInput(attrs={'readonly': 'readonly'}),      
             'frecuencia': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'formula': forms.TextInput(attrs={'readonly': 'readonly'})
+            'programa': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'objetivo': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'formula': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'numerador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'denominador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'numerador_valor': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'denominador_valor': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'resultado': forms.TextInput(attrs={'readonly': 'readonly'}),
         }
 
     def __init__(self, *args, **kwargs):

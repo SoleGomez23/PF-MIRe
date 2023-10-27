@@ -59,7 +59,7 @@ class IndicadorForm(forms.ModelForm):
             'resultado': forms.TextInput(attrs={'readonly': 'readonly'}),
             'numerador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
             'denominador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
-        }
+        }    
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -140,8 +140,8 @@ class IndicadorFormEditar(forms.ModelForm):
             'nombre': forms.Textarea(attrs={'cols': 10, 'rows': 1}),  
             'nombre': forms.TextInput(attrs={'readonly': 'readonly'}),      
             'frecuencia': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'programa': forms.TextInput(attrs={'readonly': 'readonly'}),
-            'objetivo': forms.TextInput(attrs={'readonly': 'readonly'}),
+            # 'programa': forms.TextInput(attrs={'readonly': 'readonly'}),
+            # 'objetivo': forms.TextInput(attrs={'readonly': 'readonly'}),
             'formula': forms.TextInput(attrs={'readonly': 'readonly'}),
             'numerador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
             'denominador_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
@@ -168,9 +168,10 @@ class IndicadorFormEditar(forms.ModelForm):
 class ProgramaFormEditar(forms.ModelForm):
     class Meta:
         model = Programa
-        fields = ['descripcion','objetivo','duracion']
+        fields = '__all__'
         widgets = {   
             'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
+            'nombre': forms.TextInput(attrs={'readonly': 'readonly'}), 
         }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

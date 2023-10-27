@@ -15,6 +15,7 @@ urlpatterns = [
     path('metricas', views.metricas, name='metricas'),
     path('error', views.error, name='error'),
     path('programas',views.programas, name='programas'),
+    path('programas/crear_objetivo',views.crear_objetivo2, name='crear_objetivo2'),
     path('programas/crear',views.crear_programa, name='crear_programa'),
     path('programas/eliminar/<int:id>', views.eliminar_programas, name='eliminar_programas'),
     path('programas/editar/<int:id>', views.editar_programas, name='editar_programas'),

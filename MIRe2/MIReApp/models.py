@@ -57,7 +57,7 @@ class Indicador(models.Model):
     descripcion = models.CharField(max_length=100, verbose_name='Descripción', blank=True, null=True) 
     ambito = models.ForeignKey('Ambito', on_delete=models.CASCADE)
     tipo = models.ForeignKey('Tipo', on_delete=models.CASCADE)
-    programa = models.ForeignKey('Programa', on_delete=models.CASCADE)
+    programa = models.ForeignKey('Programa', on_delete=models.SET_NULL, null=True, blank=True)
     objetivo = models.ForeignKey('Objetivos', on_delete=models.CASCADE, blank=True, null=True)
     frecuencia = models.CharField(verbose_name='Frecuencia de medición',max_length=10, choices=FRECUENCIAS)
     formula = models.CharField(max_length=20, choices= FORMULAS,verbose_name='Formula', blank=True) 
@@ -113,15 +113,16 @@ class Programa(models.Model):
                                                  code='invalid_nombre')
                               ])
     descripcion = models.CharField(max_length=50)
-    objetivo = models.CharField(max_length=100)
+    objetivo = models.CharField(max_length=100, blank=True, null=True)
     duracion = models.CharField(max_length=20)
 
     def __str__(self):
         return f"{self.nombre}"
 
 class Objetivos(models.Model):
+    id = models.AutoField(primary_key=True)
     programa = models.PositiveIntegerField()
-    nombre = models.CharField(max_length=15)
+    nombre = models.CharField(max_length=15, blank=True, null=True)
     
     def __str__(self):
         return self.nombre

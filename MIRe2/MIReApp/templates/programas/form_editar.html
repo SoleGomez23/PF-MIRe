@@ -24,20 +24,17 @@
                 <td><a class="btn eliminar-btn" data-id="{{ item.id }}" style="background-color: #f60;" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
             </tr>
         {% endfor %}                        
-    </table>
-      <div class="mb-3">
-        <input type="hidden" name="programa" value="{{ formulario.id }}">
-        <!-- <input type="hidden" name="nombre" value="{{ formulario.nombre }}"> -->
-        <label for="{{ form_objetivo.nombre.id_for_label }}" class="form-label">Nuevo Objetivo</label>
-        {{ form_objetivo.nombre }}  
+    </table>      
+    <label for="{{ form_objetivo.nombre.id_for_label }}" class="form-label">Nuevo Objetivo</label>
+    <div class="horizontal-fields" style="display:flex" style="flex-direction:row">
+      <div style="flex: 7; margin-right: 10px;">
+        {{ form_objetivo.nombre }} 
+        <div class="help-text">{{ formulario2.form_objetivo.errors }}</div>
+      </div>        
+      <div  style="flex: 1;">
+        <button class='rounded-4 fw-bold 'id="miBoton" type="button" style="border-radius: 3%; color:white;background-color: #965FB8;border-color: transparent;">Agregar</button>
       </div>
-      <button class='rounded-4 fw-bold 'id="miBoton" href="{% url 'editar_programas' id=12 %}" type="button" style="border-radius: 3%; color:white;background-color: #965FB8;border-color: transparent;">Guardar</button>
-    <div class="col-12 help-text">{{ form_objetivo.nombre.errors }}</div>  
-      <!-- <div class="mb-3">
-        <label for="{{ formulario.objetivo.id_for_label }}" class="form-label">{{ formulario.objetivo.label }}</label>
-        {{ formulario.objetivo }}  
-      </div>
-      <div class="col-12 help-text">{{ formulario.objetivo.errors }}</div> -->
+    </div>
       <div class="mb-3">
         <label for="{{ formulario.duracion.id_for_label }}" class="form-label">{{ formulario.duracion.label }}</label>
         {{ formulario.duracion }}  
@@ -67,6 +64,7 @@
 }
 const csrftoken = getCookie('csrftoken');
 let boton = document.getElementById("miBoton"); 
+// Cuando el usuario hace clic en el boton guardar se hace una llamada a la vista crear objetivo2 para crear el objetivo
 boton.addEventListener("click", agregar_objetivo)
 function agregar_objetivo(){     
   let objetivo = document.getElementById("id_nombre"); 
@@ -92,6 +90,7 @@ console.log('Success:', data[0]['nombre']);
 .catch((error) => {
   console.error('Error:', error);
 })
+// Cuando se termina de cargar el objetivo se refresca la pagina para que se actualice la tabla
 location.reload();
 }
 </script>

@@ -278,36 +278,6 @@ def crear_objetivo2(request):
         programa = request.POST.get('programa')
         print(progrma)
 
-from django.shortcuts import render
-
-# def editar_programas(request, id):
-#     programa = get_object_or_404(Programa, id=id)
-#     objetivos = Objetivos.objects.filter(programa=id)
-#     # formulario = ProgramaFormEditar(request.POST or None, request.FILES or None, instance=programa)
-#     form_objetivo = ObjetivoForm(request.POST or None, request.FILES or None)
-
-#     if request.method == 'POST':
-#         form_programa = ProgramaFormEditar(request.POST or None, request.FILES or None, instance=programa)
-#         form_objetivos = ObjetivoForm(request.POST)
-
-#         if form_programa.is_valid() and form_objetivos.is_valid():
-#             # Guardar el autor
-#             programa = form_programa.save()
-
-#             # Asociar el autor al libro
-#             objetivos = form_objetivos.save(commit=False)
-#             objetivos.programa = programa
-#             objetivos.save()
-
-#             # Resto de la lógica
-
-#     else:
-#         form_programa = ProgramaFormEditar()
-#         form_objetivos = ObjetivoForm()
-
-#     return render(request, 'programas/editar.html', {'objetivos':form_objetivos, 'programa': formulario, 'programa':form_programa, 'objetivos':objetivos})
-
-
 def crear_objetivo2(request):
     data = json.loads(request.body)
     # Aca estaba el problema, cuando creo un objeto sin la plantilla HTML no tengo que usar el 
@@ -318,7 +288,5 @@ def crear_objetivo2(request):
 
     # Guarda el objeto en la base de datos
     nuevo_objetivo.save()
-
-    print('Funcionó')
 
     return JsonResponse({"success": True})

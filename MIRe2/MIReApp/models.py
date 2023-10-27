@@ -114,7 +114,7 @@ class Programa(models.Model):
                               ])
     descripcion = models.CharField(max_length=50)
     objetivo = models.CharField(max_length=100, blank=True, null=True)
-    duracion = models.CharField(max_length=20)
+    duracion = models.PositiveIntegerField()
 
     def __str__(self):
         return f"{self.nombre}"

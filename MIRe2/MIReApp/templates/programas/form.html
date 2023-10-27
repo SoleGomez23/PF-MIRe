@@ -1,15 +1,29 @@
 <form enctype="multipart/form-data" method="post">
   {% csrf_token %}  
-  {% for campo in formulario %}
     <div class="mb-3">
-      <label for="{{ campo.id_for_label }}" class="form-label">{{ campo.label }}</label>
-
-      {{ campo }}
-
+    <label for="{{ formulario.nombre.id_for_label }}" class="form-label">{{ formulario.nombre.label }}</label>
+      {{ formulario.nombre }}
     </div>
-    <div class="col-12 help-text">{{ campo.errors }}</div>
-  {% endfor %}
+    <div class="col-12 help-text">{{ formulario.nombre.errors }}</div>
 
+    <div class="mb-3">
+      <label for="{{ formulario.descripcion.id_for_label }}" class="form-label">{{ formulario.descripcion.label }}</label>
+        {{ formulario.descripcion }}
+      </div>
+      <div class="col-12 help-text">{{ formulario.descripcion.errors }}</div>
+      
+    <div class="mb-3">
+    <label for="{{ formulario.objetivo.id_for_label }}" class="form-label">{{ formulario.objetivo.label }}</label>
+      {{ formulario.objetivo }}
+    </div>
+    <div class="col-12 help-text">{{ formulario.objetivo.errors }}</div>
+
+    <div class="mb-3">
+    <label for="{{ formulario.duracion.id_for_label }}" class="form-label">{{ formulario.duracion.label }} (en meses)</label>
+      {{ formulario.duracion }}
+    </div>
+    <div class="col-12 help-text">{{ formulario.duracion.errors }}</div>
+  
   <input name="" id="" class="btn btn-success" style="background-color: #965FB8; border-color: #a020ba;" type="submit" value="Confirmar">
   <a name="" id="" class="btn btn-success" style="background-color: #f60; border-color: #f60;" href="{% url 'programas' %}" role="button">Cancelar</a>
 </form>

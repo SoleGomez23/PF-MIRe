@@ -15,6 +15,22 @@ class MetricaForm(forms.ModelForm):
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'}) #Le agrega la clase form control a todos los campos
 
+class MetricaFormEditar(forms.ModelForm):
+    class Meta:
+        model = Metrica
+        fields = ['titulo', 'descripcion', 'unidad_medida', 'frecuencia']
+        widgets = {
+            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
+            'titulo': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'unidad_medida': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'frecuencia': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.fields:
+            self.fields[i].widget.attrs.update({'class':'form-control'})
+            
 class ProgramaForm(forms.ModelForm):
     class Meta:
         model = Programa
@@ -118,19 +134,6 @@ class IndicadorForm(forms.ModelForm):
                 pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
         elif self.instance.pk:
             self.fields['denominador_periodo'].queryset = self.instance.denominador_periodo.tipo_set.order_by('id')
-
-class MetricaFormEditar(forms.ModelForm):
-    class Meta:
-        model = Metrica
-        fields = ['descripcion']
-        widgets = {
-            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for i in self.fields:
-            self.fields[i].widget.attrs.update({'class':'form-control'})
 
 class IndicadorFormEditar(forms.ModelForm):
     class Meta:

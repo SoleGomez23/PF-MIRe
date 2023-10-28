@@ -33,8 +33,8 @@ class Metrica(models.Model):
                                                             message="La unidad de medida no puede contener caracteres especiales",
                                                             code='invalid_nombre')
                                         ])
-    valor = models.IntegerField(verbose_name='Valor', validators=[MinValueValidator(0, message="El valor no puede ser negativo")], default=0)
     frecuencia = models.CharField(max_length=10, choices=FRECUENCIAS)
+    valor = models.IntegerField(verbose_name='Valor', validators=[MinValueValidator(0, message="El valor no puede ser negativo")], default=0)
     year = models.PositiveIntegerField(verbose_name='Ingrese año:', validators=[validate_year])
     month = models.CharField(max_length=10, verbose_name='Ingrese mes:', choices=MESES, blank=True, null=True)
     semestral = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
@@ -112,7 +112,7 @@ class Programa(models.Model):
                                                  message="El nombre no puede contener caracteres especiales.",
                                                  code='invalid_nombre')
                               ])
-    descripcion = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=50, blank=True, null=True)
     objetivo = models.CharField(max_length=100, blank=True, null=True)
     duracion = models.PositiveIntegerField()
 
@@ -122,7 +122,7 @@ class Programa(models.Model):
 class Objetivos(models.Model):
     id = models.AutoField(primary_key=True)
     programa = models.PositiveIntegerField()
-    nombre = models.CharField(max_length=15, blank=True, null=True)
+    nombre = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         return self.nombre

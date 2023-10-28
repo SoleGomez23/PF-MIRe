@@ -40,11 +40,27 @@ class ProgramaForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for i in self.fields:
             self.fields[i].widget.attrs.update({'class':'form-control'}) #Le agrega la clase form control a todos los campos
+      
+class ProgramaFormEditar(forms.ModelForm):
+    class Meta:
+        model = Programa
+        fields = '__all__'
+        widgets = {   
+            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
+            'nombre': forms.TextInput(attrs={'readonly': 'readonly'}), 
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for i in self.fields:
+            self.fields[i].widget.attrs.update({'class':'form-control'})
 
 class ObjetivoForm(forms.ModelForm):
     class Meta:
         model = Objetivos
         fields = '__all__'
+        widgets = { 
+            'nombre' : forms.TextInput(attrs={'id': 'nombre_objetivo'})
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -167,16 +183,3 @@ class IndicadorFormEditar(forms.ModelForm):
                 pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
         elif self.instance.pk:
             self.fields['tipo'].queryset = self.instance.ambito.tipo_set.order_by('nombre')
-      
-class ProgramaFormEditar(forms.ModelForm):
-    class Meta:
-        model = Programa
-        fields = '__all__'
-        widgets = {   
-            'descripcion': forms.Textarea(attrs={'cols': 10, 'rows': 3}),
-            'nombre': forms.TextInput(attrs={'readonly': 'readonly'}), 
-        }
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for i in self.fields:
-            self.fields[i].widget.attrs.update({'class':'form-control'})

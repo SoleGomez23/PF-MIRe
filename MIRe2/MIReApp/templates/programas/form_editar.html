@@ -36,11 +36,12 @@
         <button class='rounded-4 fw-bold 'id="miBoton" type="button" style="border-radius: 3%; color:white;background-color: #965FB8;border-color: transparent;">Agregar</button>
       </div>
     </div>
-      <div class="mb-3">
-        <label for="{{ formulario.duracion.id_for_label }}" class="form-label">{{ formulario.duracion.label }}</label>
-        {{ formulario.duracion }}  
-      </div>
-      <div class="col-12 help-text">{{ formulario.duracion.errors }}</div>  
+    <br>
+    <div class="mb-3">
+      <label for="{{ formulario.duracion.id_for_label }}" class="form-label">{{ formulario.duracion.label }}</label>
+      {{ formulario.duracion }}  
+    </div>
+    <div class="col-12 help-text">{{ formulario.duracion.errors }}</div>  
 
 
   <input name="" id="" class="btn btn-success min-content" style="background-color: #965FB8;border-color: #965FB8;margin-left: 206px;" type="submit" value="Confirmar">
@@ -60,38 +61,34 @@
               break;
           }
       }
+    }
+    return cookieValue;
   }
-  return cookieValue;
-}
-const csrftoken = getCookie('csrftoken');
-let boton = document.getElementById("miBoton"); 
-// Cuando el usuario hace clic en el boton guardar se hace una llamada a la vista crear objetivo2 para crear el objetivo
-boton.addEventListener("click", agregar_objetivo)
-function agregar_objetivo(){     
-  let objetivo = document.getElementById("id_nombre"); 
-  console.log(objetivo.value);  
-  let programa = "{{ programa.id }}"
-  console.log(programa);
-  const data = { programa: programa, nombre:objetivo.value} //Agrega el ambito a un objeto 
-  let url = " {% url 'crear_objetivo2' %} "
-  console.log('hola');   
-  console.log(programa); 
-  fetch(url, { //Hace la request HTTP
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-CSRFToken': csrftoken
-  },
-  body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
-})
-.then(response => response.json())
-.then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
-console.log('Success:', data[0]['nombre']);
-})
-.catch((error) => {
-  console.error('Error:', error);
-})
-// Cuando se termina de cargar el objetivo se refresca la pagina para que se actualice la tabla
-location.reload();
-}
+  const csrftoken = getCookie('csrftoken');
+  let boton = document.getElementById("miBoton"); 
+  // Cuando el usuario hace clic en el boton guardar se hace una llamada a la vista crear objetivo2 para crear el objetivo
+  boton.addEventListener("click", agregar_objetivo)
+  function agregar_objetivo(){     
+    let objetivo = document.getElementById("nombre_objetivo"); 
+    let programa = "{{ programa.id }}"
+    const data = { programa: programa, nombre:objetivo.value}
+    let url = " {% url 'crear_objetivo2' %} "
+    fetch(url, { //Hace la request HTTP
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': csrftoken
+    },
+    body: JSON.stringify(data), //envia en la id del ambito elegido, la que se guardo mas arriba en la variable data
+    })
+    .then(response => response.json())
+    .then(data => { //se reutiliza la variable data para guardr el resultado, osea todos los tipos relacionados con el ambito elegido
+      console.log('Success:', data[0]['nombre']);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    })
+    // Cuando se termina de cargar el objetivo se refresca la pagina para que se actualice la tabla
+    location.reload();
+  }
 </script>

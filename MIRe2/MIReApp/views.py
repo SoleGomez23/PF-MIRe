@@ -136,7 +136,7 @@ def historial_metrica(request, metrica_id, valor=0, año2=0, año=0, semestral=0
                     historial_metrica = HistorialMetrica(metrica=metrica, año_historico=nuevo_año, semestre_historico=nuevo_semestre, valor_historico=nuevo_valor)
                     historial_metrica.save()
                     messages.success(request, '¡Instancia creada exitosamente!', extra_tags='alta-exitosa')
-            elif (metrica.frecuencia == 'Bianual') or (metrica.frecuencia == 'Cuatrianual' ):
+            elif (metrica.frecuencia == 'Bianual') or (metrica.frecuencia == 'Cuatrienal' ):
                 nuevo_año2 = int(request.POST['año2_historico'])
                 if HistorialMetrica.objects.filter(metrica=metrica, año_historico=nuevo_año, año2_historico=nuevo_año2).exists():
                     messages.error(request, 'Error: La instancia ingresada ya está registrada en el historial.')

@@ -20,28 +20,6 @@
 <br>
 <br>
 <br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
   <div class="contenedor">
 
         <div class="col-md-6 rounded-4" style="padding: 40px;">
@@ -70,62 +48,74 @@
     </div>
   </div> 
   <br> 
-  <div class="dropdown">
-  <button class="btn dropdown-toggle" style="background-color: #D7A5FF;" type="button" data-bs-toggle="dropdown" aria-expanded="false">Área</button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Decanato</a>
-    <a class="dropdown-item" href="#">Sec. Académica</a>
-    <a class="dropdown-item" href="#">Sec. Administrativa</a>
-    <a class="dropdown-item" href="#">Sec. de Asuntos Universitarios</a>
-    <a class="dropdown-item" href="#">Sec. de Extensión Universitaria</a>
-    <a class="dropdown-item" href="#">Sec. de Ciencia y Tecnología</a>
-    <a class="dropdown-item" href="#">Sec. de Relaciones Internacionales</a>
-    <a class="dropdown-item" href="#">Sec. de Infraestructura</a>
-    <a class="dropdown-item" href="#">Depto. de Carreras</a>
-
-  </div>
-  <button class="btn dropdown-toggle" style="background-color: #f60;" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Tipo
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Calidad</a>
-    <a class="dropdown-item" href="#">Eficacia</a>
-    <a class="dropdown-item" href="#">Economía</a>
-    <a class="dropdown-item" href="#">Eficiencia</a>
-  </div>
-  <button class="btn dropdown-toggle" style="background-color: #ffd500;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Ámbito</button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Actividad</a>
-    <a class="dropdown-item" href="#">Componente</a>
-    <a class="dropdown-item" href="#">Propósito</a>
-    <a class="dropdown-item" href="#">Fin</a>
-  </div>
-  <button class="btn border dropdown-toggle" style="background-color: #ffff;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Programa</button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Repensando UTN</a>
-    <a class="dropdown-item" href="#">otro</a>
-  </div>
-  <button class="btn dropdown-toggle" style="background-color: #965FB8;" type="button"data-bs-toggle="dropdown" aria-expanded="false">Perioricidad</button>
+  <br>
+  <br>
+  <form method="GET" action="{% url 'inicio2' %}" class="d-flex flex-row">
+    <div class="form-group">
+        <select name="tipo" id="tipo" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="margin-left: 20px;width:min-content;border-color: #D7A5FF;border-width: 3px;">
+            <option value="">Tipo</option>
+            <option value="Calidad">Calidad</option>
+            <option value="Eficacia">Eficacia</option>
+            <option value="Economía">Economía</option>
+            <option value="Eficiencia">Eficiencia</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <select name="ambito" id="ambito" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="width:min-content;border-color: #D7A5FF;border-width: 3px;">
+            <option value="">Ámbito</option>
+            <option value="4">Actividad</option>
+            <option value="3">Componente</option>
+            <option value="2">Propósito</option>
+            <option value="1">Fin</option>
+        </select>
+    </div>
+  
+    <div class="form-group">
+        <select name="programa" id="programa" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="width:min-content;border-color: #D7A5FF;border-width: 3px;">
+            <option value="">Programa</option>
+            {% for programa in programas %}
+                <option value="{{ programa.id }}">{{ programa.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <select name="periodicidad" id="periodicidad" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="width:min-content;border-color: #D7A5FF;border-width: 3px;">
+            <option value="">Periodicidad</option>
+            <option value="Anual">Anual</option>
+            <option value="Bianual">Bianual</option>
+            <option value="Cuatrienal">Cuatrienal</option>
+            <option value="Semestral">Semestral</option>
+            <option value="Mensual">Mensual</option>
+        </select>
+    </div> 
+    
+    <button id="miBoton" type="submit" class="btn rounded-4"style="background-color:#D7A5FF; color: #000000;border-color: #965FB8;border-width: 3px;width:min-content">Filtrar</button>
+</form>
+  <br>
+  {% for indi in indicadores %}
+        <div class="indicador rounded-4" >
+            <h2>{{ indi.nombre }}</h2>
+            <p>{{ indi.frecuencia }}</p>
+        </div>
+  {% endfor %}
   </div>
     <br> 
-    <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #D7A5FF;">
-        <img src="/../static/images/grafica.png" class="col-md-3"> 
-    </div>
-    <br>
-    <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #D7A5FF;">
-        <h6 class='text-center' style="color: black;">Nivel de satisfaccion respecto<br/> a la implementación del repensando </h6>
     <br>
     <br>
-    <br>
-    <br>
-    </div>
-    <br>
-    <div class="h-30 p-5 text-white border rounded-pill" style="background-color: #D7A5FF;">
-      <h6 class='text-center' style="color: black;">Acá se verian los<br/> Indicadores</h6>
-  <br>
-  <br>
-  <br>
-  <br>
-  </div>
 <br>
+
+<style>
+  .indicador {
+      width: 100%;
+      /* height: 100vh; Ocupa toda la altura de la pantalla */
+      background-color:  #D7A5FF;
+      padding: 20px;
+      margin-bottom: 20px;
+  }
+</style>
+
+
+
+
 {% endblock %}

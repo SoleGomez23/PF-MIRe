@@ -73,7 +73,7 @@ class Indicador(models.Model):
     estado = models.CharField(max_length=100, verbose_name='Descripción', blank=True, null=True) 
 
     def __str__(self):
-        fila = 'Nombre: ' + self.nombre + ' - ' + 'Descripcíon: ' + self.descripcion
+        fila = 'Nombre: ' + self.nombre
         return fila
     
 class HistorialMetrica(models.Model):

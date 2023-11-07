@@ -5,7 +5,9 @@ from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
+    path('inicio2', views.inicio2, name='inicio2'),
     path('tipos', views.tipos, name = "tipos"),
+    path('crear_excel', views.crear_excel, name="crear_excel"),
     path('valores', views.valores, name = "valores"),
     path('medidas', views.medidas, name = "medidas"),
     path('listarMetricas', views.listarMetricas, name = "listarMetricas"),

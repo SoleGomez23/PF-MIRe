@@ -171,6 +171,7 @@ function cargarTipos(e){
     const data = { user_id: ambito_id} //Agrega el ambito a un objeto 
     let url = " {% url 'tipos' %} " //Configura la url en la que buscará los tipos, en este caso es la vista de tipos (ver en views.py)
 
+    console.log(typeof dato);
   fetch(url, { //Hace la request HTTP
     method: 'POST',
     headers: {

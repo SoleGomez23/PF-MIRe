@@ -4,10 +4,41 @@ from django.http import HttpResponse, JsonResponse
 from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito, Objetivos
 from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar, ObjetivoForm
 import json
+from django.core import serializers
 from django.db.utils import IntegrityError  # Importa la excepción de integridad
 
 def inicio(request):
-    return render(request, 'paginas/inicio.html')
+    indicadores = Indicador.objects.all()
+    programas = Programa.objects.all()    
+    return render(request, 'paginas/inicio.html', {'indicadores': indicadores, 'programas': programas})
+
+def inicio2(request):
+    indicadores = Indicador.objects.all() 
+    programas = Programa.objects.all()    
+    tipo_opciones = {
+        "Eficacia": ["1", "2", "4"],
+        "Eficiencia": ["3", "5", "8"],
+        "Calidad": ["6"],
+        "Economia": ["9"],
+    }
+    tipo = request.GET.get('tipo')
+    ambito = request.GET.get('ambito')
+    programa = request.GET.get('programa')
+    frecuencia = request.GET.get('periodicidad')
+
+    if tipo:
+        tipo = tipo_opciones[tipo]
+        indicadores = indicadores.filter(tipo__in=tipo)
+    if ambito:
+        indicadores = indicadores.filter(ambito=ambito)
+    if programa:
+        indicadores = indicadores.filter(programa=programa)
+    if frecuencia:
+        print(frecuencia)
+        indicadores = indicadores.filter(frecuencia=frecuencia)
+        print(indicadores)
+
+    return render(request, 'paginas/inicio.html', {'indicadores': indicadores, 'programas': programa})
 
 def nosotros(request):
     return render(request, 'paginas/nosotros.html')
@@ -27,10 +58,12 @@ def metricas(request):
 
 def indicadores(request):
     indicadores = Indicador.objects.all()
+    json_data = serializers.serialize("json", indicadores)
+    
     tipos = Tipo.objects.all()
     ambitos = Ambito.objects.all()
     programas = Programa.objects.all()
-    return render(request, 'indicadores/index.html', {'indicador': indicadores,'tipos': tipos,'ambitos': ambitos,'programas': programas,})
+    return render(request, 'indicadores/index.html', {'indicador': indicadores,'tipos': tipos,'ambitos': ambitos,'programas': programas,'json_data':json_data})
 
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
@@ -249,6 +282,7 @@ def crear_objetivo(id, objetivo):
 def lista_indicadores(request):
     # Estos son todos los id que tienen los tipos en la base de datos
     # Por esto no andaba, buscabamos por nombre o por un id que no era el correcto
+
     tipo_opciones = {
         "Eficacia": ["1", "2", "4"],
         "Eficiencia": ["3", "5", "8"],
@@ -260,6 +294,7 @@ def lista_indicadores(request):
     programa = request.GET.get('programa')
     frecuencia = request.GET.get('periodicidad')
     indicadores = Indicador.objects.all()
+    json_data = serializers.serialize("json", indicadores)
 
     if tipo:
         tipo = tipo_opciones[tipo]
@@ -271,7 +306,7 @@ def lista_indicadores(request):
     if frecuencia:
         indicadores = indicadores.filter(frecuencia=frecuencia)
 
-    return render(request, 'indicadores/index.html', {'indicador': indicadores})
+    return render(request, 'indicadores/index.html', {'indicador': indicadores, 'json_data':json_data})
 
 def crear_objetivo2(request):
     if request.method == 'POST':
@@ -290,3 +325,11 @@ def crear_objetivo2(request):
     nuevo_objetivo.save()
 
     return JsonResponse({"success": True})
+
+def crear_excel(request):
+    print('hola')
+    data = json.loads(request.body)
+    print(type(data))
+
+    return JsonResponse({"success": True})
+

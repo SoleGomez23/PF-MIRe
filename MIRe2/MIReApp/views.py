@@ -396,52 +396,45 @@ def crear_excel(request):
     data = json.loads(request.body)
     data_str_fixed = unescape(data['indicador'])
     decoded_data = json.loads(data_str_fixed)
+    lista_ambitos = ['Fin', 'Propósito', 'Componente', 'Actividades']
 
     # Usar un búfer de memoria para guardar el libro de Excel
     output = io.BytesIO()
+    # Crea el archivo de excel y lo guard en el bufer
     libro = xlsxwriter.Workbook(output)
+    # Crea la hoja en el excel
     hoja = libro.add_worksheet()
-
+    #Escribe las cabeceras de las columnas
     hoja.write(0, 0, 'Nombre')
     hoja.write(0, 1, 'Descripción')
     hoja.write(0, 2, 'Ámbito')
     hoja.write(0, 3, 'Frecuencia')
     hoja.write(0, 4, 'Periodo')
     hoja.write(0, 5, 'Valor')
-
+    # Recorre los indicadores y los ingresa en las celdas
     row = 1
-    col = 0
-
     for indicador in decoded_data:
         # Acceder a los campos del indicador
         nombre = indicador['fields']['nombre']
         descripcion = indicador['fields']['descripcion']
-        ambito = indicador['fields']['ambito']
-        if ambito == 1:
-            ambito = 'Fin'
-        elif ambito == 2:
-            ambito = 'Propósito'
-        elif ambito == 3:
-            ambito = 'Componente'
-        else:
-            ambito = 'Actividades'
+        id_ambito = indicador['fields']['ambito']#Obtiene el id del ambito
+        ambito = lista_ambitos[id_ambito-1]#Lo transforma en el nombre del ambito
         frecuencia = indicador['fields']['frecuencia']
-        periodo = indicador['fields']['numerador_periodo']
+        id_instancia = indicador['fields']['numerador_periodo']
         valor = indicador['fields']['resultado']
-        print(periodo)
-        instance = HistorialMetrica.objects.filter(id=periodo)
-        primer_historial = instance.first()
-        variable = 0
-        if primer_historial != None:
-            variable = str(primer_historial)
-        print(primer_historial)
 
-        hoja.write(row, col, nombre)
-        hoja.write(row, col + 1, descripcion)
-        hoja.write(row, col + 2, ambito)
-        hoja.write(row, col + 3, frecuencia)
-        hoja.write(row, col + 4, variable)
-        hoja.write(row, col + 5, valor)
+        instancia = HistorialMetrica.objects.filter(id=id_instancia)
+        instancia = instancia.first()
+        periodo = '-'
+        if instancia != None:
+            periodo = str(instancia)
+
+        hoja.write(row, 0, nombre)
+        hoja.write(row, 1, descripcion)
+        hoja.write(row, 2, ambito)
+        hoja.write(row, 3, frecuencia)
+        hoja.write(row, 4, periodo)
+        hoja.write(row, 5, valor)
         row += 1
 
     libro.close()

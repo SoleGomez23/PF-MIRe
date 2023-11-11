@@ -87,11 +87,11 @@ class HistorialMetrica(models.Model):
 
     def __str__(self):
         if self.mes_historico:
-            return str(self.año_historico)+ '-' + str(self.mes_historico)
+            return str(self.año_historico)+ ' - ' + str(self.mes_historico)
         elif self.semestre_historico:
-            return str(self.año_historico)+ '-' + str(self.semestre_historico)
+            return str(self.año_historico)+ ' - ' + str(self.semestre_historico)
         elif self.año2_historico:
-            return str(self.año_historico)+ '-' + str(self.año2_historico)
+            return str(self.año_historico)+ ' - ' + str(self.año2_historico)
         else:
             return str(self.año_historico)
 

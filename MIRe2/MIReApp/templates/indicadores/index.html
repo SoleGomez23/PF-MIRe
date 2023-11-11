@@ -192,35 +192,45 @@
         }
     }
     return cookieValue;
-}
+    }
+
     const csrftoken = getCookie('csrftoken');
     let boton = document.getElementById("miBoton")
     console.log('hola');
     boton.addEventListener("click", exportar)
-    function exportar(){
-      indicador = '{{ json_data }}'
-      console.log(indicador);
-      const data = JSON.stringify({indicador});
-      let url = " {% url 'crear_excel' %} " 
-  
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrftoken
-      },
-      body: data 
-    })
-    .then(response => response.json())
-    .then(data => { 
     
+function exportar() {
+    indicador = '{{ json_data }}';
+    console.log(indicador);
+    const data = JSON.stringify({ indicador });
+    let url = "{% url 'crear_excel' %}";
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+        },
+        body: data
+    })
+    .then(response => response.blob())  // Convertir la respuesta a un Blob
+    .then(blob => {
+        // Crear un enlace de descarga
+        const downloadLink = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        downloadLink.href = url;
+        downloadLink.download = 'Informe_indicadores.xlsx';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        window.URL.revokeObjectURL(url);
     })
     .catch((error) => {
-      console.error('Error:', error);
+        console.error('Error:', error);
     });
-    }
-  </script>
+}
 
+  </script>
 </div>
 </center>
 

@@ -9,6 +9,10 @@ from django.utils.http import quote
 from django.db.utils import IntegrityError  # Importa la excepción de integridad
 from html import unescape
 import xlsxwriter
+from datetime import datetime
+import django_excel as excel
+import io
+from django.views.decorators.csrf import csrf_exempt
 
 def inicio(request):
     indicadores = Indicador.objects.all()
@@ -330,12 +334,14 @@ def crear_objetivo2(request):
 
     return JsonResponse({"success": True})
 
-def crear_excel(request):
+def crear_excel2(request):
     data = json.loads(request.body)
     data_str_fixed = unescape(data['indicador'])
     decoded_data = json.loads(data_str_fixed)
- 
-    libro = xlsxwriter.Workbook('Informe_indicadores.xlsx')
+
+    # Usar un búfer de memoria para guardar el libro de Excel
+    output = io.BytesIO()
+    libro = xlsxwriter.Workbook(output)
     hoja = libro.add_worksheet()
 
     hoja.write(0, 0, 'Nombre')
@@ -349,11 +355,9 @@ def crear_excel(request):
     col = 0
 
     for indicador in decoded_data:
-    # Acceder a los campos del indicador
+        # Acceder a los campos del indicador
         nombre = indicador['fields']['nombre']
-        print(nombre, end=', ')
         descripcion = indicador['fields']['descripcion']
-        print(descripcion, end=', ')
         ambito = indicador['fields']['ambito']
         if ambito == 1:
             ambito = 'Fin'
@@ -363,7 +367,6 @@ def crear_excel(request):
             ambito = 'Componente'
         else:
             ambito = 'Actividades'
-        # print(ambito)
         frecuencia = indicador['fields']['frecuencia']
         periodo = indicador['fields']['numerador_periodo']
         valor = indicador['fields']['resultado']
@@ -374,16 +377,73 @@ def crear_excel(request):
         hoja.write(row, col + 4, periodo)
         hoja.write(row, col + 5, valor)
         row += 1
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    
-    # Configurar el encabezado para que el navegador interprete la respuesta como un archivo adjunto
-    filename = "Informe_indicadores.xlsx"
-    response['Content-Disposition'] = f'attachment; filename="{quote(filename)}"'
 
-    # Guardar el libro de Excel en el cuerpo de la respuesta
-    # libro.save(response)
-
-    # Devolver la respuesta HTTP
     libro.close()
 
+    # Establecer la posición del búfer en el inicio
+    output.seek(0)
+
+    # Crear la respuesta HTTP con el archivo adjunto
+    response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=Informe_indicadores.xlsx'
+
+    # Devolver la respuesta HTTP
+    return response
+
+
+@csrf_exempt  # Solo para simplificar el ejemplo. Considera usar csrf_exempt con precaución.
+def crear_excel(request):
+    data = json.loads(request.body)
+    data_str_fixed = unescape(data['indicador'])
+    decoded_data = json.loads(data_str_fixed)
+
+    # Usar un búfer de memoria para guardar el libro de Excel
+    output = io.BytesIO()
+    libro = xlsxwriter.Workbook(output)
+    hoja = libro.add_worksheet()
+
+    hoja.write(0, 0, 'Nombre')
+    hoja.write(0, 1, 'Descripción')
+    hoja.write(0, 2, 'Ámbito')
+    hoja.write(0, 3, 'Frecuencia')
+    hoja.write(0, 4, 'Periodo')
+    hoja.write(0, 5, 'Valor')
+
+    row = 1
+    col = 0
+
+    for indicador in decoded_data:
+        # Acceder a los campos del indicador
+        nombre = indicador['fields']['nombre']
+        descripcion = indicador['fields']['descripcion']
+        ambito = indicador['fields']['ambito']
+        if ambito == 1:
+            ambito = 'Fin'
+        elif ambito == 2:
+            ambito = 'Propósito'
+        elif ambito == 3:
+            ambito = 'Componente'
+        else:
+            ambito = 'Actividades'
+        frecuencia = indicador['fields']['frecuencia']
+        periodo = indicador['fields']['numerador_periodo']
+        valor = indicador['fields']['resultado']
+        hoja.write(row, col, nombre)
+        hoja.write(row, col + 1, descripcion)
+        hoja.write(row, col + 2, ambito)
+        hoja.write(row, col + 3, frecuencia)
+        hoja.write(row, col + 4, periodo)
+        hoja.write(row, col + 5, valor)
+        row += 1
+
+    libro.close()
+
+    # Establecer la posición del búfer en el inicio
+    output.seek(0)
+
+    # Crear la respuesta HTTP con el archivo adjunto
+    response = HttpResponse(output.getvalue(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=Informe_indicadores.xlsx'
+
+    # Devolver la respuesta HTTP
     return response

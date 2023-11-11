@@ -14,12 +14,10 @@ import django_excel as excel
 import io
 from django.views.decorators.csrf import csrf_exempt
 
-def inicio(request):
-    indicadores = Indicador.objects.all()
-    programas = Programa.objects.all()    
-    return render(request, 'paginas/inicio.html', {'indicadores': indicadores, 'programas': programas})
+lista_tipos = ['Eficacia','Eficacia','Eficiencia','Eficacia','Eficiencia','Calidad','Eficacia','Eficiencia','Economia']
+lista_ambitos = ['Fin', 'Propósito', 'Componente', 'Actividades']
 
-def inicio2(request):
+def inicio(request):
     indicadores = Indicador.objects.all() 
     programas = Programa.objects.all()    
     tipo_opciones = {
@@ -41,9 +39,7 @@ def inicio2(request):
     if programa:
         indicadores = indicadores.filter(programa=programa)
     if frecuencia:
-        print(frecuencia)
         indicadores = indicadores.filter(frecuencia=frecuencia)
-        print(indicadores)
 
     return render(request, 'paginas/inicio.html', {'indicadores': indicadores, 'programas': programa})
 
@@ -66,12 +62,34 @@ def metricas(request):
 def indicadores(request):
     indicadores = Indicador.objects.all()
     json_data = serializers.serialize("json", indicadores)
-    print(json_data)
-    
     tipos = Tipo.objects.all()
     ambitos = Ambito.objects.all()
     programas = Programa.objects.all()
-    return render(request, 'indicadores/index.html', {'indicador': indicadores,'tipos': tipos,'ambitos': ambitos,'programas': programas,'json_data':json_data})
+
+    tipo_opciones = {
+        "Eficacia": ["1", "2", "4"],
+        "Eficiencia": ["3", "5", "8"],
+        "Calidad": ["6"],
+        "Economía": ["9"],
+    }
+    tipo = request.GET.get('tipo')
+    ambito = request.GET.get('ambito')
+    programa = request.GET.get('programa')
+    frecuencia = request.GET.get('periodicidad')
+    indicadores = Indicador.objects.all()
+    json_data = serializers.serialize("json", indicadores)
+
+    if tipo:
+        tipo = tipo_opciones[tipo]
+        indicadores = indicadores.filter(tipo__in=tipo)
+    if ambito:
+        indicadores = indicadores.filter(ambito=ambito)
+    if programa:
+        indicadores = indicadores.filter(programa=programa)
+    if frecuencia:
+        indicadores = indicadores.filter(frecuencia=frecuencia)
+
+    return render(request, 'indicadores/index.html', {'indicador': indicadores, 'json_data':json_data, 'tipos': tipos, 'ambitos': ambitos, 'programas': programas})
 
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
@@ -224,10 +242,9 @@ def valores(request):
     instances = HistorialMetrica.objects.filter(id=data['user_id'])
     return JsonResponse(list(instances.values("id", "valor_historico")), safe=False)
 
-def listarMetricas(request):
+def listar_metricas(request):
     data = json.loads(request.body)
     metricas = Metrica.objects.filter(frecuencia=data['user_id'])
-    print(list(metricas.values("id", "titulo")))
     return JsonResponse(list(metricas.values("id", "titulo")), safe=False)
 
 def programas(request):
@@ -262,8 +279,6 @@ def editar_programas(request, id):
                 formulario.save()
                 messages.success(request, '¡Cambios guardados exitosamente!', extra_tags='modificación-exitosa')
                 return redirect('programas')
-            else:
-                print(formulario.errors)
         except IntegrityError as e:
             messages.error(request, 'Error al guardar los cambios: {}'.format(e), extra_tags='error-guardado')
     
@@ -287,116 +302,10 @@ def crear_objetivo(id, objetivo):
 
     return JsonResponse({"success": True})
 
-def lista_indicadores(request):
-    # Estos son todos los id que tienen los tipos en la base de datos
-    # Por esto no andaba, buscabamos por nombre o por un id que no era el correcto
-
-    tipo_opciones = {
-        "Eficacia": ["1", "2", "4"],
-        "Eficiencia": ["3", "5", "8"],
-        "Calidad": ["6"],
-        "Economia": ["9"],
-    }
-    tipo = request.GET.get('tipo')
-    ambito = request.GET.get('ambito')
-    programa = request.GET.get('programa')
-    frecuencia = request.GET.get('periodicidad')
-    indicadores = Indicador.objects.all()
-    json_data = serializers.serialize("json", indicadores)
-
-    if tipo:
-        tipo = tipo_opciones[tipo]
-        indicadores = indicadores.filter(tipo__in=tipo)
-    if ambito:
-        indicadores = indicadores.filter(ambito=ambito)
-    if programa:
-        indicadores = indicadores.filter(programa=programa)
-    if frecuencia:
-        indicadores = indicadores.filter(frecuencia=frecuencia)
-
-    return render(request, 'indicadores/index.html', {'indicador': indicadores, 'json_data':json_data})
-
-def crear_objetivo2(request):
-    if request.method == 'POST':
-        programa = request.POST.get('programa')
-        print(progrma)
-
-def crear_objetivo2(request):
-    data = json.loads(request.body)
-    # Aca estaba el problema, cuando creo un objeto sin la plantilla HTML no tengo que usar el 
-    #ObjetivoForm (formulario), simplemente instancio el objeto con python
-    nuevo_objetivo = Objetivos()
-    nuevo_objetivo.programa = data["programa"]
-    nuevo_objetivo.nombre = data["nombre"]
-
-    # Guarda el objeto en la base de datos
-    nuevo_objetivo.save()
-
-    return JsonResponse({"success": True})
-
-def crear_excel2(request):
-    data = json.loads(request.body)
-    data_str_fixed = unescape(data['indicador'])
-    decoded_data = json.loads(data_str_fixed)
-
-    # Usar un búfer de memoria para guardar el libro de Excel
-    output = io.BytesIO()
-    libro = xlsxwriter.Workbook(output)
-    hoja = libro.add_worksheet()
-
-    hoja.write(0, 0, 'Nombre')
-    hoja.write(0, 1, 'Descripción')
-    hoja.write(0, 2, 'Ámbito')
-    hoja.write(0, 3, 'Frecuencia')
-    hoja.write(0, 4, 'Periodo')
-    hoja.write(0, 5, 'Valor')
-
-    row = 1
-    col = 0
-
-    for indicador in decoded_data:
-        # Acceder a los campos del indicador
-        nombre = indicador['fields']['nombre']
-        descripcion = indicador['fields']['descripcion']
-        ambito = indicador['fields']['ambito']
-        if ambito == 1:
-            ambito = 'Fin'
-        elif ambito == 2:
-            ambito = 'Propósito'
-        elif ambito == 3:
-            ambito = 'Componente'
-        else:
-            ambito = 'Actividades'
-        frecuencia = indicador['fields']['frecuencia']
-        periodo = indicador['fields']['numerador_periodo']
-        valor = indicador['fields']['resultado']
-        hoja.write(row, col, nombre)
-        hoja.write(row, col + 1, descripcion)
-        hoja.write(row, col + 2, ambito)
-        hoja.write(row, col + 3, frecuencia)
-        hoja.write(row, col + 4, periodo)
-        hoja.write(row, col + 5, valor)
-        row += 1
-
-    libro.close()
-
-    # Establecer la posición del búfer en el inicio
-    output.seek(0)
-
-    # Crear la respuesta HTTP con el archivo adjunto
-    response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=Informe_indicadores.xlsx'
-
-    # Devolver la respuesta HTTP
-    return response
-
-
-@csrf_exempt  # Solo para simplificar el ejemplo. Considera usar csrf_exempt con precaución.
 def crear_excel(request):
     data = json.loads(request.body)
     data_str_fixed = unescape(data['indicador'])
     decoded_data = json.loads(data_str_fixed)
-    lista_ambitos = ['Fin', 'Propósito', 'Componente', 'Actividades']
 
     # Usar un búfer de memoria para guardar el libro de Excel
     output = io.BytesIO()
@@ -404,13 +313,16 @@ def crear_excel(request):
     libro = xlsxwriter.Workbook(output)
     # Crea la hoja en el excel
     hoja = libro.add_worksheet()
-    #Escribe las cabeceras de las columnas
-    hoja.write(0, 0, 'Nombre')
-    hoja.write(0, 1, 'Descripción')
-    hoja.write(0, 2, 'Ámbito')
-    hoja.write(0, 3, 'Frecuencia')
-    hoja.write(0, 4, 'Periodo')
-    hoja.write(0, 5, 'Valor')
+
+    #Escribe las cabeceras de las columnas y los tamaños
+    hoja.write(0, 0, 'Nombre');hoja.set_column(0, 0, 25)
+    hoja.write(0, 1, 'Descripción');hoja.set_column(1, 1, 25)
+    hoja.write(0, 2, 'Ámbito');hoja.set_column(2, 2, 15)
+    hoja.write(0, 3, 'Tipo');hoja.set_column(3, 3, 10)
+    hoja.write(0, 4, 'Frecuencia');hoja.set_column(4, 4, 10)
+    hoja.write(0, 5, 'Periodo');hoja.set_column(5, 5, 20)
+    hoja.write(0, 6, 'Valor');hoja.set_column(6, 6, 10)
+
     # Recorre los indicadores y los ingresa en las celdas
     row = 1
     for indicador in decoded_data:
@@ -419,6 +331,8 @@ def crear_excel(request):
         descripcion = indicador['fields']['descripcion']
         id_ambito = indicador['fields']['ambito']#Obtiene el id del ambito
         ambito = lista_ambitos[id_ambito-1]#Lo transforma en el nombre del ambito
+        id_tipo = indicador['fields']['ambito']#Obtiene el id del ambito
+        tipo = lista_tipos[id_tipo-1]#Lo transforma en el nombre del ambito        
         frecuencia = indicador['fields']['frecuencia']
         id_instancia = indicador['fields']['numerador_periodo']
         valor = indicador['fields']['resultado']
@@ -432,9 +346,10 @@ def crear_excel(request):
         hoja.write(row, 0, nombre)
         hoja.write(row, 1, descripcion)
         hoja.write(row, 2, ambito)
-        hoja.write(row, 3, frecuencia)
-        hoja.write(row, 4, periodo)
-        hoja.write(row, 5, valor)
+        hoja.write(row, 3, tipo)
+        hoja.write(row, 4, frecuencia)
+        hoja.write(row, 5, periodo)
+        hoja.write(row, 6, valor)
         row += 1
 
     libro.close()

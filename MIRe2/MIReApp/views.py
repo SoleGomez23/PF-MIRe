@@ -1,18 +1,15 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
+from django.core import serializers
+from django.db.utils import IntegrityError  # Importa la excepción de integridad
 from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito, Objetivos
 from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar, ObjetivoForm
-import json
-from django.core import serializers
-from django.utils.http import quote
-from django.db.utils import IntegrityError  # Importa la excepción de integridad
 from html import unescape
-import xlsxwriter
-from datetime import datetime
 import django_excel as excel
+import xlsxwriter
+import json
 import io
-from django.views.decorators.csrf import csrf_exempt
 
 lista_tipos = ['Eficacia','Eficacia','Eficiencia','Eficacia','Eficiencia','Calidad','Eficacia','Eficiencia','Economia']
 lista_ambitos = ['Fin', 'Propósito', 'Componente', 'Actividades']
@@ -59,6 +56,35 @@ def metricas(request):
             u.year = str(t.año_historico) #Agrego en el campo año, el año de la ultima instancia
     return render(request, 'metricas/index.html', {'metrica': metricas})
 
+def crear_metricas(request):
+    formulario = MetricaForm(request.POST or None, request.FILES or None)
+    if formulario.is_valid():
+        band = True 
+        formulario.save()
+        messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
+        t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo']) 
+        historial_metrica(request, t.id, t.valor, t.year2, t.year, t.semestral, t.month, band) #Le paso los valores de la metrica a historial_metrica para crear su primera instancia
+        return redirect('metricas')
+    return render(request, 'metricas/crear.html', {'formulario': formulario}) 
+    
+def editar_metricas(request, id):
+    metrica = get_object_or_404(Metrica, id=id)
+    formulario = MetricaFormEditar(request.POST or None, request.FILES or None, instance=metrica)
+    if request.method == 'POST':
+        formulario = MetricaFormEditar(request.POST, instance=metrica)
+        if formulario.is_valid():
+            formulario.save()
+        return redirect('metricas')
+    else:
+        form = MetricaForm(instance = metrica)
+    return render(request, 'metricas/editar.html', {'formulario': formulario})
+
+def eliminar_metricas(request, id):
+    metricas = Metrica.objects.get(id=id)
+    metricas.delete()
+    messages.success(request, '¡Metrica eliminada exitosamente!', extra_tags='alta-exitosa')
+    return redirect('metricas')
+
 def indicadores(request):
     indicadores = Indicador.objects.all()
     json_data = serializers.serialize("json", indicadores)
@@ -91,17 +117,6 @@ def indicadores(request):
 
     return render(request, 'indicadores/index.html', {'indicador': indicadores, 'json_data':json_data, 'tipos': tipos, 'ambitos': ambitos, 'programas': programas})
 
-def crear_metricas(request):
-    formulario = MetricaForm(request.POST or None, request.FILES or None)
-    if formulario.is_valid():
-        band = True 
-        formulario.save()
-        messages.success(request, '¡Métrica creada exitosamente!', extra_tags='alta-exitosa')
-        t = Metrica.objects.get(titulo=formulario.cleaned_data['titulo']) 
-        historial_metrica(request, t.id, t.valor, t.year2, t.year, t.semestral, t.month, band) #Le paso los valores de la metrica a historial_metrica para crear su primera instancia
-        return redirect('metricas')
-    return render(request, 'metricas/crear.html', {'formulario': formulario})  
-
 def crear_indicadores(request):
     if request.method == 'POST':
         formulario2 = IndicadorForm(request.POST or None, request.FILES or None)   
@@ -118,24 +133,6 @@ def crear_indicadores(request):
     context = { 'formulario2': formulario2, 'metricas': metricas, 'programas':programas, 'objetivos': objetivos}
 
     return render(request, 'indicadores/crear.html', context)
-
-def editar_metricas(request, id):
-    metrica = get_object_or_404(Metrica, id=id)
-    formulario = MetricaFormEditar(request.POST or None, request.FILES or None, instance=metrica)
-    if request.method == 'POST':
-        formulario = MetricaFormEditar(request.POST, instance=metrica)
-        if formulario.is_valid():
-            formulario.save()
-        return redirect('metricas')
-    else:
-        form = MetricaForm(instance = metrica)
-    return render(request, 'metricas/editar.html', {'formulario': formulario})
-
-def eliminar_metricas(request, id):
-    metricas = Metrica.objects.get(id=id)
-    metricas.delete()
-    messages.success(request, '¡Metrica eliminada exitosamente!', extra_tags='alta-exitosa')
-    return redirect('metricas')
 
 def editar_indicadores(request, id):
     indicador = get_object_or_404(Indicador, id=id)

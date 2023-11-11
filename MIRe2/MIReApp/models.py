@@ -86,7 +86,14 @@ class HistorialMetrica(models.Model):
     semestre_historico = models.CharField(max_length=15, verbose_name='Ingrese semestre:', choices=SEMESTRES, blank=True, null=True,)
 
     def __str__(self):
-        return f"{self.año_historico}"
+        if self.mes_historico:
+            return str(self.año_historico)+ '-' + str(self.mes_historico)
+        elif self.semestre_historico:
+            return str(self.año_historico)+ '-' + str(self.semestre_historico)
+        elif self.año2_historico:
+            return str(self.año_historico)+ '-' + str(self.año2_historico)
+        else:
+            return str(self.año_historico)
 
 class Ambito(models.Model):
     nombre = models.CharField(max_length=15)

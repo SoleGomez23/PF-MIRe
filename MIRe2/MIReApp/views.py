@@ -428,11 +428,19 @@ def crear_excel(request):
         frecuencia = indicador['fields']['frecuencia']
         periodo = indicador['fields']['numerador_periodo']
         valor = indicador['fields']['resultado']
+        print(periodo)
+        instance = HistorialMetrica.objects.filter(id=periodo)
+        primer_historial = instance.first()
+        variable = 0
+        if primer_historial != None:
+            variable = str(primer_historial)
+        print(primer_historial)
+
         hoja.write(row, col, nombre)
         hoja.write(row, col + 1, descripcion)
         hoja.write(row, col + 2, ambito)
         hoja.write(row, col + 3, frecuencia)
-        hoja.write(row, col + 4, periodo)
+        hoja.write(row, col + 4, variable)
         hoja.write(row, col + 5, valor)
         row += 1
 

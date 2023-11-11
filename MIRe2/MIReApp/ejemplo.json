@@ -1,0 +1,49 @@
+{"indicador": [
+    {"model": "MIReApp.indicador", 
+    "pk": 1, 
+    "fields": {
+                "nombre": "xx", 
+                "descripcion": null, 
+                "ambito": 1, 
+                "tipo": 1, 
+                "programa": 2, 
+                "objetivo": 3, 
+                "frecuencia": "Cuatrienal", 
+                "formula": "", 
+                "numerador": null, 
+                "denominador": null, 
+                "numerador_periodo": null, 
+                "denominador_periodo": null, 
+                "numerador_medida": null, 
+                "denominador_medida": null, 
+                "numerador_valor": null, 
+                "denominador_valor": null, 
+                "resultado": null, 
+                "estado": null
+            }
+        }, 
+    {"model": "MIReApp.indicador", 
+    "pk": 2, 
+    "fields": {
+                "nombre": "yy", 
+                "descripcion": null, 
+                "ambito": 1, 
+                "tipo": 1, 
+                "programa": 2, 
+                "objetivo": 2, 
+                "frecuencia": "Cuatrienal", 
+                "formula": "", 
+                "numerador": null, 
+                "denominador": null, 
+                "numerador_periodo": null, 
+                "denominador_periodo": null, 
+                "numerador_medida": null, 
+                "denominador_medida": null, 
+                "numerador_valor": null, 
+                "denominador_valor": null, 
+                "resultado": null, 
+                "estado": null
+                }
+        }
+    ]
+}

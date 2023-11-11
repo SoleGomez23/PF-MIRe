@@ -200,7 +200,7 @@
     function exportar(){
       indicador = '{{ json_data }}'
       console.log(indicador);
-      const data = { user_id: 5} 
+      const data = JSON.stringify({indicador});
       let url = " {% url 'crear_excel' %} " 
   
     fetch(url, {
@@ -209,7 +209,7 @@
         'Content-Type': 'application/json',
         'X-CSRFToken': csrftoken
       },
-      body: JSON.stringify(indicador), 
+      body: data 
     })
     .then(response => response.json())
     .then(data => { 

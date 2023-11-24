@@ -422,3 +422,8 @@ font-weight: bold; /* Estilo de fuente en negrita */
 color: #965FB8; /* Color de texto personalizado */
 /* Otros estilos deseados para el título */
 }
+
+.chart {
+    width: 100%;
+    min-height: 400px;
+}

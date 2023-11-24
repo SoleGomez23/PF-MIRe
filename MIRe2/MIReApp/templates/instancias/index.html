@@ -72,11 +72,19 @@
                     </ul>
                 {% endif %}
 
+    </div>         
+    <!-- En este container va el grafico -->
+    <div class="container" style="background-color: yellow;">
+        <div class="row my-4">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
+                <div id="chart" class="chart"></div>
+            </div>
+        </div>
     </div>
     <div class="card-footer text-muted" style="background-color: #D7A5FF;">
         <br>
     </div>   
-</div> 
+</div>
 <br> 
 </center>
 
@@ -121,6 +129,32 @@
             });
         });
     });
+</script>
+
+<script>
+    const getOptionChart = async () => {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/api/get_chart/");
+        return await response.json();
+    } catch (ex) {
+        alert(ex);
+    }
+};
+
+const initChart = async () => {
+    const myChart = echarts.init(document.getElementById("chart"));
+
+    myChart.setOption(await getOptionChart());
+
+    myChart.resize();
+};
+
+window.addEventListener("load", async () => {
+    await initChart();
+    setInterval(async () => {
+        await initChart();
+    }, 2000);
+});
 </script>
 
 

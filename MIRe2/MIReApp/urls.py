@@ -8,6 +8,7 @@ urlpatterns = [
     path('error', views.error, name='error'),
     path('nosotros', views.nosotros, name='nosotros'),
     path('tipos', views.tipos, name = "tipos"),
+    path('get_chart', views.get_chart, name='get_chart'),
     path('valores', views.valores, name = "valores"),
     path('medidas', views.medidas, name = "medidas"),
     path('listar_metricas', views.listar_metricas, name = "listar_metricas"),

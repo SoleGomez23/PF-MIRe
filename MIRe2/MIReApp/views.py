@@ -7,6 +7,7 @@ from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito
 from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar, ObjetivoForm
 from html import unescape
 import django_excel as excel
+from random import randrange
 import xlsxwriter
 import json
 import io
@@ -360,3 +361,48 @@ def crear_excel(request):
 
     # Devolver la respuesta HTTP
     return response
+
+def get_chart(_request):
+
+    colors = ['blue', 'orange', 'red', 'black', 'yellow', 'green', 'magenta', 'lightblue', 'purple', 'brown']
+    random_color = colors[randrange(0, (len(colors)-1))]
+
+    serie = []
+    counter = 0
+
+    while (counter < 7):
+        serie.append(randrange(100, 400))
+        counter += 1
+
+    chart = {
+        'tooltip': {
+            'show': True,
+            'trigger': "axis",
+            'triggerOn': "mousemove|click"
+        },
+        'xAxis': [
+            {
+                'type': "category",
+                'data': ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+            }
+        ],
+        'yAxis': [
+            {
+                'type': "value"
+            }
+        ],
+        'series': [
+            {
+                'data': serie,
+                'type': "line",
+                'itemStyle': {
+                    'color': random_color
+                },
+                'lineStyle': {
+                    'color': random_color
+                }
+            }
+        ]
+    }
+
+    return JsonResponse(chart)

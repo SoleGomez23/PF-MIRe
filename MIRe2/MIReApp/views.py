@@ -152,7 +152,7 @@ def eliminar_indicador(request, id):
     indicadores = Indicador.objects.get(id=id)
     indicadores.delete()
     messages.success(request, '¡Indicador eliminado exitosamente!', extra_tags='alta-exitosa')
-    return redirect('indicadores')
+    return JsonResponse({"success": True})
 
 def historial_metrica(request, metrica_id, valor=0, año2=0, año=0, semestral=0, mes=0, band=False):
     metrica = Metrica.objects.get(id=metrica_id)

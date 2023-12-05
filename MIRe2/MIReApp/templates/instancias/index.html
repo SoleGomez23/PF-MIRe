@@ -116,6 +116,7 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        console.log(data);
                         // Eliminar la fila de la tabla en la página
                         if (data.success) {
                             const fila = this.closest("tr");

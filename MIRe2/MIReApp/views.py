@@ -1,10 +1,14 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from .forms import CustomUserCreationForm, CustomUserCreationFormEditar
+from django.contrib.auth import authenticate, login
 from django.core import serializers
 from django.db.utils import IntegrityError  # Importa la excepción de integridad
 from .models import Indicador, Metrica, HistorialMetrica, Tipo, Programa, Ambito, Objetivos
-from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar, ObjetivoForm
+from .forms import MetricaForm, MetricaFormEditar, IndicadorForm, IndicadorFormEditar, InstanciaForm, ProgramaForm,ProgramaFormEditar, ObjetivoForm, User
 from html import unescape
 import django_excel as excel
 from random import randrange
@@ -406,3 +410,67 @@ def get_chart(_request):
     }
 
     return JsonResponse(chart)
+
+@login_required
+def registrar_admin(request):
+    permisos = False
+    if request.user.is_owner:
+        permisos = True
+    print(permisos)
+    data = {
+        'form': CustomUserCreationForm(),
+        'admin' : True,
+        'permisos': permisos,
+    }
+    if request.method == 'POST':
+        user_creation_form = CustomUserCreationForm(data=request.POST)
+
+        if user_creation_form.is_valid():
+            user_creation_form.save()  # Guarda el objeto de usuario en la base de datos
+            return redirect('inicio')
+        else:
+            data['form'] = user_creation_form
+
+    return render(request, 'registration/registro.html', data)
+    
+def registrar_owner(request):
+    owners = User.objects.filter(is_owner=1)
+    if owners:
+        creado = True
+    else:
+        creado = False
+    data = {
+        'form': CustomUserCreationForm(),
+        'owner': True,
+        'creado': creado
+    }
+
+    if request.method == 'POST':
+        user_creation_form = CustomUserCreationForm(data=request.POST)
+
+        if user_creation_form.is_valid():
+            user = user_creation_form.save(commit=False)  # No guarda inmediatamente en la base de datos
+            user.is_owner = 1  # Asigna el valor deseado al campo is_owner
+            user.save()  # Guarda el objeto de usuario en la base de datos
+            return redirect('inicio')
+        else:
+            data['form'] = user_creation_form
+
+    return render(request, 'registration/registro.html', data)
+
+def editar_perfil(request):
+    user = User.objects.get(pk=request.user.id)
+    form = CustomUserCreationFormEditar(request.POST or None, request.FILES or None, instance=request.user)
+    if request.method == 'POST':
+        form = CustomUserCreationFormEditar(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            print('se guardo')
+            return redirect('inicio')  # Cambia 'perfil' al nombre de la vista de perfil
+        else:
+            print('no se guardo')
+            print(form.errors)
+    else:
+        form = CustomUserCreationFormEditar(instance=user)
+
+    return render(request, 'registration/editar_perfil.html', {'form': form, 'is_owner':request.user.is_owner})

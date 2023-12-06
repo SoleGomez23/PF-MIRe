@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+{% load crispy_forms_tags %}
+       
+<h3> EDITAR PERFIL</h3>
+
+<br>
+<br>
+<br>
+<br>
+
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+
+    <div class="card mx-auto" style="width: 30rem;">
+        <div class="card-body">
+            <h5 class="card-title">Informacion de Perfil</h5>
+
+            {{ form.username | as_crispy_field }}
+            {{ form.first_name | as_crispy_field }}
+            {{ form.last_name | as_crispy_field }}
+            {{ form.email | as_crispy_field }}            
+            <div class="form-group">
+                <label class="control-label">Tipo de usuario</label>
+                {% if is_owner %}
+                    <input type="text" class="form-control" value="Owner" readonly>
+                {% else %}
+                    <input type="text" class="form-control" value="Administrador" readonly>
+                {% endif %}
+            </div>
+            <br>
+            <button type="submit">Guardar cambios</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+
+  

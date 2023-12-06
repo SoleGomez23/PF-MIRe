@@ -5,6 +5,9 @@ from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
+    path('registrar_admin/', views.registrar_admin, name='registrar_admin'),
+    path('registrar_owner/', views.registrar_owner, name='registrar_owner'),
+    path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
     path('error', views.error, name='error'),
     path('nosotros', views.nosotros, name='nosotros'),
     path('tipos', views.tipos, name = "tipos"),
@@ -28,4 +31,4 @@ urlpatterns = [
     path('metricas/eliminar/<int:id>', views.eliminar_metricas, name='eliminar'),
     path('historial-metrica/<int:metrica_id>/', views.historial_metrica, name='historial_metrica'),
     path('eliminar_historial_metrica/<int:historial_id>/', views.eliminar_historial_metrica, name='eliminar_historial_metrica'),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

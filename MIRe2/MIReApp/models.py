@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
@@ -9,6 +10,7 @@ FRECUENCIAS = (('Cuatrienal','Cuatrienal'),('Bianual','Bianual'), ('Anual', 'Anu
 FORMULAS = (('Inversion promedio','Inversion promedio'), ('Tasa de variacion','Tasa de variacion'), ('Porcentaje','Porcentaje'))
 MESES = (('Enero','Enero'),('Febrero','Febrero'),('Marzo','Marzo'),('Abril','Abril'),('Mayo','Mayo'),('Junio','Junio'),('Julio','Julio'),('Agosto','Agosto'),('Septiembre','Septiembre'),('Octubre','Octubre'),('Noviembre','Noviembre'),('Diciembre','Diciembre'))
 SEMESTRES = (('Enero-Junio', 'Enero-Junio'),('Julio-Diciembre', 'Julio-Diciembre'))
+AREAS = (('Ingeniería en Sistemas de Información', 'Ingeniería en Sistemas de Información'),('Ingeniería Química', 'Ingeniería Química'),('Ingeniería Electromecánica', 'Ingeniería Electromecánica'),('Materias Básicas', 'Materias Básicas'))
 
 def validate_year(value):
     current_year = timezone.now().year
@@ -133,3 +135,29 @@ class Objetivos(models.Model):
     
     def __str__(self):
         return self.nombre
+
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+    is_owner = models.BooleanField(default=False)
+    area = models.CharField(max_length=40, choices=AREAS, blank=True, null=True)
+    # frecuencia = models.CharField(max_length=10, choices=FRECUENCIAS)
+
+    # Agrega related_name para evitar el conflicto
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='customuser_set',
+        related_query_name='user',
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+    )
+
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='customuser_set',
+        related_query_name='user',
+        blank=True,
+        help_text='Specific permissions for this user.',
+    )
+
+    def __str__(self):
+        return self.username

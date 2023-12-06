@@ -1,5 +1,8 @@
 from django import forms 
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth import get_user_model
 from .models import Metrica, Indicador, Tipo, HistorialMetrica, Programa, Objetivos
+User = get_user_model()
 
 class MetricaForm(forms.ModelForm):
     class Meta:
@@ -183,3 +186,25 @@ class IndicadorFormEditar(forms.ModelForm):
                 pass  # invalid input from the client; ignore and fallback to empty Tipo queryset
         elif self.instance.pk:
             self.fields['tipo'].queryset = self.instance.ambito.tipo_set.order_by('nombre')
+
+class CustomUserCreationForm(UserCreationForm):
+	email = forms.EmailField(required=True)
+	is_owner = forms.BooleanField(initial=False, required=False)
+
+	class Meta:
+		model = User
+		fields = ['username', 'first_name', 'last_name', 'email', 'area', 'password1', 'password2', 'is_owner']
+
+	def clean_email(self):
+		email = self.cleaned_data['email']
+
+		if User.objects.filter(email=email).exists():
+			raise forms.ValidationError('Este correo electrónico ya está registrado')
+		return email 
+
+class CustomUserCreationFormEditar(UserChangeForm):
+	email = forms.EmailField(required=True)
+
+	class Meta:
+		model = User
+		fields = ['username', 'first_name', 'last_name', 'email']

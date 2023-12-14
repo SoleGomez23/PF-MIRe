@@ -474,3 +474,18 @@ def editar_perfil(request):
         form = CustomUserCreationFormEditar(instance=user)
 
     return render(request, 'registration/editar_perfil.html', {'form': form, 'is_owner':request.user.is_owner})
+
+
+def perfiles(request):
+    permisos = False
+    if request.user.is_owner:
+        permisos = True
+    user = User.objects.all() 
+    return render(request, 'registration/perfiles.html', {'user': user, 'permisos':permisos})
+
+def deshabilitar_usuario(request, id):
+    user = User.objects.get(pk=id)
+    user.is_active = not user.is_active
+    user.save()
+    return redirect('perfiles')
+

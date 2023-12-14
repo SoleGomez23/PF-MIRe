@@ -5,6 +5,8 @@ from django.contrib.staticfiles.urls import static
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
+    path('perfiles/', views.perfiles, name='perfiles'),
+    path('deshabilitar_usuario/<int:id>/', views.deshabilitar_usuario, name='deshabilitar_usuario'),
     path('registrar_admin/', views.registrar_admin, name='registrar_admin'),
     path('registrar_owner/', views.registrar_owner, name='registrar_owner'),
     path('editar_perfil/', views.editar_perfil, name='editar_perfil'),

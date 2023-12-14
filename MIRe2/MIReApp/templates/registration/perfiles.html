@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block titulo %} Perfiles {% endblock %}
+
+{% block contenido %} 
+<br>
+<br>
+<br>
+<center>
+<div class="card col-md-6" style="text-align: left;">
+    <div class="card-header fw-bold" style="background-color: #D7A5FF;color: #000000;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span><a href="{% url 'inicio' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">⪻ Volver</a></span>
+            <span><h2>Perfiles</h2></span>
+        </div>
+    </div>
+    <div class="card-body" >
+                <title>Perfiles</title>
+                
+                <body>
+                    <br>
+                    <table class="table rounded-4" style="background-color: #D7A5FF; width: flex;">
+                        <tr> <!-- El ttulo de las columnas varia segun la frecuancia de la metrica -->
+                                <th>Username</th>
+                                <th>Nombre</th>  
+                                <th>Apellido</th> 
+                                <th>Estado</th>   
+                                <th>EMAIL</th>                         
+                        </tr>
+
+                        {% for item in user %}
+                            <tr> 
+                                {%  if not item.is_owner %}
+                                    <td scope="row">{{ item.username }}</td> 
+                                    <td scope="row">{{ item.first_name }}</td> 
+                                    <td scope="row">{{ item.last_name }}</td> 
+                                    {%  if item.is_active %}                                        
+                                        <td scope="row">Activo</td> 
+                                    {% else %}                                    
+                                        <td scope="row">Inactivo</td> 
+                                    {% endif %}
+                                    <td scope="row">{{ item.email }}</td> 
+                                    {% if item.is_active %}
+                                        <td><a class="btn eliminar-btn" href="{% url 'deshabilitar_usuario' item.id %} " data-id="{{ item.id }}" style="background-color: #f60;" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
+                                    {% else %}
+                                        <td><a class="btn eliminar-btn" href="{% url 'deshabilitar_usuario' item.id %} " data-id="{{ item.id }}" style="background-color: #f60;" role="button"><i class="fa-solid fa-rotate-right"></i></a></td>
+                                    {% endif %}
+                                        
+                                {% endif %}
+                            </tr>
+                        {% endfor %}                        
+                    </table>
+
+                </body>
+
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+    </div>  
+</div>
+<br> 
+</center>
+
+<script>                   
+    // Esta funcion quita el mensaje de exito despues de un tiempo
+    setTimeout(function() {
+        var altaExitosaMessage = document.querySelector('.messages .alta-exitosa');
+        if (altaExitosaMessage) {
+            altaExitosaMessage.style.display = 'none';
+        }
+    }, 3000);  // Tiempo en el que se muestra el mensaje de éxito
+    
+</script>
+
+{% endblock %}

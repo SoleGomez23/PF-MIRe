@@ -39,7 +39,7 @@
                 </span>
 
                 <span> <!-- Titulo del cuadro --->
-                    <h2>MIS INDICADORES</h2>
+                    <h2 style="color: #965FB8;">MIS INDICADORES</h2>
                 </span>
 
             </div>            
@@ -48,11 +48,10 @@
         <div class="card-body">
             
             
-            <form method="GET" action="{% url 'indicadores' %}" class="d-flex flex-row">
-                <a name="" id="" class="btn fw-bold rounded-4" href="{% url 'crear_indicador' %}" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;">+ Agregar nuevo indicador</a>
-                <a class="fw-bold" style="color: black;margin-left:62px ;text-decoration: none;">Filtrar por</a>
-                <div class="form-group">
-                    <select name="tipo" id="tipo" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="margin-left: 20px;width:min-content;border-color: #D7A5FF;border-width: 3px;">
+            <form method="GET" action="{% url 'indicadores' %}" class="d-flex flex-row table-responsive">
+                <a name="" id="" class="btn fw-bold rounded-4" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;" href="{% url 'crear_indicador' %}">+ Agregar nuevo indicador</a>
+                <div class="form-group ">
+                    <select name="tipo" id="tipo" class="btn dropdown-toggle rounded-4" type="button" data-bs-toggle="dropdown" aria-expanded="false"style="margin-left: 20px;border-color: #D7A5FF;border-width: 3px;">
                         <option value="">Tipo</option>
                         <option value="Calidad">Calidad</option>
                         <option value="Eficacia">Eficacia</option>
@@ -137,7 +136,7 @@
         </div>
         <div class="card-footer text-muted" style="background-color: #D7A5FF;">
             <!-- <i class="fa-solid fa-download"></i> -->
-        <button class='rounded-4 fw-bold fa-solid fa-download'id="miBoton" type="button" style="border-radius: 3%; color:white;background-color: #965FB8;border-color: transparent;"> Exportar</button>
+        <button class='rounded-4 fw-bold fa-solid fa-download' id="miBoton" type="button" style="border-radius: 3%; color:white;background-color: #965FB8;border-color: transparent;"></button>
         </div>
     </div>
     <script>

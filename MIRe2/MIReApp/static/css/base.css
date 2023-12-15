@@ -427,3 +427,7 @@ color: #965FB8; /* Color de texto personalizado */
     width: 100%;
     min-height: 400px;
 }
+
+nav.navbar.bg-body-tertiary.fixed-top {
+    background-color: #965FB8 !important;
+}

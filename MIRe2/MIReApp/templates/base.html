@@ -17,10 +17,10 @@
   <script src="https://kit.fontawesome.com/3b1b78c3c2.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body style="background-image: url(../../static/images/base.jpg);">
   <nav class="navbar bg-body-tertiary fixed-top" style="background-color: #965FB8; position: fixed;">
-    <div class="container-fluid">
-      <a class="nav-item nav-link fw-bold " style="color: #965FB8;" href="{% url 'inicio' %}" aria-current="page">
+    <div class="container-fluid"style="color: #965FB8 !important;">
+      <a class="nav-item nav-link fw-bold " style="color: #965FB8 !important;" href="{% url 'inicio' %}" aria-current="page">
       <img src="/../static/images/grafiquita.png" class="rounded-3"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation" >
         <span class="navbar-toggler-icon"></span>
@@ -36,14 +36,15 @@
               <a class="nav-item nav-link fw-bold " style="color: #965FB8;" href="{% url 'inicio' %}" aria-current="page">Inicio<span class="visually-hidden">(current)</span></a>
             </li>
             <li class="nav-item">
+              <a class="nav-item nav-link fw-bold" style="color: #965FB8;" href="{% url 'programas' %}">Programas</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-item nav-link fw-bold" style="color: #965FB8;" href="{% url 'metricas' %}">Métricas</a>
             </li>
             <li class="nav-item">
               <a class="nav-item nav-link fw-bold" style="color: #965FB8;" href="{% url 'indicadores' %}">Indicadores</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-item nav-link fw-bold" style="color: #965FB8;" href="{% url 'nosotros' %}">Informes</a>
-            </li>
+           
             {% if request.user.is_authenticated %}
               <li class="nav-item">
                   <a class="nav-link" href={% url 'logout' %}>Salir</a>

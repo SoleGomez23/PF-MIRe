@@ -15,6 +15,11 @@ from random import randrange
 import xlsxwriter
 import json
 import io
+import matplotlib.pyplot as plt
+from django.http import HttpResponse
+from django.template import loader
+from io import BytesIO
+import base64
 
 lista_tipos = ['Eficacia','Eficacia','Eficiencia','Eficacia','Eficiencia','Calidad','Eficacia','Eficiencia','Economia']
 lista_ambitos = ['Fin', 'Propósito', 'Componente', 'Actividades']
@@ -52,6 +57,10 @@ def error(request):
     return render(request, 'paginas/error.html')
 
 def metricas(request):
+    es_owner = False
+    if request.user.is_authenticated:
+        if request.user.is_owner:
+            es_owner = True
     metricas = Metrica.objects.all()
     ultimos_valores = list()
     for u in metricas:
@@ -59,7 +68,7 @@ def metricas(request):
             t = list(HistorialMetrica.objects.filter(metrica=u.id).order_by('año_historico'))[-1] #Obtengo el la ultima instancia de la metrica
             u.valor = str(t.valor_historico) #Agrego en el campo valor, el valor de la ultima instancia 
             u.year = str(t.año_historico) #Agrego en el campo año, el año de la ultima instancia
-    return render(request, 'metricas/index.html', {'metrica': metricas})
+    return render(request, 'metricas/index.html', {'metrica': metricas, 'es_owner': es_owner})
 
 def crear_metricas(request):
     formulario = MetricaForm(request.POST or None, request.FILES or None)
@@ -91,6 +100,10 @@ def eliminar_metricas(request, id):
     return redirect('metricas')
 
 def indicadores(request):
+    es_owner = False
+    if request.user.is_authenticated:
+        if request.user.is_owner:
+            es_owner = True
     indicadores = Indicador.objects.all()
     json_data = serializers.serialize("json", indicadores)
     tipos = Tipo.objects.all()
@@ -120,7 +133,7 @@ def indicadores(request):
     if frecuencia:
         indicadores = indicadores.filter(frecuencia=frecuencia)
 
-    return render(request, 'indicadores/index.html', {'indicador': indicadores, 'json_data':json_data, 'tipos': tipos, 'ambitos': ambitos, 'programas': programas})
+    return render(request, 'indicadores/index.html', {'indicador': indicadores, 'json_data':json_data, 'tipos': tipos, 'ambitos': ambitos, 'programas': programas, 'es_owner': es_owner})
 
 def crear_indicadores(request):
     if request.method == 'POST':
@@ -159,9 +172,40 @@ def eliminar_indicador(request, id):
     return JsonResponse({"success": True})
 
 def historial_metrica(request, metrica_id, valor=0, año2=0, año=0, semestral=0, mes=0, band=False):
+    es_owner = False
+    if request.user.is_authenticated:
+        if request.user.is_owner:
+            es_owner = True
     metrica = Metrica.objects.get(id=metrica_id)
     formulario = InstanciaForm(request.POST or None, request.FILES or None)
+    lista_valores = [ [], [] ]
     historial = HistorialMetrica.objects.filter(metrica=metrica).order_by('-año_historico')
+    for h in reversed(historial):
+        lista_valores[0].append(h.año_historico)
+        lista_valores[1].append(h.valor_historico)
+    print(lista_valores)
+
+    # Crear un gráfico simple para ilustrar el proceso
+    # plt.plot(lista_valores[0], lista_valores[1])
+    plt.bar(lista_valores[0], lista_valores[1])
+    plt.xlabel('Año')
+    plt.ylabel('Valor')
+    plt.title('Gráfico de Barras')
+
+    # Convertir el gráfico a una imagen en formato BytesIO
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plt.close()
+
+    # Codificar la imagen en base64 para incrustarla en la plantilla HTML
+    img_base64 = base64.b64encode(img.getvalue()).decode('utf-8')
+
+    # Puedes pasar otros datos necesarios en el contexto
+    imagen_grafico = img_base64
+
+    # Cargar la plantilla y renderizarla con el contexto
+    template = loader.get_template('instancias/index.html')
     
     if band: #Si band es true entro a historial_metrica porque una metrica acaba de ser creada, entonces se debe crear su primera instancia con los datos que recibio por parametro
         historial_metrica = HistorialMetrica(metrica=metrica, año2_historico=año2, año_historico=año, semestre_historico=semestral, mes_historico=mes, valor_historico=valor)
@@ -208,7 +252,8 @@ def historial_metrica(request, metrica_id, valor=0, año2=0, año=0, semestral=0
 
             return redirect('historial_metrica', metrica_id=metrica_id)
 
-        return render(request, 'instancias/index.html', {'metrica': metrica, 'historial': historial, 'formulario':formulario})
+        #return HttpResponse(template.render(context, request))
+        return render(request, 'instancias/index.html', {'imagen_grafico' : imagen_grafico,'metrica': metrica, 'historial': historial, 'formulario':formulario, 'es_owner': es_owner, 'lista_valores':lista_valores})
 
 def eliminar_historial_metrica(request, historial_id):
     historial = HistorialMetrica.objects.get(id=historial_id)
@@ -250,8 +295,12 @@ def listar_metricas(request):
     return JsonResponse(list(metricas.values("id", "titulo")), safe=False)
 
 def programas(request):
+    es_owner = False
+    if request.user.is_authenticated:
+        if request.user.is_owner:
+            es_owner = True
     programs = Programa.objects.all()
-    return render(request, 'programas/index.html', {'programas': programs})
+    return render(request, 'programas/index.html', {'programas': programs, 'es_owner': es_owner})
 
 def crear_programa(request):
 

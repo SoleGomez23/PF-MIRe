@@ -54,14 +54,18 @@
                                     <td scope="row">{{ item.semestre_historico }}</td>     
                                 {% endif %}
                                 <td>{{ item.valor_historico }}</td>
-                                <td><a class="btn eliminar-btn" data-id="{{ item.id }}" style="background-color: #D7A5FF;" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
-                            </tr>
+                                {% if request.user.is_authenticated and not es_owner %}
+                                    <td><a class="btn eliminar-btn" data-id="{{ item.id }}" style="background-color: #D7A5FF;" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
+                                {% endif %}
+                                </tr>
                         {% endfor %}                        
                     </table>
 
                     <br>
-                    <h6>Agregar nueva instancia:</h6>
-                    {%  include 'instancias/form.html' %}
+                    {% if request.user.is_authenticated and not es_owner %}
+                        <h6>Agregar nueva instancia:</h6>
+                        {%  include 'instancias/form.html' %}
+                    {% endif %}
                 </body>
 
                 {% if messages %}
@@ -72,15 +76,13 @@
                     </ul>
                 {% endif %}
 
-    </div>         
-    <!-- En este container va el grafico -->
-    <!-- <div class="container" style="background-color: yellow;">
-        <div class="row my-4">
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 mx-auto">
-                <div id="chart" class="chart"></div>
-            </div>
-        </div>
-    </div> -->
+    </div>  
+    <div>
+        <h1>Gráfico Matplotlib en Django</h1>
+
+        <!-- Mostrar la imagen del gráfico -->
+        <img src="data:image/png;base64,{{ imagen_grafico }}" alt="Gráfico">
+    </div>
     <div class="card-footer text-muted" style="background-color: #D7A5FF;">
         <br>
     </div>   

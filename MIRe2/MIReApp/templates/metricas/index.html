@@ -32,7 +32,9 @@
             </div>  
         </div>
         <div class="card-body">
-            <a name="" id="" class="btn fw-bold rounded-4" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;" href="{% url 'crear' %}">+ Agregar nueva métrica</a>
+            {% if request.user.is_authenticated and not es_owner %}
+                <a name="" id="" class="btn fw-bold rounded-4" style="background-color: #fff4bb;color: #000000;border-color: #ffd500;border-width: 3px;" href="{% url 'crear' %}">+ Agregar nueva métrica</a>
+            {% endif %}
             <br>
             <br>
             <div class="table-responsive">
@@ -58,9 +60,10 @@
                             <td>{{ metri.valor }}</td>
                             <td>{{ metri.year }}</td>
                             <td> 
-            
-                                <a name="" id="" class="btn" href="{% url 'editar' metri.id %}"><i class="fa-solid fa-square-pen fa-lg"></i></a> <!--Boton editar-->
-                                <a name="" id="" class="btn" href="{% url 'eliminar' metri.id %}" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
+                                {% if request.user.is_authenticated and not es_owner %}
+                                    <a name="" id="" class="btn" href="{% url 'editar' metri.id %}"><i class="fa-solid fa-square-pen fa-lg"></i></a> <!--Boton editar-->
+                                    <a name="" id="" class="btn" href="{% url 'eliminar' metri.id %}" role="button"><i class="fa-solid fa-trash-can"></i></a><!--Boton eliminar-->
+                                {% endif %}
                                 <a name="" id="" class="btn rounded-4" style="border-color: #965FB8" href="{% url 'historial_metrica' metri.id %}"><i class="fa-solid fa-plus"></i></a><!--Boton Historico-->
 
                             </td>

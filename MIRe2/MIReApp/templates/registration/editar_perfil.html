@@ -16,7 +16,7 @@
 
     <div class="card mx-auto" style="width: 30rem;">
         <div class="card-body">
-            <h5 class="card-title">Informacion de Perfil</h5>
+            <h5 class="card-title">Editar Perfil</h5>
 
             {{ form.username | as_crispy_field }}
             {{ form.first_name | as_crispy_field }}
@@ -31,7 +31,7 @@
                 {% endif %}
             </div>
             <br>
-            <button type="submit">Guardar cambios</button>
+            <button type="submit" class="rounded-4" style="border-color: blueviolet;">Guardar cambios</button>
         </div>
     </div>
 </form>

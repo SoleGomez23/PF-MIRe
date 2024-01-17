@@ -305,7 +305,7 @@ button {
     background-color: #D7A5FF
 }
 h6 {
-    color: #965FB8;
+    color: #965FB8 !important;
     font-size: 10px;
     text-align: justify;
 }

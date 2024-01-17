@@ -187,7 +187,7 @@ def historial_metrica(request, metrica_id, valor=0, año2=0, año=0, semestral=0
 
     # Crear un gráfico simple para ilustrar el proceso
     # plt.plot(lista_valores[0], lista_valores[1])
-    plt.bar(lista_valores[0], lista_valores[1])
+    plt.bar(lista_valores[0], lista_valores[1],color='#D7A5FF')
     plt.xlabel('Año')
     plt.ylabel('Valor')
     plt.title('Gráfico de Barras')

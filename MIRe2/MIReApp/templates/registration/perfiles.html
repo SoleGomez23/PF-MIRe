@@ -11,7 +11,7 @@
     <div class="card-header fw-bold" style="background-color: #D7A5FF;color: #000000;">
         <div style="display: flex; justify-content: space-between; align-items: center;">
             <span><a href="{% url 'inicio' %}" class="btn btn-secondary rounded-4 fw-bold" style="background-color: transparent; color: #ffff;border-color: #ffff;border-width: 2px;">⪻ Volver</a></span>
-            <span><h2>Perfiles</h2></span>
+            <span><h2 style="color: #965FB8;">PERFILES</h2></span>
         </div>
     </div>
     <div class="card-body" >
@@ -19,13 +19,13 @@
                 
                 <body>
                     <br>
-                    <table class="table rounded-4" style="background-color: #D7A5FF; width: flex;">
+                    <table class="table rounded-4" style=" width: flex;">
                         <tr> <!-- El ttulo de las columnas varia segun la frecuancia de la metrica -->
-                                <th>Username</th>
+                                <th>Usuario</th>
                                 <th>Nombre</th>  
                                 <th>Apellido</th> 
                                 <th>Estado</th>   
-                                <th>EMAIL</th>                         
+                                <th>Correo</th>                         
                         </tr>
 
                         {% for item in user %}
@@ -41,9 +41,9 @@
                                     {% endif %}
                                     <td scope="row">{{ item.email }}</td> 
                                     {% if item.is_active %}
-                                        <td><a class="btn eliminar-btn" href="{% url 'deshabilitar_usuario' item.id %} " data-id="{{ item.id }}" style="background-color: #f60;" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
+                                        <td><a class="btn eliminar-btn" href="{% url 'deshabilitar_usuario' item.id %} " data-id="{{ item.id }}" style="background-color: #D7A5FF;" role="button"><i class="fa-solid fa-trash-can"></i></a></td>
                                     {% else %}
-                                        <td><a class="btn eliminar-btn" href="{% url 'deshabilitar_usuario' item.id %} " data-id="{{ item.id }}" style="background-color: #f60;" role="button"><i class="fa-solid fa-rotate-right"></i></a></td>
+                                        <td><a class="btn eliminar-btn" href="{% url 'deshabilitar_usuario' item.id %} " data-id="{{ item.id }}" style="background-color: #D7A5FF;" role="button"><i class="fa-solid fa-rotate-right"></i></a></td>
                                     {% endif %}
                                         
                                 {% endif %}

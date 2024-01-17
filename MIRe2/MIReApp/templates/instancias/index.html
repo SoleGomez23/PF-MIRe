@@ -7,6 +7,23 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <center>
 <div class="card col-md-6" style="text-align: left;">
     <div class="card-header fw-bold" style="background-color: #D7A5FF;color: #000000;">
@@ -78,18 +95,20 @@
 
     </div>  
     <div>
-        <h1>Gráfico Matplotlib en Django</h1>
-
-        <!-- Mostrar la imagen del gráfico -->
-        <img src="data:image/png;base64,{{ imagen_grafico }}" alt="Gráfico">
+        <!-- Contenedor de la tabla -->
+        <div style="width: 100%; overflow-x: auto;">
+    
+            <!-- Mostrar la imagen del gráfico -->
+            <img src="data:image/png;base64,{{ imagen_grafico }}" alt="Gráfico" style="width: 100%; height: auto;">
+        </div>
+    
+        <!-- Pie de la carta -->
+        <div class="card-footer text-muted" style="background-color: #D7A5FF;">
+            <br>
+        </div>
     </div>
-    <div class="card-footer text-muted" style="background-color: #D7A5FF;">
-        <br>
-    </div>   
-</div>
-<br> 
 </center>
-
+<br>
 <script>                   
     // Esta funcion quita el mensaje de exito despues de un tiempo
     setTimeout(function() {
